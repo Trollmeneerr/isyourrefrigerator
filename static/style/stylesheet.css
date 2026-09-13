@@ -134,9 +134,11 @@ svg {
     0% {
         transform: translate(0, 0) scale(1);
     }
+
     50% {
         transform: translate(35px, -25px) scale(1.08);
     }
+
     100% {
         transform: translate(-30px, 30px) scale(0.95);
     }
@@ -146,7 +148,7 @@ svg {
     position: absolute;
     inset: 0;
     opacity: 0.04;
-    background-image: 
+    background-image:
         linear-gradient(to right, #ffffff 1px, transparent 1px),
         linear-gradient(to bottom, #ffffff 1px, transparent 1px);
     background-size: 60px 60px;
@@ -206,7 +208,7 @@ header.site {
     box-shadow: 0 6px 20px rgba(56, 189, 248, 0.4);
 }
 
-.brand-icon svg {
+.brand-icon img {
     width: 22px;
     height: 22px;
     color: var(--cyan);
@@ -352,10 +354,13 @@ header.site {
 }
 
 @keyframes pulse {
-    0%, 100% {
+
+    0%,
+    100% {
         opacity: 1;
         transform: scale(1);
     }
+
     50% {
         opacity: 0.4;
         transform: scale(0.85);
@@ -599,34 +604,53 @@ section.section-block {
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    background: rgba(34, 197, 94, 0.12);
-    border: 1px solid rgba(34, 197, 94, 0.3);
-    color: #4ade80;
-    padding: 5px 11px;
+    padding: 4px 10px;
     border-radius: 999px;
-    font-size: 0.74rem;
-    font-weight: 600;
-    font-family: 'JetBrains Mono', monospace;
-}
-
-.server-status-pill.on-demand {
-    background: rgba(251, 191, 36, 0.12);
-    border: 1px solid rgba(251, 191, 36, 0.35);
-    color: #fbbf24;
-}
-
-.server-status-pill.slot-pill {
-    background: rgba(13, 140, 241, 0.12);
-    border-color: rgba(56, 189, 248, 0.3);
-    color: var(--cyan);
+    background: rgba(255, 255, 255, 0.05);
+    font-size: 0.8rem;
+    color: var(--text-dim);
 }
 
 .server-status-pill .indicator-dot {
-    width: 6px;
-    height: 6px;
+    display: inline-block;
+    vertical-align: middle;
+    flex-shrink: 0;
+    width: 8px;
+    height: 8px;
     border-radius: 50%;
-    background: currentColor;
-    box-shadow: 0 0 6px currentColor;
+    background: #6b7280;
+    box-shadow: 0 0 6px #6b7280;
+    transition: background 0.3s ease, box-shadow 0.3s ease;
+}
+
+.server-status-pill .indicator-dot.online {
+    background: #22c55e;
+    box-shadow: 0 0 6px #22c55e;
+}
+
+.server-status-pill .indicator-dot.offline {
+    background: #ef4444;
+    box-shadow: 0 0 6px #ef4444;
+}
+
+.server-status-pill .indicator-dot.unknown {
+    background: #6b7280;
+    box-shadow: 0 0 6px #6b7280;
+}
+
+.server-status-pill .indicator-dot.available {
+    background: #22c55e;
+    box-shadow: 0 0 6px #22c55e;
+}
+
+.server-status-pill .indicator-dot.private {
+    background: #a855f7;
+    box-shadow: 0 0 6px #a855f7;
+}
+
+.server-status-pill .indicator-dot.taken {
+    background: #ef4444;
+    box-shadow: 0 0 6px #ef4444;
 }
 
 .server-icon {
@@ -1205,6 +1229,7 @@ footer.site {
 
 /* ---------- Responsive Breakpoints ---------- */
 @media (max-width: 960px) {
+
     .overview-grid,
     .server-grid {
         grid-template-columns: 1fr;

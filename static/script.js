@@ -58,6 +58,8 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
+
+
     // Copy to Clipboard (Server IP & Discord handle)
     const copyButtons = document.querySelectorAll('.btn-copy-ip');
     const toast = document.getElementById('toastNotice');
@@ -173,3 +175,30 @@ document.addEventListener('DOMContentLoaded', () => {
         el.textContent = currentYear;
     });
 });
+
+async function checkPZStatus() {
+    const dot = document.getElementById('pzStatusDot');
+    const text = document.getElementById('pzStatusText');
+
+    try {
+        const res = await fetch('/static/status.json', { cache: 'no-store' });
+        const data = await res.json();
+
+        if (data.online) {
+            dot.classList.remove('offline', 'unknown');
+            dot.classList.add('online');
+            text.textContent = 'Online';
+        } else {
+            dot.classList.remove('online', 'unknown');
+            dot.classList.add('offline');
+            text.textContent = 'Offline';
+        }
+    } catch (err) {
+        dot.classList.remove('online', 'offline');
+        dot.classList.add('unknown');
+        text.textContent = 'Unknown';
+    }
+}
+
+checkPZStatus();
+setInterval(checkPZStatus, 60000); // refresh every minute
