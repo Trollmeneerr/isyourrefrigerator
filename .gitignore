@@ -1,0 +1,7 @@
+# Ignore everything inside static/images/
+static/images/*
+# Optional: Keep the directory structure in git by keeping .gitkeep
+!static/images/.gitkeep
+
+# Ignore status.json
+static/status.json
