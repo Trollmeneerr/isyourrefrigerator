@@ -1,5 +1,2 @@
-# Ignore everything inside static/images/
-static/images/*
-
 # Ignore status.json
 static/status.json
