@@ -27,9 +27,9 @@ const SERVERS = [
         // CORS-friendly API, so this genuinely pings host:port every refresh.
         statusCheck: { type: 'mcsrvstat' },
         specs: [
-            { label: 'CPU', value: '2 Cores' },
-            { label: 'RAM', value: '8GB' },
-            { label: 'DISK', value: '25GB SSD' }
+            { label: 'CPU', value: 'i5-10300H 2 Cores' },
+            { label: 'RAM', value: 'DDR4 8GB' },
+            { label: 'DISK', value: '50GB SSD' }
         ]
     },
     {
@@ -49,7 +49,7 @@ const SERVERS = [
         // library). Swap `url` for wherever that snapshot lives.
         statusCheck: { type: 'endpoint', url: '/static/status.json' },
         specs: [
-            { label: 'CPU', value: '4 Cores / 8 Threads' },
+            { label: 'CPU', value: 'I7-6700k 4 Cores' },
             { label: 'RAM', value: 'DDR4 16GB' },
             { label: 'GPU', value: 'GeForce GTX 1080 8GB' }
         ]
@@ -114,25 +114,38 @@ function renderServerCard(server, context) {
                     <span class="spec-val">${escapeHtml(spec.value)}</span>
                 </div>`).join('');
 
-    const connectHtml = server.ip ? `
+    // Always show an IP/address on the card.
+    // Uses the server IP when available, otherwise the public server address.
+    const displayIp = server.ip || 'play.isyourrefrigerator.online:25565';
+
+    const connectHtml = `
             <div class="server-connect">
-                <span class="ip-display">${escapeHtml(server.ip)}</span>
-                <button type="button" class="btn-copy-ip" data-ip="${escapeHtml(server.ip)}" aria-label="Copy ${escapeHtml(server.name)} address">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <span class="ip-display">${escapeHtml(displayIp)}</span>
+                <button type="button" class="btn-copy-ip"
+                    data-ip="${escapeHtml(displayIp)}"
+                    aria-label="Copy ${escapeHtml(server.name)} address">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="9" y="9" width="13" height="13" rx="2"></rect>
                         <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
                     </svg>
                     <span>Join</span>
                 </button>
-            </div>` : '';
+            </div>`;
 
     return `
         <div class="server-card" data-server-id="${escapeHtml(server.id)}">
             <div class="server-top">
                 <div class="server-icon">${icon}</div>
                 <div class="server-status-pill">
-                    <span class="indicator-dot ${escapeHtml(status)}" data-status-dot="${escapeHtml(server.id)}" data-status-context="${context}"></span>
-                    <span data-status-text="${escapeHtml(server.id)}" data-status-context="${context}">${escapeHtml(statusText)}</span>
+                    <span class="indicator-dot ${escapeHtml(status)}"
+                        data-status-dot="${escapeHtml(server.id)}"
+                        data-status-context="${context}"></span>
+                    <span data-status-text="${escapeHtml(server.id)}"
+                        data-status-context="${context}">
+                        ${escapeHtml(statusText)}
+                    </span>
                 </div>
             </div>
 
@@ -143,6 +156,7 @@ function renderServerCard(server, context) {
 
             <div class="server-specs">${specsHtml}
             </div>
+
             ${connectHtml}
         </div>`;
 }
