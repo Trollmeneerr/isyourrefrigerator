@@ -41,19 +41,15 @@ const SERVERS = [
         icon: 'zomboid',
         host: 'play.isyourrefrigerator.online',
         port: 16261,
+        ip: 'play.isyourrefrigerator.online:16261',
         status: 'unknown',
-        // Zomboid has no public HTTP API for this, and browsers can't open a
-        // raw socket to a custom game port — so this reads a JSON snapshot
-        // that a script on the server itself should write after actually
-        // querying host:port (e.g. a small cron job using a Steam-query
-        // library). Swap `url` for wherever that snapshot lives.
         statusCheck: { type: 'endpoint', url: '/static/status.json' },
         specs: [
             { label: 'CPU', value: 'I7-6700k 4 Cores' },
             { label: 'RAM', value: 'DDR4 16GB' },
             { label: 'GPU', value: 'GeForce GTX 1080 8GB' }
         ]
-    }
+    },
 ];
 
 /* Icon library, keyed by the `icon` field above. Add a new key here whenever
