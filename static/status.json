@@ -1,1 +1,13 @@
-{"online": false, "checked_at": "2026-09-14T18:30:07Z"}
+{
+    "online": false,
+    "checked_at": "2026-09-19T13:35:44Z",
+    "minecraft": {
+        "online": true
+    },
+    "valheim": {
+        "online": true
+    },
+    "zomboid": {
+        "online": false
+    }
+}

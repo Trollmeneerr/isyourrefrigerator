@@ -18,7 +18,25 @@ const SERVERS = [
         port: 25565,
         ip: 'play.isyourrefrigerator.online:25565',
         status: 'unknown',
-        statusCheck: { type: 'mcsrvstat' },
+        statusCheck: { type: 'endpoint', url: '/static/status.json', key: 'minecraft' },
+        specs: [
+            { label: 'CPU', value: 'i5-10300H 2 Cores' },
+            { label: 'RAM', value: 'DDR4 8GB' },
+            { label: 'DISK', value: '50GB SSD' }
+        ]
+    },
+    {
+        id: 'valheim',
+        name: 'Valheim',
+        subtitle: 'Co-op Survival',
+        description: 'A brutal exploration and survival game set in a procedurally generated purgatory.',
+        managedBy: 'The Refrigerator',
+        icon: 'default',
+        host: 'play.isyourrefrigerator.online',
+        port: 16271,
+        ip: 'play.isyourrefrigerator.online:16271',
+        status: 'unknown',
+        statusCheck: { type: 'endpoint', url: '/static/status.json', key: 'valheim' },
         specs: [
             { label: 'CPU', value: 'i5-10300H 2 Cores' },
             { label: 'RAM', value: 'DDR4 8GB' },
@@ -36,13 +54,13 @@ const SERVERS = [
         port: 16261,
         ip: 'play.isyourrefrigerator.online:16261',
         status: 'unknown',
-        statusCheck: { type: 'endpoint', url: '/static/status.json' },
+        statusCheck: { type: 'endpoint', url: '/static/status.json', key: 'zomboid' },
         specs: [
             { label: 'CPU', value: 'I7-6700k 4 Cores' },
             { label: 'RAM', value: 'DDR4 16GB' },
             { label: 'GPU', value: 'GeForce GTX 1080 8GB' }
         ]
-    },
+    }
 ];
 
 const SERVER_ICONS = {
@@ -168,7 +186,12 @@ async function refreshLiveStatus(server) {
         } else if (check.type === 'endpoint') {
             const res = await fetch(check.url, { cache: 'no-store' });
             const data = await res.json();
-            applyStatus(data.online ? 'online' : 'offline', data.online ? 'Online' : 'Offline');
+
+            // Extracts nested server object if key is defined (e.g., data.minecraft.online), fallback to top-level data.online
+            const targetData = check.key ? data[check.key] : data;
+            const isOnline = targetData && targetData.online === true;
+
+            applyStatus(isOnline ? 'online' : 'offline', isOnline ? 'Online' : 'Offline');
         }
     } catch (err) {
         applyStatus('unknown', 'Unknown');
