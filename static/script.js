@@ -5,11 +5,6 @@
 
 /* =========================================================================
    SERVER DATA
-   -------------------------------------------------------------------------
-   Add a new server by pushing another object onto this array. Every field
-   is optional except id, name and specs — leave out `ip` for servers that
-   don't take direct connections, and leave out `liveEndpoint` unless you
-   have a status.json (or similar) endpoint to poll for live status.
    ========================================================================= */
 const SERVERS = [
     {
@@ -22,9 +17,7 @@ const SERVERS = [
         host: 'play.isyourrefrigerator.online',
         port: 25565,
         ip: 'play.isyourrefrigerator.online:25565',
-        status: 'unknown', // replaced by a live check on load, see statusCheck below
-        // Minecraft's server-list-ping protocol can be queried by a public,
-        // CORS-friendly API, so this genuinely pings host:port every refresh.
+        status: 'unknown',
         statusCheck: { type: 'mcsrvstat' },
         specs: [
             { label: 'CPU', value: 'i5-10300H 2 Cores' },
@@ -52,8 +45,6 @@ const SERVERS = [
     },
 ];
 
-/* Icon library, keyed by the `icon` field above. Add a new key here whenever
-   a new server needs an icon that doesn't exist yet. */
 const SERVER_ICONS = {
     minecraft: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <rect x="3" y="3" width="7" height="7"></rect>
@@ -73,12 +64,8 @@ const SERVER_ICONS = {
     </svg>`
 };
 
-/* Update this one line to point "Server Panel" at your actual panel URL
-   (e.g. your Pelican/Pterodactyl panel address). Both the header button and
-   the mobile-nav button pull from this single constant. */
 const SERVER_PANEL_URL = 'https://panel.isyourrefrigerator.online';
 
-/* Human-readable label per status value. */
 const STATUS_LABELS = {
     online: 'Online',
     offline: 'Offline',
@@ -93,12 +80,6 @@ function escapeHtml(str) {
     return div.innerHTML;
 }
 
-/**
- * Renders a single server as a `.server-card` element.
- * `context` namespaces the data-attributes used for live status updates so
- * the same server can render in more than one place (main grid + modal)
- * without id collisions.
- */
 function renderServerCard(server, context) {
     const icon = SERVER_ICONS[server.icon] || SERVER_ICONS.default;
     const status = server.status || 'unknown';
@@ -110,8 +91,6 @@ function renderServerCard(server, context) {
                     <span class="spec-val">${escapeHtml(spec.value)}</span>
                 </div>`).join('');
 
-    // Always show an IP/address on the card.
-    // Uses the server IP when available, otherwise the public server address.
     const displayIp = server.ip || 'play.isyourrefrigerator.online:25565';
 
     const connectHtml = `
@@ -157,24 +136,11 @@ function renderServerCard(server, context) {
         </div>`;
 }
 
-/** Renders every server in SERVERS into a target container. */
 function renderServerList(container, context) {
     if (!container) return;
     container.innerHTML = SERVERS.map(server => renderServerCard(server, context)).join('');
 }
 
-/**
- * Polls a server's `statusCheck` config (if any) and patches every status
- * pill for that server id in place — both the main grid card and the All
- * Servers modal card update together since they share the same server id.
- *
- * Supported statusCheck.type values:
- *   'mcsrvstat' — actually pings server.host:server.port using the public,
- *                 CORS-enabled api.mcsrvstat.us Minecraft status API.
- *   'endpoint'  — fetches a JSON file/URL (statusCheck.url) with an
- *                 `online` boolean, for servers a browser can't query
- *                 directly (e.g. non-Minecraft game protocols).
- */
 async function refreshLiveStatus(server) {
     const check = server.statusCheck;
     if (!check) return;
@@ -213,8 +179,6 @@ function refreshAllLiveStatuses() {
     SERVERS.filter(s => s.statusCheck).forEach(refreshLiveStatus);
 }
 
-// Mobile nav close helper, defined at top level so both the DOMContentLoaded
-// handler and the anchor-click handler below can call it safely.
 function closeMobileNav() {
     const mobileNav = document.getElementById('mobileNav');
     const mobileMenuToggle = document.getElementById('mobileMenuToggle');
@@ -226,25 +190,49 @@ function closeMobileNav() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    // Console Easter Egg & Privacy Confirmation
+    // Console Easter Egg
     console.log(
         '%c❄️ isyourrefrigerator.online%c\nPrivacy-First Homelab: Zero cookies, zero third-party trackers, 100% chilled.',
         'color: #38bdf8; font-size: 16px; font-weight: bold; font-family: monospace;',
         'color: #94a3b8; font-size: 12px;'
     );
 
-    // Wire up the Server Panel link(s) from the single SERVER_PANEL_URL constant
+    // Wire up Server Panel Links
     document.querySelectorAll('#serverPanelLink, #serverPanelLinkMobile').forEach(link => {
         link.href = SERVER_PANEL_URL;
     });
 
-    // Render the modular server cards into the main grid and the "All Servers" modal
+    // Render Servers
     renderServerList(document.getElementById('dynamicServerCards'), 'grid');
     renderServerList(document.getElementById('allServersList'), 'modal');
     refreshAllLiveStatuses();
-    setInterval(refreshAllLiveStatuses, 60000); // refresh every minute
+    setInterval(refreshAllLiveStatuses, 60000);
 
-    // Active Navigation Highlight on Scroll
+    // Console GIF Modal
+    const openGifBtn = document.getElementById('openConsoleGif');
+    const gifModal = document.getElementById('consoleGifModal');
+    const closeGifBtn = document.getElementById('closeConsoleGif');
+    const gifBackdrop = document.getElementById('consoleGifBackdrop');
+
+    if (openGifBtn && gifModal) {
+        function openConsoleGif() {
+            gifModal.classList.add('active');
+            gifModal.setAttribute('aria-hidden', 'false');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeConsoleGif() {
+            gifModal.classList.remove('active');
+            gifModal.setAttribute('aria-hidden', 'true');
+            document.body.style.overflow = '';
+        }
+
+        openGifBtn.addEventListener('click', openConsoleGif);
+        if (closeGifBtn) closeGifBtn.addEventListener('click', closeConsoleGif);
+        if (gifBackdrop) gifBackdrop.addEventListener('click', closeConsoleGif);
+    }
+
+    // Scroll Active Links
     const sections = document.querySelectorAll('section[id]');
     const navLinks = document.querySelectorAll('.nav-link');
 
@@ -266,7 +254,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-        // If at top of page, remove active states
         if (scrollY < 200) {
             navLinks.forEach(link => link.classList.remove('active'));
         }
@@ -274,7 +261,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     window.addEventListener('scroll', updateActiveNav, { passive: true });
 
-    // Smooth Scrolling for internal anchor links
+    // Smooth Scrolling
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
             const targetId = this.getAttribute('href');
@@ -293,8 +280,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Copy to Clipboard (Server IP & Discord handle) — event delegation so this
-    // also covers server cards that get injected into the DOM after page load.
+    // Copy IP & Notifications
     const toast = document.getElementById('toastNotice');
 
     function showToast(message) {
@@ -334,7 +320,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Modal Helper Functions
+    // Modal Generic Logic
     function openModalById(modalId) {
         const modal = document.getElementById(modalId);
         if (!modal) return;
@@ -354,9 +340,14 @@ document.addEventListener('DOMContentLoaded', () => {
         document.querySelectorAll('.modal-backdrop').forEach(modal => {
             closeModal(modal);
         });
+        if (gifModal && gifModal.classList.contains('active')) {
+            gifModal.classList.remove('active');
+            gifModal.setAttribute('aria-hidden', 'true');
+            document.body.style.overflow = '';
+        }
     }
 
-    // Say Hi / Discord Modal Triggers
+    // Modal Triggers
     document.querySelectorAll('.btn-say-hi').forEach(btn => {
         btn.addEventListener('click', (e) => {
             e.preventDefault();
@@ -371,7 +362,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Privacy & Legal Modal Triggers
     document.querySelectorAll('.btn-privacy').forEach(btn => {
         btn.addEventListener('click', (e) => {
             e.preventDefault();
@@ -386,7 +376,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // All Servers Modal Triggers (any button with .btn-view-servers, incl. mobile nav)
     document.querySelectorAll('.btn-view-servers').forEach(btn => {
         btn.addEventListener('click', (e) => {
             e.preventDefault();
@@ -402,7 +391,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Backdrop Click Dismiss for all Modals
     document.querySelectorAll('.modal-backdrop').forEach(backdrop => {
         backdrop.addEventListener('click', (e) => {
             if (e.target === backdrop) {
@@ -411,7 +399,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Escape Key to Close Modals
     document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') {
             closeAllModals();
@@ -419,7 +406,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Mobile Navigation Menu
+    // Mobile Nav Toggle
     const mobileMenuToggle = document.getElementById('mobileMenuToggle');
     const mobileNav = document.getElementById('mobileNav');
 
@@ -435,14 +422,12 @@ document.addEventListener('DOMContentLoaded', () => {
         mobileMenuToggle.addEventListener('click', toggleMobileNav);
     }
 
-    // Close the mobile menu automatically if the viewport grows back to desktop size
     window.addEventListener('resize', () => {
         if (window.innerWidth > 960) {
             closeMobileNav();
         }
     });
 
-    // Dynamic current year in footer
     const currentYearElements = document.querySelectorAll('.current-year');
     const currentYear = new Date().getFullYear();
     currentYearElements.forEach(el => {

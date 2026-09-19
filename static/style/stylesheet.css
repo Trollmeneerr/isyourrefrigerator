@@ -308,9 +308,6 @@ header.site {
     gap: 14px;
 }
 
-/* Server Panel appears in the header on desktop; on tablet/mobile it moves
-   into the mobile-nav panel instead (see breakpoints below) so the header
-   doesn't get crowded. */
 .header-actions .btn-server-panel {
     white-space: nowrap;
 }
@@ -430,8 +427,6 @@ header.site {
     transform: translateY(-2px);
 }
 
-/* View All Servers is always blue/filled, even where it's combined with
-   .btn-outline markup, since this rule comes after .btn-outline above. */
 .btn-view-servers {
     background: linear-gradient(135deg, var(--t) 0%, #0b76ce 100%);
     color: #ffffff;
@@ -714,8 +709,112 @@ section.section-block {
     height: 100%;
 }
 
+.pelican-info {
+    padding: 20px;
+    margin-bottom: 16px;
+    border-radius: 16px;
+    background: rgba(56, 189, 248, 0.045);
+    border: 1px solid rgba(56, 189, 248, 0.12);
+}
+
+.pelican-info-header {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    margin-bottom: 14px;
+}
+
+.pelican-icon {
+    width: 42px;
+    height: 42px;
+    flex: 0 0 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    color: #38bdf8;
+    background: rgba(56, 189, 248, 0.08);
+    border: 1px solid rgba(56, 189, 248, 0.14);
+}
+
+.pelican-icon svg {
+    width: 21px;
+    height: 21px;
+}
+
+.pelican-info h4 {
+    margin: 2px 0 0;
+    font-size: 1.05rem;
+}
+
+.pelican-info>p {
+    margin: 0 0 17px;
+    color: #94a3b8;
+    font-size: 0.88rem;
+    line-height: 1.65;
+}
+
+.pelican-features {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+    margin-bottom: 18px;
+}
+
+.pelican-feature {
+    display: flex;
+    gap: 10px;
+    padding: 12px;
+    border-radius: 11px;
+    background: rgba(255, 255, 255, 0.025);
+    border: 1px solid rgba(148, 163, 184, 0.07);
+}
+
+.pelican-feature>span {
+    flex: 0 0 auto;
+    color: #38bdf8;
+    font-size: 0.62rem;
+    font-weight: 700;
+    padding-top: 2px;
+}
+
+.pelican-feature strong {
+    display: block;
+    font-size: 0.78rem;
+    margin-bottom: 2px;
+}
+
+.pelican-feature small {
+    display: block;
+    color: #64748b;
+    font-size: 0.68rem;
+    line-height: 1.4;
+}
+
+.btn-management {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px 14px;
+    border-radius: 10px;
+    color: #e0f2fe;
+    background: rgba(56, 189, 248, 0.1);
+    border: 1px solid rgba(56, 189, 248, 0.18);
+    text-decoration: none;
+    font-size: 0.78rem;
+    font-weight: 700;
+    transition: 0.2s ease;
+}
+
+.btn-management:hover {
+    background: rgba(56, 189, 248, 0.17);
+    border-color: rgba(56, 189, 248, 0.3);
+    transform: translateY(-1px);
+}
+
 .request-card .server-specs {
-    margin-bottom: 10;
+    margin-bottom: 10px;
 }
 
 .request-card .server-connect {
@@ -772,12 +871,14 @@ section.section-block {
     transition: background 0.3s ease, box-shadow 0.3s ease;
 }
 
-.server-status-pill .indicator-dot.online {
+.server-status-pill .indicator-dot.online,
+.server-status-pill .indicator-dot.available {
     background: #22c55e;
     box-shadow: 0 0 6px #22c55e;
 }
 
-.server-status-pill .indicator-dot.offline {
+.server-status-pill .indicator-dot.offline,
+.server-status-pill .indicator-dot.taken {
     background: #ef4444;
     box-shadow: 0 0 6px #ef4444;
 }
@@ -787,19 +888,9 @@ section.section-block {
     box-shadow: 0 0 6px #6b7280;
 }
 
-.server-status-pill .indicator-dot.available {
-    background: #22c55e;
-    box-shadow: 0 0 6px #22c55e;
-}
-
 .server-status-pill .indicator-dot.private {
     background: #a855f7;
     box-shadow: 0 0 6px #a855f7;
-}
-
-.server-status-pill .indicator-dot.taken {
-    background: #ef4444;
-    box-shadow: 0 0 6px #ef4444;
 }
 
 .server-icon {
@@ -904,7 +995,6 @@ section.section-block {
 .ip-display {
     flex: 1;
     background: rgba(3, 11, 24, 0.85);
-    border: 1px solid var(--hair);
     border-radius: var(--radius-sm);
     padding: 10px 12px;
     font-family: 'JetBrains Mono', monospace;
@@ -947,8 +1037,6 @@ section.section-block {
     box-shadow: 0 0 14px var(--green-glow);
 }
 
-/* Lets script.js inject .server-card elements as direct grid children
-   without an extra wrapper box breaking the grid layout. */
 .dynamic-server-cards {
     display: contents;
 }
@@ -1071,7 +1159,7 @@ section.section-block {
     font-weight: 600;
 }
 
-/* ---------- Say Hi / Discord Modal ---------- */
+/* ---------- Modals ---------- */
 .modal-backdrop {
     position: fixed;
     inset: 0;
@@ -1098,7 +1186,7 @@ section.section-block {
     border: 1px solid var(--glass-hover-border);
     box-shadow: 0 24px 60px rgba(0, 0, 0, 0.7), 0 0 35px var(--cyan-glow);
     border-radius: var(--radius-lg);
-    max-width: 440px;
+    max-width: 800px;
     width: 100%;
     padding: 32px 28px;
     position: relative;
@@ -1165,6 +1253,87 @@ section.section-block {
 .modal-header p {
     font-size: 0.88rem;
     color: var(--text-dim);
+}
+
+/* Pelican Console GIF Modal */
+.console-gif-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 99999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 0.25s ease, visibility 0.25s ease;
+}
+
+.console-gif-modal.active {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+}
+
+.console-gif-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(1, 7, 18, 0.82);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.console-gif-container {
+    position: relative;
+    z-index: 1;
+    width: 80vw;
+    max-width: 1400px;
+    max-height: 90vh;
+    padding: 10px;
+    border-radius: 18px;
+    background: rgba(10, 25, 48, 0.92);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    box-shadow: 0 30px 100px rgba(0, 0, 0, 0.65), 0 0 50px rgba(13, 140, 241, 0.12);
+    transform: scale(0.94);
+    transition: transform 0.25s ease;
+}
+
+.console-gif-modal.active .console-gif-container {
+    transform: scale(1);
+}
+
+.console-gif {
+    display: block;
+    width: 100%;
+    height: auto;
+    max-height: calc(90vh - 20px);
+    object-fit: contain;
+    border-radius: 11px;
+}
+
+.console-gif-close {
+    position: absolute;
+    top: -14px;
+    right: -14px;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 50%;
+    background: rgba(10, 25, 48, 0.95);
+    color: #fff;
+    font-size: 25px;
+    line-height: 1;
+    cursor: pointer;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+    transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.console-gif-close:hover {
+    background: rgba(13, 140, 241, 0.9);
+    transform: scale(1.08);
 }
 
 .contact-card {
@@ -1417,11 +1586,6 @@ footer.site {
 }
 
 /* ---------- Responsive Breakpoints ---------- */
-/* This site is designed desktop-first; these breakpoints reflow the same
-   layout for tablets and phones rather than swapping in a separate mobile
-   design. */
-
-/* Tablet: switch to 2-column grids where 3 columns get cramped */
 @media (max-width: 960px) {
 
     .overview-grid,
@@ -1467,7 +1631,18 @@ footer.site {
     }
 }
 
-/* Phone: collapse to a single column everywhere */
+@media (max-width: 700px) {
+    .console-gif-container {
+        width: 94vw;
+        max-height: 85vh;
+    }
+
+    .console-gif-close {
+        top: -12px;
+        right: -8px;
+    }
+}
+
 @media (max-width: 640px) {
     .wrap {
         padding: 0 18px;
@@ -1549,14 +1724,12 @@ footer.site {
         max-width: 100px;
     }
 
-    /* 2.5x the base logo-icon height at this breakpoint too */
     .brand-link img.logo-wordmark {
         height: 65px;
         max-width: 240px;
     }
 }
 
-/* Small phones: tighten up spacing and specs so nothing clips */
 @media (max-width: 400px) {
     .spec-item {
         grid-template-columns: minmax(40px, auto) 1fr;
@@ -1735,8 +1908,14 @@ footer.site {
 }
 
 @media (max-width: 520px) {
+
+    .pelican-features,
     .rental-plans {
         grid-template-columns: 1fr;
+    }
+
+    .pelican-info {
+        padding: 16px;
     }
 
     .request-server-connect {
