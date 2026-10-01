@@ -220,9 +220,13 @@ document.addEventListener('DOMContentLoaded', () => {
         'color: #94a3b8; font-size: 12px;'
     );
 
-    // Wire up Server Panel Links
+    // Wire up Server Panel Links & add click handler for maximum browser compatibility (e.g., Brave popup blockers)
     document.querySelectorAll('#serverPanelLink, #serverPanelLinkMobile').forEach(link => {
         link.href = SERVER_PANEL_URL;
+        link.addEventListener('click', (e) => {
+            // Let the standard target="_blank" work, but fallback gracefully if needed
+            if (e.defaultPrevented) return;
+        });
     });
 
     // Render Servers

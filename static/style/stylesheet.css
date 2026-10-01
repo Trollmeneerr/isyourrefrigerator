@@ -65,6 +65,8 @@ a {
 img,
 svg {
     display: block;
+    max-width: 100%;
+    height: auto;
 }
 
 .wrap {
@@ -177,27 +179,28 @@ header.site {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    min-height: 74px;
-    padding: 10px 0;
-    gap: 20px;
+    min-height: 70px;
+    padding: 8px 0;
+    gap: 16px;
 }
 
 .brand-link {
     display: inline-flex;
     align-items: center;
-    gap: 12px;
+    gap: 10px;
     text-decoration: none;
     cursor: pointer;
     min-width: 0;
+    flex-shrink: 1;
 }
 
 .brand-link img.logo-icon {
-    display: inline-flex;
-    align-items: center;
+    display: block;
     height: 34px;
     width: auto;
     max-width: 140px;
     object-fit: contain;
+    flex-shrink: 0;
 }
 
 .server-address {
@@ -207,14 +210,16 @@ header.site {
     flex-direction: column;
 }
 
-/* 2.5x the base logo-icon height */
 .brand-link img.logo-wordmark {
-    display: inline-flex;
-    align-items: center;
+    display: block;
     height: 85px;
     width: auto;
     max-width: 340px;
     object-fit: contain;
+}
+
+.brand-link img.logo-mobile {
+    display: none;
 }
 
 .brand-icon {
@@ -1595,6 +1600,16 @@ footer.site {
         gap: 20px;
     }
 
+    .brand-link img.logo-icon {
+        height: 28px;
+        max-width: 110px;
+    }
+
+    .brand-link img.logo-wordmark {
+        height: 60px;
+        max-width: 240px;
+    }
+
     .site-nav {
         display: none;
     }
@@ -1702,13 +1717,13 @@ footer.site {
     }
 
     .site-inner {
-        min-height: 66px;
-        padding: 8px 0;
-        gap: 10px;
+        min-height: 60px;
+        padding: 6px 0;
+        gap: 8px;
     }
 
     .header-actions {
-        gap: 8px;
+        gap: 6px;
     }
 
     .btn-say-hi span {
@@ -1716,21 +1731,34 @@ footer.site {
     }
 
     .btn-say-hi {
-        padding: 9px 12px;
+        padding: 8px 10px;
     }
 
-    .brand-link img.logo-icon {
-        height: 26px;
-        max-width: 100px;
+    .brand-link {
+        flex: 1;
+        justify-content: center;
+        max-width: calc(100% - 50px);
     }
 
+    .brand-link img.logo-icon,
     .brand-link img.logo-wordmark {
-        height: 65px;
-        max-width: 240px;
+        display: none !important;
+    }
+
+    .brand-link img.logo-mobile {
+        display: block !important;
+        height: auto;
+        max-height: 44px;
+        width: auto;
+        max-width: 100%;
+        object-fit: contain;
     }
 }
 
 @media (max-width: 400px) {
+    .brand-link img.logo-mobile {
+        max-height: 36px;
+    }
     .spec-item {
         grid-template-columns: minmax(40px, auto) 1fr;
     }
@@ -1751,21 +1779,11 @@ footer.site {
 
     .server-card,
     .overview-card {
-        padding: 24px 18px;
+        padding: 20px 14px;
     }
 
     .contact-card {
         flex-wrap: wrap;
-    }
-
-    .brand-link img.logo-icon {
-        height: 22px;
-        max-width: 80px;
-    }
-
-    .brand-link img.logo-wordmark {
-        height: 55px;
-        max-width: 190px;
     }
 }
 
