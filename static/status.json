@@ -8,6 +8,9 @@
         "online": true
     },
     "zomboid": {
-        "online": false
+        "online": true
+    },
+    "forest": {
+        "online": true
     }
 }

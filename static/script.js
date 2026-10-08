@@ -8,42 +8,6 @@
    ========================================================================= */
 const SERVERS = [
     {
-        id: 'minecraft-26-2',
-        name: 'Minecraft 26.2',
-        subtitle: 'Fabric • Modded Survival',
-        description: 'Fabric-modded survival world running the latest content. Cozy building, exploration, and a light automation modpack.',
-        managedBy: 'The Refrigerator',
-        icon: 'minecraft',
-        host: 'play.isyourrefrigerator.online',
-        port: 25565,
-        ip: 'play.isyourrefrigerator.online:25565',
-        status: 'unknown',
-        statusCheck: { type: 'endpoint', url: '/static/status.json', key: 'minecraft' },
-        specs: [
-            { label: 'CPU', value: 'i5-10300H 2 Cores' },
-            { label: 'RAM', value: 'DDR4 8GB' },
-            { label: 'DISK', value: '50GB SSD' }
-        ]
-    },
-    {
-        id: 'valheim',
-        name: 'Valheim',
-        subtitle: 'Co-op Survival',
-        description: 'A brutal exploration and survival game set in a procedurally generated purgatory.',
-        managedBy: 'The Refrigerator',
-        icon: 'default',
-        host: 'play.isyourrefrigerator.online',
-        port: 16271,
-        ip: 'play.isyourrefrigerator.online:16271',
-        status: 'unknown',
-        statusCheck: { type: 'endpoint', url: '/static/status.json', key: 'valheim' },
-        specs: [
-            { label: 'CPU', value: 'i5-10300H 2 Cores' },
-            { label: 'RAM', value: 'DDR4 8GB' },
-            { label: 'DISK', value: '50GB SSD' }
-        ]
-    },
-    {
         id: 'project-zomboid',
         name: 'Project Zomboid',
         subtitle: 'Build 42 • Modded Survival PvE',
@@ -60,6 +24,60 @@ const SERVERS = [
             { label: 'RAM', value: 'DDR4 16GB' },
             { label: 'GPU', value: 'GeForce GTX 1080 8GB' }
         ]
+    },
+    {
+        id: 'valheim',
+        name: 'Valheim',
+        subtitle: 'Co-op Survival',
+        description: 'A brutal exploration and survival game set in a procedurally generated purgatory.',
+        managedBy: 'The Refrigerator',
+        icon: 'default',
+        host: 'play.isyourrefrigerator.online',
+        port: 16271,
+        ip: 'play.isyourrefrigerator.online:16271',
+        status: 'unknown',
+        statusCheck: { type: 'endpoint', url: '/static/status.json', key: 'valheim' },
+        specs: [
+            { label: 'CPU', value: 'i5-10300H 3 Threads' },
+            { label: 'RAM', value: 'DDR4 6GB' },
+            { label: 'DISK', value: '50GB SSD' }
+        ]
+    },
+    {
+        id: 'minecraft-26-2',
+        name: 'Minecraft 26.2',
+        subtitle: 'Fabric • Modded Survival',
+        description: 'Fabric-modded survival world running the latest content. Cozy building, exploration, and a light automation modpack.',
+        managedBy: 'The Refrigerator',
+        icon: 'minecraft',
+        host: 'play.isyourrefrigerator.online',
+        port: 25565,
+        ip: 'play.isyourrefrigerator.online:25565',
+        status: 'unknown',
+        statusCheck: { type: 'endpoint', url: '/static/status.json', key: 'minecraft' },
+        specs: [
+            { label: 'CPU', value: 'i5-10300H 2 Threads' },
+            { label: 'RAM', value: 'DDR4 4GB' },
+            { label: 'DISK', value: '50GB SSD' }
+        ]
+    },
+    {
+        id: 'the-forest',
+        name: 'The Forest',
+        subtitle: 'Co-op Survival',
+        description: 'Build, explore, and survive on a mysterious peninsula filled with dangerous mutants.',
+        managedBy: 'The Refrigerator',
+        icon: 'forest',
+        host: 'play.isyourrefrigerator.online',
+        port: 27015,
+        ip: 'play.isyourrefrigerator.online:16278',
+        status: 'unknown',
+        statusCheck: { type: 'endpoint', url: '/static/status.json', key: 'forest' },
+        specs: [
+            { label: 'CPU', value: 'i5-10300H 3 Threads' },
+            { label: 'RAM', value: 'DDR4 6GB' },
+            { label: 'DISK', value: '50GB SSD' }
+        ]
     }
 ];
 
@@ -72,6 +90,9 @@ const SERVER_ICONS = {
     </svg>`,
     zomboid: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <path d="M12 2v4m0 12v4M4.93 4.93l2.83 2.83m8.48 8.48l2.83 2.83M2 12h4m12 0h4M4.93 19.07l2.83-2.83m8.48-8.48l2.83-2.83"></path>
+    </svg>`,
+    forest: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 2L4 15h5l-3 6h12l-3-6h5L12 2z"></path>
     </svg>`,
     racing: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <circle cx="12" cy="12" r="10"></circle>
@@ -154,9 +175,10 @@ function renderServerCard(server, context) {
         </div>`;
 }
 
-function renderServerList(container, context) {
+function renderServerList(container, context, limit) {
     if (!container) return;
-    container.innerHTML = SERVERS.map(server => renderServerCard(server, context)).join('');
+    const serversToRender = limit ? SERVERS.slice(0, limit) : SERVERS;
+    container.innerHTML = serversToRender.map(server => renderServerCard(server, context)).join('');
 }
 
 async function refreshLiveStatus(server) {
@@ -230,7 +252,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Render Servers
-    renderServerList(document.getElementById('dynamicServerCards'), 'grid');
+    renderServerList(document.getElementById('dynamicServerCards'), 'grid', 2);
     renderServerList(document.getElementById('allServersList'), 'modal');
     refreshAllLiveStatuses();
     setInterval(refreshAllLiveStatuses, 60000);
