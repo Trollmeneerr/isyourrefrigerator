@@ -94,68 +94,148 @@ function buildLists() {
         section.className = 'zb-list';
         section.innerHTML = `
             <div class="zb-list-head">
-                <div><h2>${esc(list.title)}</h2><p>${esc(list.note || '')}</p></div>
+                <div>
+                    <h2>${esc(list.title)}</h2>
+                    <p>${esc(list.note || '')}</p>
+                </div>
                 <div class="zb-list-tools">
                     <span class="zb-count">0 / ${total}</span>
-                    <input type="search" class="zb-search" placeholder="Filter" aria-label="Filter ${esc(list.title)}">
+                    <input type="search" class="zb-search"
+                        placeholder="Filter"
+                        aria-label="Filter ${esc(list.title)}">
                 </div>
             </div>
-            <div class="zb-bar"><div class="zb-bar-fill"></div></div>
+            <div class="zb-bar">
+                <div class="zb-bar-fill"></div>
+            </div>
             <div class="zb-body"></div>`;
 
         const body = section.querySelector('.zb-body');
-        if (list.groups) body.classList.add('zb-skills');
-        const rows = [];
 
-        if (!total) {
-            body.innerHTML = '<p class="zb-empty">Nothing here yet. Add names to <code>static/items.js</code>.</p>';
+        if (list.groups) {
+            body.classList.add('zb-skills');
         }
 
+        const rows = [];
         const used = new Set();
+
+        if (!total) {
+            body.innerHTML =
+                '<p class="zb-empty">Nothing here yet. Add names to <code>static/items.js</code>.</p>';
+        }
 
         groups.forEach(group => {
             if (!group.items.length) return;
 
+            const isSkillGroup = Boolean(group.name);
+
             const wrap = document.createElement('div');
-            wrap.className = group.name ? 'zb-skill' : 'zb-group';
-            if (group.name) wrap.innerHTML = `<h3>${esc(group.name)}</h3>`;
+            wrap.className = isSkillGroup ? 'zb-skill' : 'zb-group';
+
+            if (isSkillGroup) {
+                const heading = document.createElement('h3');
+                heading.textContent = group.name;
+                wrap.append(heading);
+            }
 
             const grid = document.createElement('div');
-            grid.className = group.name ? 'zb-vols' : 'zb-grid';
+            grid.className = isSkillGroup ? 'zb-vols' : 'zb-grid';
 
-            // Two columns, filled vertically from top to bottom.
-            grid.style.display = 'grid';
-            grid.style.gridTemplateColumns = 'repeat(2, minmax(0, 1fr))';
-            grid.style.gridAutoFlow = 'column';
-            grid.style.gridTemplateRows = `repeat(${Math.ceil(group.items.length / 2)}, auto)`;
+            let leftColumn;
+            let rightColumn;
+            let midpoint = 0;
+
+            if (isSkillGroup) {
+                // Keep volumes I-V together on one horizontal row.
+                grid.style.display = 'flex';
+                grid.style.flexDirection = 'row';
+                grid.style.flexWrap = 'nowrap';
+                grid.style.alignItems = 'center';
+                grid.style.gap = '4px';
+                grid.style.flexShrink = '0';
+            } else {
+                // Two vertical columns: fill the left, then the right.
+                grid.style.display = 'flex';
+                grid.style.flexDirection = 'row';
+                grid.style.alignItems = 'stretch';
+                grid.style.gap = '8px';
+
+                leftColumn = document.createElement('div');
+                rightColumn = document.createElement('div');
+
+                [leftColumn, rightColumn].forEach(column => {
+                    column.className = 'zb-column';
+                    column.style.display = 'flex';
+                    column.style.flexDirection = 'column';
+                    column.style.flex = '1 1 0';
+                    column.style.minWidth = '0';
+                    column.style.gap = '8px';
+                });
+
+                // Sort regular items alphabetically before splitting.
+                midpoint = Math.ceil(group.items.length / 2);
+
+                grid.append(leftColumn, rightColumn);
+            }
 
             wrap.append(grid);
 
-            const groupRows = group.items.map(name => {
-                let id = slug(name) || 'item', n = 2;
-                while (used.has(id)) id = `${slug(name)}-${n++}`;
+            const itemNames = isSkillGroup
+                ? group.items.slice()
+                : group.items.slice().sort((a, b) =>
+                    a.localeCompare(b, undefined, {
+                        numeric: true,
+                        sensitivity: 'base'
+                    })
+                );
+
+            const groupRows = [];
+
+            itemNames.forEach((name, index) => {
+                let id = slug(name) || 'item';
+                let n = 2;
+
+                while (used.has(id)) {
+                    id = `${slug(name)}-${n++}`;
+                }
+
                 used.add(id);
 
                 const label = document.createElement('label');
-                label.className = group.name ? 'zb-vol' : 'zb-item';
+                label.className = isSkillGroup ? 'zb-vol' : 'zb-item';
 
                 const box = document.createElement('input');
                 box.type = 'checkbox';
                 box.setAttribute('aria-label', name);
-                box.addEventListener('change', () => setChecked(key, id, box.checked));
+
+                box.addEventListener('change', () => {
+                    setChecked(key, id, box.checked);
+                });
 
                 const text = document.createElement('span');
-                text.textContent =
-                    group.name && name.startsWith(group.name + ' ')
-                        ? name.slice(group.name.length + 1)
-                        : name;
+
+                // For skills, show only the volume beside its skill title.
+                text.textContent = isSkillGroup &&
+                    name.startsWith(group.name + ' ')
+                    ? name.slice(group.name.length + 1)
+                    : name;
 
                 label.append(box, text);
-                grid.append(label);
+
+                if (isSkillGroup) {
+                    // I, II, III, IV, V remain next to each other.
+                    grid.append(label);
+                } else if (index < midpoint) {
+                    // First half goes down the left column.
+                    leftColumn.append(label);
+                } else {
+                    // Second half goes down the right column.
+                    rightColumn.append(label);
+                }
 
                 const row = { id, name, label, box };
                 rows.push(row);
-                return row;
+                groupRows.push(row);
             });
 
             body.append(wrap);
@@ -163,20 +243,22 @@ function buildLists() {
             group.el = wrap;
         });
 
+        // Search/filter functionality.
         section.querySelector('.zb-search').addEventListener('input', e => {
             const q = e.target.value.trim().toLowerCase();
 
-            groups.forEach(g => {
-                if (!g.rows) return;
+            groups.forEach(group => {
+                if (!group.rows) return;
 
                 let any = false;
-                g.rows.forEach(r => {
-                    const hit = !q || r.name.toLowerCase().includes(q);
-                    r.label.hidden = !hit;
-                    any = any || hit;
+
+                group.rows.forEach(row => {
+                    const hit = !q || row.name.toLowerCase().includes(q);
+                    row.label.hidden = !hit;
+                    if (hit) any = true;
                 });
 
-                g.el.hidden = !any;
+                group.el.hidden = !any;
             });
         });
 
