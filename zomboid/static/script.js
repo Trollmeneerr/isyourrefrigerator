@@ -112,13 +112,23 @@ function buildLists() {
         }
 
         const used = new Set();
+
         groups.forEach(group => {
             if (!group.items.length) return;
+
             const wrap = document.createElement('div');
             wrap.className = group.name ? 'zb-skill' : 'zb-group';
             if (group.name) wrap.innerHTML = `<h3>${esc(group.name)}</h3>`;
+
             const grid = document.createElement('div');
             grid.className = group.name ? 'zb-vols' : 'zb-grid';
+
+            // Two columns, filled vertically from top to bottom.
+            grid.style.display = 'grid';
+            grid.style.gridTemplateColumns = 'repeat(2, minmax(0, 1fr))';
+            grid.style.gridAutoFlow = 'column';
+            grid.style.gridTemplateRows = `repeat(${Math.ceil(group.items.length / 2)}, auto)`;
+
             wrap.append(grid);
 
             const groupRows = group.items.map(name => {
@@ -128,13 +138,18 @@ function buildLists() {
 
                 const label = document.createElement('label');
                 label.className = group.name ? 'zb-vol' : 'zb-item';
+
                 const box = document.createElement('input');
                 box.type = 'checkbox';
                 box.setAttribute('aria-label', name);
                 box.addEventListener('change', () => setChecked(key, id, box.checked));
+
                 const text = document.createElement('span');
-                // Grouped items show only the volume ('Agriculture IV' -> 'IV') next to the bold skill title
-                text.textContent = group.name && name.startsWith(group.name + ' ') ? name.slice(group.name.length + 1) : name;
+                text.textContent =
+                    group.name && name.startsWith(group.name + ' ')
+                        ? name.slice(group.name.length + 1)
+                        : name;
+
                 label.append(box, text);
                 grid.append(label);
 
@@ -142,6 +157,7 @@ function buildLists() {
                 rows.push(row);
                 return row;
             });
+
             body.append(wrap);
             group.rows = groupRows;
             group.el = wrap;
@@ -149,19 +165,28 @@ function buildLists() {
 
         section.querySelector('.zb-search').addEventListener('input', e => {
             const q = e.target.value.trim().toLowerCase();
+
             groups.forEach(g => {
                 if (!g.rows) return;
+
                 let any = false;
                 g.rows.forEach(r => {
                     const hit = !q || r.name.toLowerCase().includes(q);
                     r.label.hidden = !hit;
                     any = any || hit;
                 });
+
                 g.el.hidden = !any;
             });
         });
 
-        cards[key] = { rows, total, fill: section.querySelector('.zb-bar-fill'), count: section.querySelector('.zb-count') };
+        cards[key] = {
+            rows,
+            total,
+            fill: section.querySelector('.zb-bar-fill'),
+            count: section.querySelector('.zb-count')
+        };
+
         host.append(section);
     });
 }
@@ -191,7 +216,7 @@ function setChecked(list, id, on) {
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
         body: JSON.stringify({ list, id, checked: on })
     }).then(r => { if (!r.ok) throw new Error(r.status); })
-      .catch(() => setSync('Could not save', 'offline'));
+        .catch(() => setSync('Could not save', 'offline'));
 }
 
 /* ---------- Sync + password ---------- */
