@@ -82,13 +82,21 @@ function normalise(list) {
     return list.groups ? list.groups : [{ name: '', items: list.items || [] }];
 }
 
+
 function buildLists() {
     const host = byId('lists');
     host.innerHTML = '';
 
+    const collator = new Intl.Collator(undefined, {
+        numeric: true,
+        sensitivity: 'base'
+    });
+
+    const volumeOrder = { I: 1, II: 2, III: 3, IV: 4, V: 5 };
+
     Object.entries(window.ZOMBOID_LISTS || {}).forEach(([key, list]) => {
         const groups = normalise(list);
-        const total = groups.reduce((n, g) => n + g.items.length, 0);
+        const total = groups.reduce((n, group) => n + group.items.length, 0);
 
         const section = document.createElement('section');
         section.className = 'zb-list';
@@ -112,9 +120,7 @@ function buildLists() {
 
         const body = section.querySelector('.zb-body');
 
-        if (list.groups) {
-            body.classList.add('zb-skills');
-        }
+        if (list.groups) body.classList.add('zb-skills');
 
         const rows = [];
         const used = new Set();
@@ -128,7 +134,6 @@ function buildLists() {
             if (!group.items.length) return;
 
             const isSkillGroup = Boolean(group.name);
-
             const wrap = document.createElement('div');
             wrap.className = isSkillGroup ? 'zb-skill' : 'zb-group';
 
@@ -141,57 +146,102 @@ function buildLists() {
             const grid = document.createElement('div');
             grid.className = isSkillGroup ? 'zb-vols' : 'zb-grid';
 
-            let leftColumn;
-            let rightColumn;
-            let midpoint = 0;
+            let leftColumn = null;
+            let rightColumn = null;
 
             if (isSkillGroup) {
-                // Keep volumes I-V together on one horizontal row.
-                grid.style.display = 'flex';
-                grid.style.flexDirection = 'row';
-                grid.style.flexWrap = 'nowrap';
-                grid.style.alignItems = 'center';
-                grid.style.gap = '4px';
-                grid.style.flexShrink = '0';
+                // Keep skill volumes I-V together on one horizontal row.
+                Object.assign(grid.style, {
+                    display: 'flex',
+                    flexDirection: 'row',
+                    flexWrap: 'nowrap',
+                    alignItems: 'center',
+                    gap: '4px',
+                    flexShrink: '0'
+                });
             } else {
-                // Two vertical columns: fill the left, then the right.
-                grid.style.display = 'flex';
-                grid.style.flexDirection = 'row';
-                grid.style.alignItems = 'stretch';
-                grid.style.gap = '8px';
+                // Two vertical flex columns.
+                Object.assign(grid.style, {
+                    display: 'flex',
+                    flexDirection: 'row',
+                    alignItems: 'stretch',
+                    gap: '8px',
+                    minWidth: '0'
+                });
 
                 leftColumn = document.createElement('div');
                 rightColumn = document.createElement('div');
 
                 [leftColumn, rightColumn].forEach(column => {
-                    column.className = 'zb-column';
-                    column.style.display = 'flex';
-                    column.style.flexDirection = 'column';
-                    column.style.flex = '1 1 0';
-                    column.style.minWidth = '0';
-                    column.style.gap = '8px';
+                    Object.assign(column.style, {
+                        display: 'flex',
+                        flexDirection: 'column',
+                        flex: '1 1 0',
+                        minWidth: '0',
+                        gap: '8px'
+                    });
                 });
 
-                // Sort regular items alphabetically before splitting.
-                midpoint = Math.ceil(group.items.length / 2);
-
                 grid.append(leftColumn, rightColumn);
+
+                // Stack columns on narrow screens.
+                const mobileLayout =
+                    window.matchMedia('(max-width: 480px)');
+
+                const updateColumnLayout = () => {
+                    grid.style.flexDirection =
+                        mobileLayout.matches ? 'column' : 'row';
+
+                    [leftColumn, rightColumn].forEach(column => {
+                        column.style.flex =
+                            mobileLayout.matches ? '0 0 auto' : '1 1 0';
+
+                        column.style.width =
+                            mobileLayout.matches ? '100%' : 'auto';
+                    });
+                };
+
+                updateColumnLayout();
+
+                if (mobileLayout.addEventListener) {
+                    mobileLayout.addEventListener(
+                        'change',
+                        updateColumnLayout
+                    );
+                } else if (mobileLayout.addListener) {
+                    mobileLayout.addListener(updateColumnLayout);
+                }
             }
 
             wrap.append(grid);
 
-            const itemNames = isSkillGroup
-                ? group.items.slice()
-                : group.items.slice().sort((a, b) =>
-                    a.localeCompare(b, undefined, {
-                        numeric: true,
-                        sensitivity: 'base'
-                    })
-                );
+            const itemNames = group.items.slice();
+
+            if (isSkillGroup) {
+                // Sort recognized volumes in Roman numeral order.
+                itemNames.sort((a, b) => {
+                    const getRank = name => {
+                        if (!name.startsWith(group.name + ' ')) return 99;
+
+                        const volume = name
+                            .slice(group.name.length + 1)
+                            .trim()
+                            .toUpperCase();
+
+                        return volumeOrder[volume] || 99;
+                    };
+
+                    return getRank(a) - getRank(b)
+                        || collator.compare(a, b);
+                });
+            } else {
+                // Sort all regular items alphabetically.
+                itemNames.sort((a, b) => collator.compare(a, b));
+            }
 
             const groupRows = [];
 
-            itemNames.forEach((name, index) => {
+            itemNames.forEach(name => {
                 let id = slug(name) || 'item';
                 let n = 2;
 
@@ -214,23 +264,27 @@ function buildLists() {
 
                 const text = document.createElement('span');
 
-                // For skills, show only the volume beside its skill title.
-                text.textContent = isSkillGroup &&
-                    name.startsWith(group.name + ' ')
-                    ? name.slice(group.name.length + 1)
-                    : name;
+                text.textContent =
+                    isSkillGroup && name.startsWith(group.name + ' ')
+                        ? name.slice(group.name.length + 1)
+                        : name;
 
                 label.append(box, text);
 
                 if (isSkillGroup) {
-                    // I, II, III, IV, V remain next to each other.
+                    // Volumes stay together in one horizontal flex row.
                     grid.append(label);
-                } else if (index < midpoint) {
-                    // First half goes down the left column.
-                    leftColumn.append(label);
                 } else {
-                    // Second half goes down the right column.
-                    rightColumn.append(label);
+                    const firstLetter =
+                        (name.trim().match(/[A-Za-z]/) || [''])[0]
+                            .toUpperCase();
+
+                    // First column A-I; second column J-Z.
+                    const belongsInLeftColumn =
+                        !firstLetter || firstLetter <= 'I';
+
+                    (belongsInLeftColumn ? leftColumn : rightColumn)
+                        .append(label);
                 }
 
                 const row = { id, name, label, box };
@@ -241,26 +295,44 @@ function buildLists() {
             body.append(wrap);
             group.rows = groupRows;
             group.el = wrap;
+            group.columns = isSkillGroup
+                ? null
+                : [leftColumn, rightColumn];
         });
 
-        // Search/filter functionality.
-        section.querySelector('.zb-search').addEventListener('input', e => {
-            const q = e.target.value.trim().toLowerCase();
+        // Filter items and hide empty columns.
+        section.querySelector('.zb-search').addEventListener(
+            'input',
+            e => {
+                const q = e.target.value.trim().toLowerCase();
 
-            groups.forEach(group => {
-                if (!group.rows) return;
+                groups.forEach(group => {
+                    if (!group.rows) return;
 
-                let any = false;
+                    let any = false;
 
-                group.rows.forEach(row => {
-                    const hit = !q || row.name.toLowerCase().includes(q);
-                    row.label.hidden = !hit;
-                    if (hit) any = true;
+                    group.rows.forEach(row => {
+                        const hit =
+                            !q || row.name.toLowerCase().includes(q);
+
+                        row.label.hidden = !hit;
+                        if (hit) any = true;
+                    });
+
+                    if (group.columns) {
+                        group.columns.forEach(column => {
+                            const hasVisibleItems =
+                                Array.from(column.children)
+                                    .some(label => !label.hidden);
+
+                            column.hidden = !hasVisibleItems;
+                        });
+                    }
+
+                    group.el.hidden = !any;
                 });
-
-                group.el.hidden = !any;
-            });
-        });
+            }
+        );
 
         cards[key] = {
             rows,
@@ -272,6 +344,7 @@ function buildLists() {
         host.append(section);
     });
 }
+
 
 function renderChecks() {
     Object.entries(cards).forEach(([key, c]) => {
