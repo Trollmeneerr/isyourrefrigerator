@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,78 +9,70 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="static/style/stylesheet.css">
     <link rel="stylesheet" href="static/style/zomboid.css">
 
-    <!-- Load order matters: Firebase SDK, then the item lists, then the page logic -->
-    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js" defer></script>
-    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js" defer></script>
+    <!-- Load order matters: item lists first, then the page logic -->
     <script src="static/items.js" defer></script>
     <script src="static/script.js" defer></script>
 </head>
-
 <body>
 
-    <div class="scene">
-        <div class="aurora a1"></div>
-        <div class="aurora a2"></div>
-        <div class="aurora a3"></div>
-        <div class="frost-grid"></div>
-        <div class="grain"></div>
+<div class="scene">
+    <div class="aurora a1"></div>
+    <div class="aurora a2"></div>
+    <div class="aurora a3"></div>
+    <div class="frost-grid"></div>
+    <div class="grain"></div>
+</div>
+
+<!-- Password gate -->
+<div class="zb-gate" id="gate">
+    <form class="zb-gate-card" id="gateForm" autocomplete="off">
+        <h2>Restricted area</h2>
+        <p>Enter the password to see the server details and checklists.</p>
+        <input type="password" id="gateInput" placeholder="Password" aria-label="Password" required>
+        <button type="submit" class="btn btn-fill" id="gateBtn">Enter</button>
+        <p class="zb-gate-msg" id="gateMsg" role="alert" hidden></p>
+    </form>
+</div>
+
+<header class="site">
+    <div class="wrap site-inner">
+        <a href="/" class="brand-link" aria-label="IsYourRefrigerator.online home">
+            <img src="static/images/isyourrefrigerator.online_logo_small.png" alt="" class="logo-icon">
+            <img src="static/images/IsYourRefrigerator.online (1).png" alt="" class="logo-wordmark">
+            <img src="static/images/IsYourRefrigerator.online.png" alt="IsYourRefrigerator.online" class="logo-mobile">
+        </a>
+        <a href="/" class="btn btn-outline">Back to main site</a>
     </div>
+</header>
 
-    <!-- Password gate -->
-    <div class="zb-gate" id="gate">
-        <form class="zb-gate-card" id="gateForm" autocomplete="off">
-            <h2>Restricted area</h2>
-            <p>Enter the password to see the server details and checklists.</p>
-            <input type="password" id="gateInput" placeholder="Password" aria-label="Password" required>
-            <button type="submit" class="btn btn-fill" id="gateBtn">Enter</button>
-            <p class="zb-gate-msg" id="gateMsg" role="alert" hidden></p>
-        </form>
+<main id="app" hidden>
+    <div class="wrap">
+        <section class="zb-intro">
+            <h1>Project Zomboid</h1>
+            <p>Tick off what you've found. Everyone on this page sees changes instantly.</p>
+        </section>
+
+        <section class="zb-server" id="serverBox" aria-label="Server information"></section>
+
+        <div class="zb-sync"><span class="indicator-dot" id="syncDot"></span><span id="syncText">Connecting...</span></div>
+
+        <div id="lists"></div>
     </div>
+</main>
 
-    <header class="site">
-        <div class="wrap site-inner">
-            <a href="/" class="brand-link" aria-label="IsYourRefrigerator.online home">
-                <img src="static/images/isyourrefrigerator.online_logo_small.png" alt="" class="logo-icon">
-                <img src="static/images/IsYourRefrigerator.online (1).png" alt="" class="logo-wordmark">
-                <img src="static/images/IsYourRefrigerator.online.png" alt="IsYourRefrigerator.online"
-                    class="logo-mobile">
-            </a>
-            <a href="/" class="btn btn-outline">Back to main site</a>
+<footer class="site">
+    <div class="wrap">
+        <div class="footer-bottom">
+            <div>&copy; <span class="current-year">2026</span> IsYourRefrigerator.online</div>
+            <div>Not affiliated with The Indie Stone.</div>
         </div>
-    </header>
-
-    <main id="app" hidden>
-        <div class="wrap">
-            <section class="zb-intro">
-                <h1>Project Zomboid</h1>
-                <p>Tick off what you've found. Everyone on this page sees changes instantly.</p>
-            </section>
-
-            <section class="zb-server" id="serverBox" aria-label="Server information"></section>
-
-            <div class="zb-sync"><span class="indicator-dot" id="syncDot"></span><span
-                    id="syncText">Connecting...</span></div>
-
-            <div id="lists"></div>
-        </div>
-    </main>
-
-    <footer class="site">
-        <div class="wrap">
-            <div class="footer-bottom">
-                <div>&copy; <span class="current-year">2026</span> IsYourRefrigerator.online</div>
-                <div>Not affiliated with The Indie Stone.</div>
-            </div>
-        </div>
-    </footer>
+    </div>
+</footer>
 
 </body>
-
 </html>
