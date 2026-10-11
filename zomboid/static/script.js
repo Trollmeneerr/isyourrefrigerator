@@ -9,7 +9,7 @@ const CONFIG = {
     api: 'api',   // resolves to /zomboid/api, proxied by nginx to the local sync service
     server: {
         name: 'Project Zomboid',
-        subtitle: 'Build 42 \u2022 Modded Survival PvE',
+        subtitle: 'Build 42 • Modded Survival PvE',
         description: "Subzero zombie apocalypse with curated QoL mods, tuned loot respawn rates, and co-op multiplayer. Don't forget your can opener.",
         managedBy: 'BataTheBear',
         address: 'play.isyourrefrigerator.online:16261',
@@ -26,7 +26,7 @@ const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': 
 const slug = s => s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 
 let token = '';
-let state = {};          // { books: {id: true}, vhs: {...}, magazines: {...} }
+let state = {};        // { books: {id: true}, vhs: {...}, magazines: {...} }
 const cards = {};        // per-list DOM handles
 
 /* ---------- Server card (same markup as the main site) ---------- */
@@ -279,7 +279,7 @@ function buildLists() {
             if (isSkillGroup) {
                 groupRows.forEach(row => grid.append(row.label));
             } else {
-                // Split groupRows in half evenly: first half goes to left column, second half to right column
+                // Split groupRows evenly: first half goes to left column, second half to right column
                 const midpoint = Math.ceil(groupRows.length / 2);
                 const leftRows = groupRows.slice(0, midpoint);
                 const rightRows = groupRows.slice(midpoint);
@@ -340,6 +340,7 @@ function buildLists() {
         host.append(section);
     });
 }
+
 
 function renderChecks() {
     Object.entries(cards).forEach(([key, c]) => {

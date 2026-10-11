@@ -167,14 +167,13 @@ main {
 }
 
 /*
-   The JavaScript sets grid-template-rows and grid-auto-flow: column.
-   This CSS supplies the two-column layout and consistent spacing.
-   Items flow down the first column, then down the second.
+    We use standard CSS Grid with row-major flow (default) 
+    because JavaScript now explicitly handles splitting the items 
+    into separate left and right column containers.
 */
 .zb-grid {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    grid-auto-flow: column;
     gap: 8px;
     align-items: start;
     min-width: 0;
@@ -326,8 +325,6 @@ main {
 @media (max-width: 480px) {
     .zb-grid {
         grid-template-columns: minmax(0, 1fr);
-        grid-auto-flow: row;
-        grid-template-rows: auto;
     }
 
     .zb-skill {
