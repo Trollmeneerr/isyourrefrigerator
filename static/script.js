@@ -1,6 +1,7 @@
 /**
  * isyourrefrigerator.online
  * Core JavaScript Logic & Interactivity
+ * Overhauled with Steam-style Media Popup & Streamlined Homelab Controls
  */
 
 /* =========================================================================
@@ -18,7 +19,7 @@ const SERVERS = [
         port: 16261,
         ip: 'play.isyourrefrigerator.online:16261',
         status: 'unknown',
-        statusCheck: { type: 'endpoint', url: '/static/status.json', key: 'zomboid' },
+        statusCheck: { type: 'endpoint', url: 'static/status.json', key: 'zomboid' },
         specs: [
             { label: 'CPU', value: 'I7-6700k 4 Cores' },
             { label: 'RAM', value: 'DDR4 16GB' },
@@ -36,7 +37,7 @@ const SERVERS = [
         port: 16271,
         ip: 'play.isyourrefrigerator.online:16271',
         status: 'unknown',
-        statusCheck: { type: 'endpoint', url: '/static/status.json', key: 'valheim' },
+        statusCheck: { type: 'endpoint', url: 'static/status.json', key: 'valheim' },
         specs: [
             { label: 'CPU', value: 'i5-10300H 3 Threads' },
             { label: 'RAM', value: 'DDR4 6GB' },
@@ -54,7 +55,7 @@ const SERVERS = [
         port: 25565,
         ip: 'play.isyourrefrigerator.online:25565',
         status: 'unknown',
-        statusCheck: { type: 'endpoint', url: '/static/status.json', key: 'minecraft' },
+        statusCheck: { type: 'endpoint', url: 'static/status.json', key: 'minecraft' },
         specs: [
             { label: 'CPU', value: 'i5-10300H 2 Threads' },
             { label: 'RAM', value: 'DDR4 4GB' },
@@ -72,7 +73,7 @@ const SERVERS = [
         port: 27015,
         ip: 'play.isyourrefrigerator.online:16278',
         status: 'unknown',
-        statusCheck: { type: 'endpoint', url: '/static/status.json', key: 'forest' },
+        statusCheck: { type: 'endpoint', url: 'static/status.json', key: 'forest' },
         specs: [
             { label: 'CPU', value: 'i5-10300H 3 Threads' },
             { label: 'RAM', value: 'DDR4 6GB' },
@@ -124,29 +125,20 @@ function renderServerCard(server, context) {
     const status = server.status || 'unknown';
     const statusText = STATUS_LABELS[status] || status;
 
+    // Original specs styling structure
     const specsHtml = (server.specs || []).map(spec => `
-                <div class="spec-item">
-                    <span class="spec-label">${escapeHtml(spec.label)}:</span>
-                    <span class="spec-val">${escapeHtml(spec.value)}</span>
-                </div>`).join('');
+        <div class="spec-item">
+            <span class="spec-label">${escapeHtml(spec.label)}:</span>
+            <span class="spec-val">${escapeHtml(spec.value)}</span>
+        </div>`).join('');
 
     const displayIp = server.ip || 'play.isyourrefrigerator.online:25565';
 
+    // Clean IP display without join button (click to copy)
     const connectHtml = `
-            <div class="server-connect">
-                <span class="ip-display">${escapeHtml(displayIp)}</span>
-                <button type="button" class="btn-copy-ip"
-                    data-ip="${escapeHtml(displayIp)}"
-                    aria-label="Copy ${escapeHtml(server.name)} address">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
-                        stroke="currentColor" stroke-width="2"
-                        stroke-linecap="round" stroke-linejoin="round">
-                        <rect x="9" y="9" width="13" height="13" rx="2"></rect>
-                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-                    </svg>
-                    <span>Join</span>
-                </button>
-            </div>`;
+        <div class="server-connect btn-copy-ip" data-ip="${escapeHtml(displayIp)}" title="Click to copy server address" role="button" tabindex="0">
+            <span class="ip-display">${escapeHtml(displayIp)}</span>
+        </div>`;
 
     return `
         <div class="server-card" data-server-id="${escapeHtml(server.id)}">
@@ -168,17 +160,74 @@ function renderServerCard(server, context) {
             <p class="server-desc">${escapeHtml(server.description || '')}</p>
             <p class="managed">Managed by ${escapeHtml(server.managedBy || 'The Refrigerator')}</p>
 
-            <div class="server-specs">${specsHtml}
-            </div>
+            <div class="server-specs">${specsHtml}</div>
 
             ${connectHtml}
         </div>`;
 }
 
-function renderServerList(container, context, limit) {
+function renderRequestCard(context) {
+    const id = context === 'modal' ? 'modalRequestServerCard' : 'requestServerCard';
+    return `
+        <article class="server-card request-card" id="${id}">
+            <div class="server-top">
+                <div class="server-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="12" y1="5" x2="12" y2="19"></line>
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                    </svg>
+                </div>
+
+                <div class="server-status-pill">
+                    <span class="indicator-dot available"></span>
+                    <span>Available</span>
+                </div>
+            </div>
+
+            <h3>Request a Server</h3>
+
+            <div class="server-subtitle">Have a game you want hosted?</div>
+
+            <p class="server-desc">
+                Minecraft, Palworld, Valheim, Factorio, or CS2?
+                If we have the RAM headroom and you have the crew,
+                let's spin up a container.
+            </p>
+
+            <p class="managed">Managed by The Refrigerator</p>
+
+            <div class="server-specs">
+                <div class="spec-item">
+                    <span class="spec-label">CPU:</span>
+                    <span class="spec-val">i5-10300H</span>
+                </div>
+
+                <div class="spec-item">
+                    <span class="spec-label">RAM:</span>
+                    <span class="spec-val">DDR4 16GB</span>
+                </div>
+
+                <div class="spec-item">
+                    <span class="spec-label">Disk:</span>
+                    <span class="spec-val">100GB SSD</span>
+                </div>
+            </div>
+
+            <div class="server-connect request-server-connect">
+                <span class="ip-display">panel.isyourrefrigerator.online</span>
+            </div>
+        </article>`;
+}
+
+function renderServerList(container, context, limit, includeRequestCard) {
     if (!container) return;
     const serversToRender = limit ? SERVERS.slice(0, limit) : SERVERS;
-    container.innerHTML = serversToRender.map(server => renderServerCard(server, context)).join('');
+    let html = serversToRender.map(server => renderServerCard(server, context)).join('');
+    if (includeRequestCard) {
+        html += renderRequestCard(context);
+    }
+    container.innerHTML = html;
 }
 
 async function refreshLiveStatus(server) {
@@ -209,7 +258,6 @@ async function refreshLiveStatus(server) {
             const res = await fetch(check.url, { cache: 'no-store' });
             const data = await res.json();
 
-            // Extracts nested server object if key is defined (e.g., data.minecraft.online), fallback to top-level data.online
             const targetData = check.key ? data[check.key] : data;
             const isOnline = targetData && targetData.online === true;
 
@@ -234,6 +282,108 @@ function closeMobileNav() {
     mobileMenuToggle.setAttribute('aria-expanded', 'false');
 }
 
+/* =========================================================================
+   OFFICIAL PELICAN IMAGE GALLERY (Steam Store Media Popup Modal)
+   ========================================================================= */
+const GALLERY_SLIDES = [
+    {
+        src: 'https://peli.nyc3.digitaloceanspaces.com/docs/serverconsoled.gif',
+        chip: 'Slide 01',
+        title: 'Client Area & Real-time Console',
+        sub: 'Live server logs, interactive terminal commands, start / restart / kill controls.'
+    },
+    {
+        src: 'https://peli.nyc3.digitaloceanspaces.com/docs/panelsettingsd.gif',
+        chip: 'Slide 02',
+        title: 'Panel Settings & Configuration',
+        sub: 'Granular Docker environments, server memory allocation, automated schedules & backups.'
+    },
+    {
+        src: 'https://peli.nyc3.digitaloceanspaces.com/docs/createserverd.gif',
+        chip: 'Slide 03',
+        title: 'Create Server & 1-Click Eggs',
+        sub: 'Deploy Minecraft, Valheim, Palworld, Zomboid, or custom containers instantly.'
+    }
+];
+
+let currentGalleryIndex = 0;
+
+function updateGallerySlide(index) {
+    if (index < 0) index = GALLERY_SLIDES.length - 1;
+    if (index >= GALLERY_SLIDES.length) index = 0;
+    currentGalleryIndex = index;
+
+    const slide = GALLERY_SLIDES[currentGalleryIndex];
+    const mainImg = document.getElementById('galleryMainImg');
+    const captionEl = document.getElementById('galleryCaption');
+    const counterEl = document.getElementById('galCounter');
+    const thumbBtns = document.querySelectorAll('.gallery-thumb-btn');
+
+    if (mainImg) {
+        mainImg.style.opacity = '0.35';
+        setTimeout(() => {
+            mainImg.src = slide.src;
+            mainImg.alt = slide.title;
+            mainImg.style.opacity = '1';
+        }, 120);
+    }
+
+    if (captionEl) {
+        captionEl.innerHTML = `
+            <span class="caption-chip">${escapeHtml(slide.chip)}</span>
+            <span class="caption-title">${escapeHtml(slide.title)}</span>
+            <span class="caption-sub">${escapeHtml(slide.sub)}</span>
+        `;
+    }
+
+    if (counterEl) {
+        counterEl.textContent = `${currentGalleryIndex + 1} / ${GALLERY_SLIDES.length}`;
+    }
+
+    thumbBtns.forEach((btn, idx) => {
+        if (idx === currentGalleryIndex) {
+            btn.classList.add('active');
+            btn.setAttribute('aria-selected', 'true');
+        } else {
+            btn.classList.remove('active');
+            btn.setAttribute('aria-selected', 'false');
+        }
+    });
+}
+
+function initGallery() {
+    const prevBtn = document.getElementById('galPrevBtn');
+    const nextBtn = document.getElementById('galNextBtn');
+    const thumbBtns = document.querySelectorAll('.gallery-thumb-btn');
+
+    if (prevBtn) {
+        prevBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            updateGallerySlide(currentGalleryIndex - 1);
+        });
+    }
+
+    if (nextBtn) {
+        nextBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            updateGallerySlide(currentGalleryIndex + 1);
+        });
+    }
+
+    thumbBtns.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const slideIndex = parseInt(btn.getAttribute('data-slide'), 10);
+            if (!isNaN(slideIndex)) {
+                updateGallerySlide(slideIndex);
+            }
+        });
+    });
+}
+
+/* =========================================================================
+   DOM CONTENT LOADED INITIALIZATION
+   ========================================================================= */
 document.addEventListener('DOMContentLoaded', () => {
     // Console Easter Egg
     console.log(
@@ -242,43 +392,77 @@ document.addEventListener('DOMContentLoaded', () => {
         'color: #94a3b8; font-size: 12px;'
     );
 
-    // Wire up Server Panel Links & add click handler for maximum browser compatibility (e.g., Brave popup blockers)
+    // Wire up Server Panel Links
     document.querySelectorAll('#serverPanelLink, #serverPanelLinkMobile').forEach(link => {
         link.href = SERVER_PANEL_URL;
-        link.addEventListener('click', (e) => {
-            // Let the standard target="_blank" work, but fallback gracefully if needed
-            if (e.defaultPrevented) return;
-        });
     });
 
-    // Render Servers
+    // Render Servers:
+    // On the main page, render 2 servers so Request a Server is #3 in the 3-column row
     renderServerList(document.getElementById('dynamicServerCards'), 'grid', 2);
-    renderServerList(document.getElementById('allServersList'), 'modal');
+    // In All Servers Modal, render all servers AND include Request a Server next to them as well
+    renderServerList(document.getElementById('allServersList'), 'modal', null, true);
+    
     refreshAllLiveStatuses();
     setInterval(refreshAllLiveStatuses, 60000);
 
-    // Console GIF Modal
-    const openGifBtn = document.getElementById('openConsoleGif');
-    const gifModal = document.getElementById('consoleGifModal');
-    const closeGifBtn = document.getElementById('closeConsoleGif');
-    const gifBackdrop = document.getElementById('consoleGifBackdrop');
+    // Initialize the official Pelican Gallery
+    initGallery();
 
-    if (openGifBtn && gifModal) {
-        function openConsoleGif() {
-            gifModal.classList.add('active');
-            gifModal.setAttribute('aria-hidden', 'false');
-            document.body.style.overflow = 'hidden';
+    // =========================================================================
+    // Cross-Platform Overflow Scroll Progress & Floating Quick-Scroll
+    // =========================================================================
+    const scrollProgressBar = document.getElementById('scrollProgressBar');
+    const scrollProgressContainer = document.getElementById('scrollProgressContainer');
+    const btnBackToTop = document.getElementById('btnBackToTop');
+    const progressRingFill = document.getElementById('progressRingFill');
+    const ringCircumference = 2 * Math.PI * 20; // 125.66px
+
+    function updateScrollProgress() {
+        const scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
+        const docHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        const progress = docHeight > 0 ? Math.min(100, Math.max(0, (scrollTop / docHeight) * 100)) : 0;
+
+        if (scrollProgressBar) {
+            scrollProgressBar.style.width = `${progress}%`;
+        }
+        if (scrollProgressContainer) {
+            scrollProgressContainer.setAttribute('aria-valuenow', Math.round(progress));
         }
 
-        function closeConsoleGif() {
-            gifModal.classList.remove('active');
-            gifModal.setAttribute('aria-hidden', 'true');
-            document.body.style.overflow = '';
+        if (btnBackToTop) {
+            if (scrollTop > 280) {
+                btnBackToTop.classList.add('visible');
+            } else {
+                btnBackToTop.classList.remove('visible');
+            }
         }
 
-        openGifBtn.addEventListener('click', openConsoleGif);
-        if (closeGifBtn) closeGifBtn.addEventListener('click', closeConsoleGif);
-        if (gifBackdrop) gifBackdrop.addEventListener('click', closeConsoleGif);
+        if (progressRingFill) {
+            const offset = ringCircumference - (progress / 100) * ringCircumference;
+            progressRingFill.style.strokeDashoffset = offset;
+        }
+    }
+
+    if (scrollProgressContainer) {
+        scrollProgressContainer.addEventListener('click', (e) => {
+            const rect = scrollProgressContainer.getBoundingClientRect();
+            const ratio = (e.clientX - rect.left) / rect.width;
+            const docHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            window.scrollTo({
+                top: ratio * docHeight,
+                behavior: 'smooth'
+            });
+        });
+    }
+
+    if (btnBackToTop) {
+        btnBackToTop.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
     }
 
     // Scroll Active Links
@@ -290,7 +474,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         sections.forEach(current => {
             const sectionHeight = current.offsetHeight;
-            const sectionTop = current.offsetTop - 120;
+            const sectionTop = current.offsetTop - 130;
             const sectionId = current.getAttribute('id');
 
             if (scrollY > sectionTop && scrollY <= sectionTop + sectionHeight) {
@@ -303,20 +487,31 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-        if (scrollY < 200) {
+        if (scrollY < 180) {
             navLinks.forEach(link => link.classList.remove('active'));
         }
     }
 
-    window.addEventListener('scroll', updateActiveNav, { passive: true });
+    window.addEventListener('scroll', () => {
+        updateActiveNav();
+        updateScrollProgress();
+    }, { passive: true });
 
-    // Smooth Scrolling
+    window.addEventListener('resize', updateScrollProgress, { passive: true });
+    updateScrollProgress();
+
+    // Smooth Scrolling & Close Modals on Internal Navigation
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
             const targetId = this.getAttribute('href');
             closeMobileNav();
 
             if (targetId === '#' || !targetId || targetId === '#contact' || targetId === '#privacy') return;
+
+            // If inside a modal, close all modals before scrolling
+            if (this.closest('.modal-backdrop')) {
+                closeAllModals();
+            }
 
             const targetElement = document.querySelector(targetId);
             if (targetElement) {
@@ -327,6 +522,20 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
             }
         });
+    });
+
+    // Global click delegate for any Request a Server card (main grid or modal) to smoothly scroll to #hosting
+    document.addEventListener('click', (e) => {
+        const reqCard = e.target.closest('.request-card');
+        if (!reqCard) return;
+
+        closeAllModals();
+        closeMobileNav();
+
+        const hostingSection = document.getElementById('hosting');
+        if (hostingSection) {
+            hostingSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
     });
 
     // Copy IP & Notifications
@@ -352,17 +561,10 @@ document.addEventListener('DOMContentLoaded', () => {
             await navigator.clipboard.writeText(val);
             const originalHtml = btn.innerHTML;
             btn.classList.add('copied');
-            btn.innerHTML = `
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <polyline points="20 6 9 17 4 12"></polyline>
-                </svg>
-                <span>Copied!</span>
-            `;
             showToast(`Copied ${val} to clipboard!`);
 
             setTimeout(() => {
                 btn.classList.remove('copied');
-                btn.innerHTML = originalHtml;
             }, 2200);
         } catch (err) {
             prompt("Copy to clipboard:", val);
@@ -389,14 +591,9 @@ document.addEventListener('DOMContentLoaded', () => {
         document.querySelectorAll('.modal-backdrop').forEach(modal => {
             closeModal(modal);
         });
-        if (gifModal && gifModal.classList.contains('active')) {
-            gifModal.classList.remove('active');
-            gifModal.setAttribute('aria-hidden', 'true');
-            document.body.style.overflow = '';
-        }
     }
 
-    // Modal Triggers
+    // Modal Triggers: Contact Modal
     document.querySelectorAll('.btn-say-hi').forEach(btn => {
         btn.addEventListener('click', (e) => {
             e.preventDefault();
@@ -411,6 +608,22 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // Modal Triggers: Pelican Panel Gallery Modal
+    document.querySelectorAll('.btn-open-panel-gallery').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            openModalById('panelGalleryModal');
+        });
+    });
+
+    const closePanelGalleryBtn = document.getElementById('closePanelGalleryModal');
+    if (closePanelGalleryBtn) {
+        closePanelGalleryBtn.addEventListener('click', () => {
+            closeModal(document.getElementById('panelGalleryModal'));
+        });
+    }
+
+    // Privacy Modal
     document.querySelectorAll('.btn-privacy').forEach(btn => {
         btn.addEventListener('click', (e) => {
             e.preventDefault();
@@ -425,6 +638,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // All Servers Modal
     document.querySelectorAll('.btn-view-servers').forEach(btn => {
         btn.addEventListener('click', (e) => {
             e.preventDefault();
@@ -440,6 +654,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // Backdrop clicks close modal
     document.querySelectorAll('.modal-backdrop').forEach(backdrop => {
         backdrop.addEventListener('click', (e) => {
             if (e.target === backdrop) {
@@ -448,10 +663,20 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
+    // Keyboard navigation
     document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') {
             closeAllModals();
             closeMobileNav();
+        }
+        const panelModal = document.getElementById('panelGalleryModal');
+        if (panelModal && panelModal.classList.contains('show')) {
+            if (e.key === 'ArrowLeft') {
+                updateGallerySlide(currentGalleryIndex - 1);
+            }
+            if (e.key === 'ArrowRight') {
+                updateGallerySlide(currentGalleryIndex + 1);
+            }
         }
     });
 
