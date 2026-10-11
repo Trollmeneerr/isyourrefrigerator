@@ -26,7 +26,7 @@ const slug = s => s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, 
 
 let token = '';
 let state = {};        // { books: {id: true}, vhs: {...}, magazines: {...} }
-const cards = {};        // per-list DOM handles
+const cards = {};      // per-list DOM handles
 
 /* ---------- Server card ---------- */
 
@@ -235,24 +235,11 @@ function buildLists() {
                 leftRows.forEach(row => leftCol.append(row.label));
                 rightRows.forEach(row => rightCol.append(row.label));
 
-            if (isSkillGroup) {
-                groupRows.forEach(row => grid.append(row.label));
-            } else {
-                // Split groupRows evenly: first half goes to left column, second half to right column
-                const midpoint = Math.ceil(groupRows.length / 2);
-                const leftRows = groupRows.slice(0, midpoint);
-                const rightRows = groupRows.slice(midpoint);
-
-                leftRows.forEach(row => leftColumn.append(row.label));
-                rightRows.forEach(row => rightColumn.append(row.label));
+                body.append(wrap);
+                group.rows = groupRows;
+                group.el = wrap;
+                group.columns = [leftCol, rightCol];
             }
-
-            body.append(wrap);
-            group.rows = groupRows;
-            group.el = wrap;
-            group.columns = isSkillGroup
-                ? null
-                : [leftColumn, rightColumn];
         });
 
         // Filter items
