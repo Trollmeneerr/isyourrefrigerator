@@ -1,9 +1,13 @@
 /* Zomboid page extras. Loads after stylesheet.css and reuses its variables.
    All new class names start with zb- so nothing clashes with the main site. */
 
-[hidden] { display: none !important; }
+[hidden] {
+    display: none !important;
+}
 
-main { padding-bottom: 80px; }
+main {
+    padding-bottom: 80px;
+}
 
 /* ---------- Password gate ---------- */
 .zb-gate {
@@ -47,13 +51,25 @@ main { padding-bottom: 80px; }
     outline-offset: 1px;
 }
 
-.zb-gate-card .btn:disabled { opacity: 0.6; cursor: wait; }
-.zb-gate-msg { color: var(--red); font-size: 0.9rem; }
+.zb-gate-card .btn:disabled {
+    opacity: 0.6;
+    cursor: wait;
+}
+
+.zb-gate-msg {
+    color: var(--red);
+    font-size: 0.9rem;
+}
 
 /* ---------- Intro + server ---------- */
-.zb-intro { padding: 44px 0 26px; }
-.zb-intro h1 { font-size: 2.4rem; margin-bottom: 8px; }
+.zb-intro {
+    padding: 44px 0 26px;
+}
 
+.zb-intro h1 {
+    font-size: 2.4rem;
+    margin-bottom: 8px;
+}
 
 .zb-sync {
     display: flex;
@@ -73,6 +89,8 @@ main { padding-bottom: 80px; }
     border: 1px solid var(--glass-border);
     border-radius: var(--radius-lg);
     box-shadow: var(--shadow-card);
+    min-width: 0;
+    overflow: hidden;
 }
 
 .zb-list-head {
@@ -84,10 +102,21 @@ main { padding-bottom: 80px; }
     margin-bottom: 14px;
 }
 
-.zb-list-head h2 { font-size: 1.4rem; margin-bottom: 2px; }
-.zb-list-head p { font-size: 0.88rem; }
+.zb-list-head h2 {
+    font-size: 1.4rem;
+    margin-bottom: 2px;
+}
 
-.zb-list-tools { display: flex; align-items: center; gap: 14px; }
+.zb-list-head p {
+    font-size: 0.88rem;
+}
+
+.zb-list-tools {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    min-width: 0;
+}
 
 .zb-count {
     font-family: 'JetBrains Mono', monospace;
@@ -98,6 +127,7 @@ main { padding-bottom: 80px; }
 
 .zb-search {
     min-width: 170px;
+    max-width: 100%;
     padding: 8px 12px;
     background: rgba(3, 11, 24, 0.8);
     border: 1px solid var(--glass-border);
@@ -118,23 +148,43 @@ main { padding-bottom: 80px; }
 .zb-bar-fill {
     width: 0;
     height: 100%;
-    background: linear-gradient(90deg, var(--s) 0%, var(--t) 50%, var(--cyan) 100%);
+    background: linear-gradient(90deg,
+            var(--s) 0%,
+            var(--t) 50%,
+            var(--cyan) 100%);
     transition: width 0.3s ease;
 }
 
-.zb-group + .zb-group { margin-top: 18px; }
-.zb-group h3 { margin-bottom: 8px; font-size: 1rem; color: var(--text-dim); }
+/* ---------- Regular lists: two vertical columns ---------- */
+.zb-group+.zb-group {
+    margin-top: 18px;
+}
 
+.zb-group h3 {
+    margin-bottom: 8px;
+    font-size: 1rem;
+    color: var(--text-dim);
+}
+
+/*
+   The JavaScript sets grid-template-rows and grid-auto-flow: column.
+   This CSS supplies the two-column layout and consistent spacing.
+   Items flow down the first column, then down the second.
+*/
 .zb-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-auto-flow: column;
     gap: 8px;
+    align-items: start;
+    min-width: 0;
 }
 
 .zb-item {
     display: flex;
     align-items: center;
     gap: 10px;
+    min-width: 0;
     padding: 9px 12px;
     background: var(--glass);
     border: 1px solid var(--hair);
@@ -146,7 +196,15 @@ main { padding-bottom: 80px; }
     transition: border-color 0.2s ease, background 0.2s ease;
 }
 
-.zb-item:hover { border-color: var(--glass-hover-border); background: var(--p-card-hover); }
+.zb-item:hover {
+    border-color: var(--glass-hover-border);
+    background: var(--p-card-hover);
+}
+
+.zb-item span {
+    min-width: 0;
+    overflow-wrap: anywhere;
+}
 
 .zb-item input {
     flex-shrink: 0;
@@ -156,19 +214,25 @@ main { padding-bottom: 80px; }
     cursor: pointer;
 }
 
-.zb-item.done { color: var(--text-faint); text-decoration: line-through; }
+.zb-item.done {
+    color: var(--text-faint);
+    text-decoration: line-through;
+}
 
-/* Skill rows: bold title, then volumes I to V on a single line */
+/* ---------- Skill lists ---------- */
+/* Keep skill groups arranged as cards; volumes remain on one line. */
 .zb-skills {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(min(100%, 370px), 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 370px), 1fr));
     gap: 8px;
+    min-width: 0;
 }
 
 .zb-skill {
     display: flex;
     align-items: center;
     gap: 8px;
+    min-width: 0;
     padding: 8px 12px;
     background: var(--glass);
     border: 1px solid var(--hair);
@@ -187,7 +251,11 @@ main { padding-bottom: 80px; }
     text-overflow: ellipsis;
 }
 
-.zb-vols { display: flex; gap: 4px; flex-shrink: 0; }
+.zb-vols {
+    display: flex;
+    gap: 4px;
+    flex-shrink: 0;
+}
 
 .zb-vol {
     display: flex;
@@ -204,7 +272,9 @@ main { padding-bottom: 80px; }
     transition: border-color 0.2s ease, background 0.2s ease;
 }
 
-.zb-vol:hover { border-color: var(--glass-hover-border); }
+.zb-vol:hover {
+    border-color: var(--glass-hover-border);
+}
 
 .zb-vol input {
     width: 13px;
@@ -219,17 +289,56 @@ main { padding-bottom: 80px; }
     color: #ffffff;
 }
 
-@media (max-width: 480px) {
-    .zb-skill { flex-wrap: wrap; }
-    .zb-skill h3 { flex-basis: 100%; }
+/* ---------- Empty state ---------- */
+.zb-empty {
+    padding: 14px 0;
+    color: var(--text-faint);
+    font-size: 0.92rem;
 }
 
-.zb-empty { padding: 14px 0; color: var(--text-faint); font-size: 0.92rem; }
-.zb-empty code { color: var(--cyan); font-family: 'JetBrains Mono', monospace; }
+.zb-empty code {
+    color: var(--cyan);
+    font-family: 'JetBrains Mono', monospace;
+}
 
+/* ---------- Responsive layout ---------- */
 @media (max-width: 680px) {
-    .zb-intro h1 { font-size: 1.9rem; }
-    .zb-list { padding: 18px; }
-    .zb-search { width: 100%; }
-    .zb-list-tools { width: 100%; justify-content: space-between; }
+    .zb-intro h1 {
+        font-size: 1.9rem;
+    }
+
+    .zb-list {
+        padding: 18px;
+    }
+
+    .zb-list-tools {
+        width: 100%;
+        justify-content: space-between;
+        gap: 10px;
+    }
+
+    .zb-search {
+        width: 100%;
+        min-width: 0;
+    }
+}
+
+@media (max-width: 480px) {
+    .zb-grid {
+        grid-template-columns: minmax(0, 1fr);
+        grid-auto-flow: row;
+        grid-template-rows: auto;
+    }
+
+    .zb-skill {
+        flex-wrap: wrap;
+    }
+
+    .zb-skill h3 {
+        flex-basis: 100%;
+    }
+
+    .zb-vols {
+        flex-wrap: wrap;
+    }
 }
