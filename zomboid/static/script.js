@@ -9,13 +9,12 @@ const CONFIG = {
     api: 'api',   // resolves to /zomboid/api, proxied by nginx to the local sync service
     server: {
         name: 'Project Zomboid',
-        subtitle: 'Build 42 \u2022 Modded Survival PvE',
+        subtitle: 'Build 42 • Modded Survival PvE',
         description: "Subzero zombie apocalypse with curated QoL mods, tuned loot respawn rates, and co-op multiplayer. Don't forget your can opener.",
         managedBy: 'BataTheBear',
         address: 'play.isyourrefrigerator.online:16261',
         specs: [['CPU', 'I7-6700k 4 Cores'], ['RAM', 'DDR4 16GB'], ['GPU', 'GeForce GTX 1080 8GB']]
     },
-    // Reuses the status file the main site already updates.
     statusUrl: '/static/status.json',
     statusKey: 'zomboid'
 };
@@ -26,10 +25,10 @@ const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': 
 const slug = s => s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 
 let token = '';
-let state = {};          // { books: {id: true}, vhs: {...}, magazines: {...} }
-const cards = {};        // per-list DOM handles
+let state = {};        // { books: {id: true}, vhs: {...}, magazines: {...} }
+const cards = {};      // per-list DOM handles
 
-/* ---------- Server card (same markup as the main site) ---------- */
+/* ---------- Server card ---------- */
 
 function renderServer() {
     const s = CONFIG.server;
@@ -78,10 +77,8 @@ async function refreshStatus() {
 /* ---------- Checklists ---------- */
 
 function normalise(list) {
-    // Accept either { items: [...] } or { groups: [{ name, items }] }
     return list.groups ? list.groups : [{ name: '', items: list.items || [] }];
 }
-
 
 function buildLists() {
     const host = byId('lists');
@@ -119,15 +116,13 @@ function buildLists() {
             <div class="zb-body"></div>`;
 
         const body = section.querySelector('.zb-body');
-
         if (list.groups) body.classList.add('zb-skills');
 
         const rows = [];
         const used = new Set();
 
         if (!total) {
-            body.innerHTML =
-                '<p class="zb-empty">Nothing here yet. Add names to <code>static/items.js</code>.</p>';
+            body.innerHTML = '<p class="zb-empty">Nothing here yet. Add names to <code>static/items.js</code>.</p>';
         }
 
         groups.forEach(group => {
@@ -141,198 +136,136 @@ function buildLists() {
                 const heading = document.createElement('h3');
                 heading.textContent = group.name;
                 wrap.append(heading);
-            }
 
-            const grid = document.createElement('div');
-            grid.className = isSkillGroup ? 'zb-vols' : 'zb-grid';
+                const vols = document.createElement('div');
+                vols.className = 'zb-vols';
 
-            let leftColumn = null;
-            let rightColumn = null;
-
-            if (isSkillGroup) {
-                // Keep skill volumes I-V together on one horizontal row.
-                Object.assign(grid.style, {
-                    display: 'flex',
-                    flexDirection: 'row',
-                    flexWrap: 'nowrap',
-                    alignItems: 'center',
-                    gap: '4px',
-                    flexShrink: '0'
-                });
-            } else {
-                // Two vertical flex columns.
-                Object.assign(grid.style, {
-                    display: 'flex',
-                    flexDirection: 'row',
-                    alignItems: 'stretch',
-                    gap: '8px',
-                    minWidth: '0'
-                });
-
-                leftColumn = document.createElement('div');
-                rightColumn = document.createElement('div');
-
-                [leftColumn, rightColumn].forEach(column => {
-                    Object.assign(column.style, {
-                        display: 'flex',
-                        flexDirection: 'column',
-                        flex: '1 1 0',
-                        minWidth: '0',
-                        gap: '8px'
-                    });
-                });
-
-                grid.append(leftColumn, rightColumn);
-
-                // Stack columns on narrow screens.
-                const mobileLayout =
-                    window.matchMedia('(max-width: 480px)');
-
-                const updateColumnLayout = () => {
-                    grid.style.flexDirection =
-                        mobileLayout.matches ? 'column' : 'row';
-
-                    [leftColumn, rightColumn].forEach(column => {
-                        column.style.flex =
-                            mobileLayout.matches ? '0 0 auto' : '1 1 0';
-
-                        column.style.width =
-                            mobileLayout.matches ? '100%' : 'auto';
-                    });
-                };
-
-                updateColumnLayout();
-
-                if (mobileLayout.addEventListener) {
-                    mobileLayout.addEventListener(
-                        'change',
-                        updateColumnLayout
-                    );
-                } else if (mobileLayout.addListener) {
-                    mobileLayout.addListener(updateColumnLayout);
-                }
-            }
-
-            wrap.append(grid);
-
-            const itemNames = group.items.slice();
-
-            if (isSkillGroup) {
-                // Sort recognized volumes in Roman numeral order.
+                const itemNames = group.items.slice();
                 itemNames.sort((a, b) => {
                     const getRank = name => {
                         if (!name.startsWith(group.name + ' ')) return 99;
-
-                        const volume = name
-                            .slice(group.name.length + 1)
-                            .trim()
-                            .toUpperCase();
-
+                        const volume = name.slice(group.name.length + 1).trim().toUpperCase();
                         return volumeOrder[volume] || 99;
                     };
-
-                    return getRank(a) - getRank(b)
-                        || collator.compare(a, b);
+                    return getRank(a) - getRank(b) || collator.compare(a, b);
                 });
+
+                const groupRows = [];
+                itemNames.forEach(name => {
+                    let id = slug(name) || 'item';
+                    let n = 2;
+                    while (used.has(id)) id = `${slug(name)}-${n++}`;
+                    used.add(id);
+
+                    const label = document.createElement('label');
+                    label.className = 'zb-vol';
+
+                    const box = document.createElement('input');
+                    box.type = 'checkbox';
+                    box.setAttribute('aria-label', name);
+                    box.addEventListener('change', () => setChecked(key, id, box.checked));
+
+                    const text = document.createElement('span');
+                    text.textContent = name.startsWith(group.name + ' ') ? name.slice(group.name.length + 1) : name;
+
+                    label.append(box, text);
+                    vols.append(label);
+
+                    const row = { id, name, label, box };
+                    rows.push(row);
+                    groupRows.push(row);
+                });
+
+                wrap.append(vols);
+                body.append(wrap);
+                group.rows = groupRows;
+                group.el = wrap;
             } else {
-                // Sort all regular items alphabetically.
-                itemNames.sort((a, b) => collator.compare(a, b));
-            }
-
-            const groupRows = [];
-
-            itemNames.forEach(name => {
-                let id = slug(name) || 'item';
-                let n = 2;
-
-                while (used.has(id)) {
-                    id = `${slug(name)}-${n++}`;
+                if (group.name) {
+                    const heading = document.createElement('h3');
+                    heading.textContent = group.name;
+                    wrap.append(heading);
                 }
 
-                used.add(id);
+                const grid = document.createElement('div');
+                grid.className = 'zb-grid';
 
-                const label = document.createElement('label');
-                label.className = isSkillGroup ? 'zb-vol' : 'zb-item';
+                const leftCol = document.createElement('div');
+                leftCol.className = 'zb-column';
 
-                const box = document.createElement('input');
-                box.type = 'checkbox';
-                box.setAttribute('aria-label', name);
+                const rightCol = document.createElement('div');
+                rightCol.className = 'zb-column';
 
-                box.addEventListener('change', () => {
-                    setChecked(key, id, box.checked);
+                grid.append(leftCol, rightCol);
+                wrap.append(grid);
+
+                const itemNames = group.items.slice();
+                itemNames.sort((a, b) => collator.compare(a, b));
+
+                const groupRows = [];
+                itemNames.forEach(name => {
+                    let id = slug(name) || 'item';
+                    let n = 2;
+                    while (used.has(id)) id = `${slug(name)}-${n++}`;
+                    used.add(id);
+
+                    const label = document.createElement('label');
+                    label.className = 'zb-item';
+
+                    const box = document.createElement('input');
+                    box.type = 'checkbox';
+                    box.setAttribute('aria-label', name);
+                    box.addEventListener('change', () => setChecked(key, id, box.checked));
+
+                    const text = document.createElement('span');
+                    text.textContent = name;
+
+                    label.append(box, text);
+
+                    const row = { id, name, label, box };
+                    rows.push(row);
+                    groupRows.push(row);
                 });
 
-                const text = document.createElement('span');
+                // Split sorted items evenly into left and right columns
+                const midpoint = Math.ceil(groupRows.length / 2);
+                const leftRows = groupRows.slice(0, midpoint);
+                const rightRows = groupRows.slice(midpoint);
 
-                text.textContent =
-                    isSkillGroup && name.startsWith(group.name + ' ')
-                        ? name.slice(group.name.length + 1)
-                        : name;
+                leftRows.forEach(row => leftCol.append(row.label));
+                rightRows.forEach(row => rightCol.append(row.label));
 
-                label.append(box, text);
-
-                if (isSkillGroup) {
-                    // Volumes stay together in one horizontal flex row.
-                    grid.append(label);
-                } else {
-                    const firstLetter =
-                        (name.trim().match(/[A-Za-z]/) || [''])[0]
-                            .toUpperCase();
-
-                    // First column A-I; second column J-Z.
-                    const belongsInLeftColumn =
-                        !firstLetter || firstLetter <= 'I';
-
-                    (belongsInLeftColumn ? leftColumn : rightColumn)
-                        .append(label);
-                }
-
-                const row = { id, name, label, box };
-                rows.push(row);
-                groupRows.push(row);
-            });
-
-            body.append(wrap);
-            group.rows = groupRows;
-            group.el = wrap;
-            group.columns = isSkillGroup
-                ? null
-                : [leftColumn, rightColumn];
+                body.append(wrap);
+                group.rows = groupRows;
+                group.el = wrap;
+                group.columns = [leftCol, rightCol];
+            }
         });
 
-        // Filter items and hide empty columns.
-        section.querySelector('.zb-search').addEventListener(
-            'input',
-            e => {
-                const q = e.target.value.trim().toLowerCase();
+        // Filter items
+        section.querySelector('.zb-search').addEventListener('input', e => {
+            const q = e.target.value.trim().toLowerCase();
 
-                groups.forEach(group => {
-                    if (!group.rows) return;
+            groups.forEach(group => {
+                if (!group.rows) return;
+                let any = false;
 
-                    let any = false;
-
-                    group.rows.forEach(row => {
-                        const hit =
-                            !q || row.name.toLowerCase().includes(q);
-
-                        row.label.hidden = !hit;
-                        if (hit) any = true;
-                    });
-
-                    if (group.columns) {
-                        group.columns.forEach(column => {
-                            const hasVisibleItems =
-                                Array.from(column.children)
-                                    .some(label => !label.hidden);
-
-                            column.hidden = !hasVisibleItems;
-                        });
-                    }
-
-                    group.el.hidden = !any;
+                group.rows.forEach(row => {
+                    const hit = !q || row.name.toLowerCase().includes(q);
+                    row.label.hidden = !hit;
+                    if (hit) any = true;
                 });
-            }
-        );
+
+                if (group.columns) {
+                    group.columns.forEach(column => {
+                        const hasVisibleItems = Array.from(column.children).some(label => !label.hidden);
+                        column.hidden = !hasVisibleItems;
+                    });
+                }
+
+                group.el.hidden = !any;
+            });
+        });
 
         cards[key] = {
             rows,
@@ -344,7 +277,6 @@ function buildLists() {
         host.append(section);
     });
 }
-
 
 function renderChecks() {
     Object.entries(cards).forEach(([key, c]) => {
@@ -362,7 +294,6 @@ function renderChecks() {
 }
 
 function setChecked(list, id, on) {
-    // Update locally right away; the server then pushes the real state to everyone.
     state[list] = state[list] || {};
     if (on) state[list][id] = true; else delete state[list][id];
 
@@ -381,7 +312,6 @@ function setSync(text, cls) {
     byId('syncDot').className = `indicator-dot ${cls}`;
 }
 
-// Resolves 'ok', 'wrong', 'limited' (too many attempts) or 'error' (service unreachable).
 async function unlock(password) {
     if (!password || password.length > 200) return 'wrong';
     try {
@@ -409,9 +339,8 @@ function startLive() {
         events.onmessage = e => { state = JSON.parse(e.data); renderChecks(); };
         events.onerror = () => {
             setSync('Reconnecting...', 'unknown');
-            if (events.readyState !== EventSource.CLOSED) return;   // the browser retries by itself
+            if (events.readyState !== EventSource.CLOSED) return;
 
-            // The service rejected the connection (restart, new password): log in again.
             let saved = '';
             try { saved = sessionStorage.getItem(SESSION_KEY) || ''; } catch { /* ignore */ }
             const retry = async () => {
@@ -439,7 +368,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     const form = byId('gateForm'), input = byId('gateInput'), msg = byId('gateMsg'), btn = byId('gateBtn');
     const say = text => { msg.textContent = text; msg.hidden = !text; };
 
-    // Remembered for this tab only; closing the tab asks again.
     let saved = '';
     try { saved = sessionStorage.getItem(SESSION_KEY) || ''; } catch { /* storage blocked */ }
     if (saved && (await unlock(saved)) === 'ok') { showApp(); return; }
