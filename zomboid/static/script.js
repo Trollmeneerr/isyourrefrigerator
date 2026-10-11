@@ -271,26 +271,22 @@ function buildLists() {
 
                 label.append(box, text);
 
-                if (isSkillGroup) {
-                    // Volumes stay together in one horizontal flex row.
-                    grid.append(label);
-                } else {
-                    const firstLetter =
-                        (name.trim().match(/[A-Za-z]/) || [''])[0]
-                            .toUpperCase();
-
-                    // First column A-I; second column J-Z.
-                    const belongsInLeftColumn =
-                        !firstLetter || firstLetter <= 'I';
-
-                    (belongsInLeftColumn ? leftColumn : rightColumn)
-                        .append(label);
-                }
-
                 const row = { id, name, label, box };
                 rows.push(row);
                 groupRows.push(row);
             });
+
+            if (isSkillGroup) {
+                groupRows.forEach(row => grid.append(row.label));
+            } else {
+                // Split groupRows in half evenly: first half goes to left column, second half to right column
+                const midpoint = Math.ceil(groupRows.length / 2);
+                const leftRows = groupRows.slice(0, midpoint);
+                const rightRows = groupRows.slice(midpoint);
+
+                leftRows.forEach(row => leftColumn.append(row.label));
+                rightRows.forEach(row => rightColumn.append(row.label));
+            }
 
             body.append(wrap);
             group.rows = groupRows;
@@ -344,7 +340,6 @@ function buildLists() {
         host.append(section);
     });
 }
-
 
 function renderChecks() {
     Object.entries(cards).forEach(([key, c]) => {
