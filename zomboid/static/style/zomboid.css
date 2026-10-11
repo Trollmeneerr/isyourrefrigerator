@@ -1,9 +1,13 @@
 /* Zomboid page extras. Loads after stylesheet.css and reuses its variables.
    All new class names start with zb- so nothing clashes with the main site. */
 
-[hidden] { display: none !important; }
+[hidden] {
+    display: none !important;
+}
 
-main { padding-bottom: 80px; }
+main {
+    padding-bottom: 80px;
+}
 
 /* ---------- Password gate ---------- */
 .zb-gate {
@@ -47,15 +51,26 @@ main { padding-bottom: 80px; }
     outline-offset: 1px;
 }
 
-.zb-gate-card .btn:disabled { opacity: 0.6; cursor: wait; }
-.zb-gate-msg { color: var(--red); font-size: 0.9rem; }
+.zb-gate-card .btn:disabled {
+    opacity: 0.6;
+    cursor: wait;
+}
+
+.zb-gate-msg {
+    color: var(--red);
+    font-size: 0.9rem;
+}
 
 /* ---------- Intro + server ---------- */
-.zb-intro { padding: 44px 0 26px; }
-.zb-intro h1 { font-size: 2.4rem; margin-bottom: 8px; }
+.zb-intro {
+    padding: 44px 0 26px;
+}
 
-.zb-server { max-width: 720px; }
-.zb-server .server-specs { max-width: 100%; }
+.zb-intro h1 {
+    font-size: 2.4rem;
+    margin-bottom: 8px;
+}
+
 
 .zb-sync {
     display: flex;
@@ -86,10 +101,20 @@ main { padding-bottom: 80px; }
     margin-bottom: 14px;
 }
 
-.zb-list-head h2 { font-size: 1.4rem; margin-bottom: 2px; }
-.zb-list-head p { font-size: 0.88rem; }
+.zb-list-head h2 {
+    font-size: 1.4rem;
+    margin-bottom: 2px;
+}
 
-.zb-list-tools { display: flex; align-items: center; gap: 14px; }
+.zb-list-head p {
+    font-size: 0.88rem;
+}
+
+.zb-list-tools {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
 
 .zb-count {
     font-family: 'JetBrains Mono', monospace;
@@ -124,8 +149,15 @@ main { padding-bottom: 80px; }
     transition: width 0.3s ease;
 }
 
-.zb-group + .zb-group { margin-top: 18px; }
-.zb-group h3 { margin-bottom: 8px; font-size: 1rem; color: var(--text-dim); }
+.zb-group+.zb-group {
+    margin-top: 18px;
+}
+
+.zb-group h3 {
+    margin-bottom: 8px;
+    font-size: 1rem;
+    color: var(--text-dim);
+}
 
 .zb-grid {
     display: grid;
@@ -148,7 +180,10 @@ main { padding-bottom: 80px; }
     transition: border-color 0.2s ease, background 0.2s ease;
 }
 
-.zb-item:hover { border-color: var(--glass-hover-border); background: var(--p-card-hover); }
+.zb-item:hover {
+    border-color: var(--glass-hover-border);
+    background: var(--p-card-hover);
+}
 
 .zb-item input {
     flex-shrink: 0;
@@ -158,14 +193,114 @@ main { padding-bottom: 80px; }
     cursor: pointer;
 }
 
-.zb-item.done { color: var(--text-faint); text-decoration: line-through; }
+.zb-item.done {
+    color: var(--text-faint);
+    text-decoration: line-through;
+}
 
-.zb-empty { padding: 14px 0; color: var(--text-faint); font-size: 0.92rem; }
-.zb-empty code { color: var(--cyan); font-family: 'JetBrains Mono', monospace; }
+/* Skill rows: bold title, then volumes I to V on a single line */
+.zb-skills {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 370px), 1fr));
+    gap: 8px;
+}
+
+.zb-skill {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    background: var(--glass);
+    border: 1px solid var(--hair);
+    border-radius: var(--radius-sm);
+}
+
+.zb-skill h3 {
+    flex: 1;
+    min-width: 0;
+    margin: 0;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #ffffff;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.zb-vols {
+    display: flex;
+    gap: 4px;
+    flex-shrink: 0;
+}
+
+.zb-vol {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    padding: 4px 6px;
+    border: 1px solid var(--hair);
+    border-radius: var(--radius-xs);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem;
+    color: var(--text-dim);
+    cursor: pointer;
+    user-select: none;
+    transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.zb-vol:hover {
+    border-color: var(--glass-hover-border);
+}
+
+.zb-vol input {
+    width: 13px;
+    height: 13px;
+    accent-color: var(--cyan);
+    cursor: pointer;
+}
+
+.zb-vol.done {
+    background: rgba(56, 189, 248, 0.14);
+    border-color: rgba(56, 189, 248, 0.45);
+    color: #ffffff;
+}
+
+@media (max-width: 480px) {
+    .zb-skill {
+        flex-wrap: wrap;
+    }
+
+    .zb-skill h3 {
+        flex-basis: 100%;
+    }
+}
+
+.zb-empty {
+    padding: 14px 0;
+    color: var(--text-faint);
+    font-size: 0.92rem;
+}
+
+.zb-empty code {
+    color: var(--cyan);
+    font-family: 'JetBrains Mono', monospace;
+}
 
 @media (max-width: 680px) {
-    .zb-intro h1 { font-size: 1.9rem; }
-    .zb-list { padding: 18px; }
-    .zb-search { width: 100%; }
-    .zb-list-tools { width: 100%; justify-content: space-between; }
+    .zb-intro h1 {
+        font-size: 1.9rem;
+    }
+
+    .zb-list {
+        padding: 18px;
+    }
+
+    .zb-search {
+        width: 100%;
+    }
+
+    .zb-list-tools {
+        width: 100%;
+        justify-content: space-between;
+    }
 }
