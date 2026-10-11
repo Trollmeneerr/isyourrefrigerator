@@ -1,5 +1,6 @@
-/* Zomboid page extras. Loads after stylesheet.css and reuses its variables.
-   All new class names start with zb- so nothing clashes with the main site. */
+/* =========================================================================
+   Project Zomboid checklists - isyourrefrigerator.online/zomboid
+   ========================================================================= */
 
 [hidden] {
     display: none !important;
@@ -155,7 +156,7 @@ main {
     transition: width 0.3s ease;
 }
 
-/* ---------- Regular lists: two vertical columns ---------- */
+/* ---------- Regular lists: Two-column layout ---------- */
 .zb-group+.zb-group {
     margin-top: 18px;
 }
@@ -176,6 +177,13 @@ main {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 8px;
     align-items: start;
+    min-width: 0;
+}
+
+.zb-column {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
     min-width: 0;
 }
 
@@ -219,7 +227,6 @@ main {
 }
 
 /* ---------- Skill lists ---------- */
-/* Keep skill groups arranged as cards; volumes remain on one line. */
 .zb-skills {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(min(100%, 370px), 1fr));
