@@ -6,7 +6,7 @@
     display: none !important;
 }
 
-main {
+#app {
     padding-bottom: 80px;
 }
 
@@ -156,35 +156,20 @@ main {
     transition: width 0.3s ease;
 }
 
-/* ---------- Regular lists: Two-column layout ---------- */
-.zb-group+.zb-group {
-    margin-top: 18px;
+/* ---------- Lists: items run top to bottom, then continue in the next column ---------- */
+.zb-grid,
+.zb-skills {
+    column-gap: 8px;
+    min-width: 0;
 }
 
-.zb-group h3 {
+.zb-grid   { columns: 2; }
+.zb-skills { columns: 370px; }
+
+.zb-item,
+.zb-skill {
+    break-inside: avoid;
     margin-bottom: 8px;
-    font-size: 1rem;
-    color: var(--text-dim);
-}
-
-/*
-    We use standard CSS Grid with row-major flow (default) 
-    because JavaScript now explicitly handles splitting the items 
-    into separate left and right column containers.
-*/
-.zb-grid {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 8px;
-    align-items: start;
-    min-width: 0;
-}
-
-.zb-column {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    min-width: 0;
 }
 
 .zb-item {
@@ -226,14 +211,7 @@ main {
     text-decoration: line-through;
 }
 
-/* ---------- Skill lists ---------- */
-.zb-skills {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 370px), 1fr));
-    gap: 8px;
-    min-width: 0;
-}
-
+/* ---------- Skill rows ---------- */
 .zb-skill {
     display: flex;
     align-items: center;
@@ -331,7 +309,7 @@ main {
 
 @media (max-width: 480px) {
     .zb-grid {
-        grid-template-columns: minmax(0, 1fr);
+        columns: 1;
     }
 
     .zb-skill {

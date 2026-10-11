@@ -1,15 +1,15 @@
 /* =========================================================================
    Project Zomboid checklists - isyourrefrigerator.online/zomboid
-   Live sync talks to the small local service in zomboid-sync/ (see INSTALL.md).
-   Checklist contents live in items.js. The password is checked by that service.
+   Live sync talks to the local sync service (nginx proxies /zomboid/api/).
+   Checklist contents live in items.js. The password is checked by the service.
    ========================================================================= */
 'use strict';
 
 const CONFIG = {
-    api: 'api',   // resolves to /zomboid/api, proxied by nginx to the local sync service
+    api: '/zomboid/api',
     server: {
         name: 'Project Zomboid',
-        subtitle: 'Build 42 • Modded Survival PvE',
+        subtitle: 'Build 42 \u2022 Modded Survival PvE',
         description: "Subzero zombie apocalypse with curated QoL mods, tuned loot respawn rates, and co-op multiplayer. Don't forget your can opener.",
         managedBy: 'BataTheBear',
         address: 'play.isyourrefrigerator.online:16261',
@@ -20,6 +20,9 @@ const CONFIG = {
 };
 
 const SESSION_KEY = 'zb-session';
+const VOLUME_RANK = { I: 1, II: 2, III: 3, IV: 4, V: 5 };
+const collator = new Intl.Collator(undefined, { numeric: true, sensitivity: 'base' });
+
 const byId = id => document.getElementById(id);
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const slug = s => s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
@@ -55,11 +58,13 @@ function renderServer() {
     };
     box.addEventListener('click', copy);
     box.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); copy(); } });
+
     refreshStatus();
     setInterval(refreshStatus, 60000);
 }
 
 async function refreshStatus() {
+    if (document.hidden) return;   // no point polling from a background tab
     const dot = byId('srvDot'), text = byId('srvText');
     if (!dot) return;
     let status = 'unknown', label = 'Unknown';
@@ -76,195 +81,96 @@ async function refreshStatus() {
 
 /* ---------- Checklists ---------- */
 
-function normalise(list) {
-    return list.groups ? list.groups : [{ name: '', items: list.items || [] }];
-}
-
+// Items are laid out by CSS columns (.zb-grid / .zb-skills), so the DOM order
+// here is simply the reading order: top to bottom, then the next column.
 function buildLists() {
     const host = byId('lists');
-    host.innerHTML = '';
-
-    const collator = new Intl.Collator(undefined, {
-        numeric: true,
-        sensitivity: 'base'
-    });
-
-    const volumeOrder = { I: 1, II: 2, III: 3, IV: 4, V: 5 };
+    const frag = document.createDocumentFragment();
 
     Object.entries(window.ZOMBOID_LISTS || {}).forEach(([key, list]) => {
-        const groups = normalise(list);
-        const total = groups.reduce((n, group) => n + group.items.length, 0);
+        const skills = list.groups || null;
+        const names = skills ? skills.flatMap(g => g.items) : (list.items || []);
+        const total = names.length;
 
         const section = document.createElement('section');
         section.className = 'zb-list';
         section.innerHTML = `
             <div class="zb-list-head">
-                <div>
-                    <h2>${esc(list.title)}</h2>
-                    <p>${esc(list.note || '')}</p>
-                </div>
+                <div><h2>${esc(list.title)}</h2><p>${esc(list.note || '')}</p></div>
                 <div class="zb-list-tools">
                     <span class="zb-count">0 / ${total}</span>
-                    <input type="search" class="zb-search"
-                        placeholder="Filter"
-                        aria-label="Filter ${esc(list.title)}">
+                    <input type="search" class="zb-search" placeholder="Filter" aria-label="Filter ${esc(list.title)}">
                 </div>
             </div>
-            <div class="zb-bar">
-                <div class="zb-bar-fill"></div>
-            </div>
-            <div class="zb-body"></div>`;
-
-        const body = section.querySelector('.zb-body');
-        if (list.groups) body.classList.add('zb-skills');
+            <div class="zb-bar"><div class="zb-bar-fill"></div></div>
+            <div class="${skills ? 'zb-skills' : 'zb-grid'}"></div>`;
+        const body = section.lastElementChild;
 
         const rows = [];
+        const skillEls = [];
         const used = new Set();
 
+        const makeRow = (name, className, shown) => {
+            let id = slug(name) || 'item', n = 2;
+            while (used.has(id)) id = `${slug(name)}-${n++}`;
+            used.add(id);
+
+            const label = document.createElement('label');
+            label.className = className;
+            const box = document.createElement('input');
+            box.type = 'checkbox';
+            box.dataset.id = id;
+            box.setAttribute('aria-label', name);
+            const text = document.createElement('span');
+            text.textContent = shown;
+            label.append(box, text);
+
+            const row = { id, name, label, box };
+            rows.push(row);
+            return row;
+        };
+
+        const items = document.createDocumentFragment();
+
         if (!total) {
+            body.className = '';
             body.innerHTML = '<p class="zb-empty">Nothing here yet. Add names to <code>static/items.js</code>.</p>';
-        }
+        } else if (skills) {
+            skills.forEach(group => {
+                if (!group.items.length) return;
+                const prefix = `${group.name} `;
+                const rank = n => (n.startsWith(prefix) && VOLUME_RANK[n.slice(prefix.length).trim().toUpperCase()]) || 99;
 
-        groups.forEach(group => {
-            if (!group.items.length) return;
-
-            const isSkillGroup = Boolean(group.name);
-            const wrap = document.createElement('div');
-            wrap.className = isSkillGroup ? 'zb-skill' : 'zb-group';
-
-            if (isSkillGroup) {
-                const heading = document.createElement('h3');
-                heading.textContent = group.name;
-                wrap.append(heading);
-
+                const el = document.createElement('div');
+                el.className = 'zb-skill';
+                const title = document.createElement('h3');
+                title.textContent = group.name;
                 const vols = document.createElement('div');
                 vols.className = 'zb-vols';
 
-                const itemNames = group.items.slice();
-                itemNames.sort((a, b) => {
-                    const getRank = name => {
-                        if (!name.startsWith(group.name + ' ')) return 99;
-                        const volume = name.slice(group.name.length + 1).trim().toUpperCase();
-                        return volumeOrder[volume] || 99;
-                    };
-                    return getRank(a) - getRank(b) || collator.compare(a, b);
-                });
+                const groupRows = [...group.items]
+                    .sort((a, b) => rank(a) - rank(b) || collator.compare(a, b))
+                    .map(name => makeRow(name, 'zb-vol', name.startsWith(prefix) ? name.slice(prefix.length) : name));
 
-                const groupRows = [];
-                itemNames.forEach(name => {
-                    let id = slug(name) || 'item';
-                    let n = 2;
-                    while (used.has(id)) id = `${slug(name)}-${n++}`;
-                    used.add(id);
+                vols.append(...groupRows.map(r => r.label));
+                el.append(title, vols);
+                items.append(el);
+                skillEls.push({ el, rows: groupRows });
+            });
+        } else {
+            [...names].sort(collator.compare).forEach(name => items.append(makeRow(name, 'zb-item', name).label));
+        }
+        body.append(items);
 
-                    const label = document.createElement('label');
-                    label.className = 'zb-vol';
-
-                    const box = document.createElement('input');
-                    box.type = 'checkbox';
-                    box.setAttribute('aria-label', name);
-                    box.addEventListener('change', () => setChecked(key, id, box.checked));
-
-                    const text = document.createElement('span');
-                    text.textContent = name.startsWith(group.name + ' ') ? name.slice(group.name.length + 1) : name;
-
-                    label.append(box, text);
-                    vols.append(label);
-
-                    const row = { id, name, label, box };
-                    rows.push(row);
-                    groupRows.push(row);
-                });
-
-                wrap.append(vols);
-                body.append(wrap);
-                group.rows = groupRows;
-                group.el = wrap;
-            } else {
-                if (group.name) {
-                    const heading = document.createElement('h3');
-                    heading.textContent = group.name;
-                    wrap.append(heading);
-                }
-
-                const grid = document.createElement('div');
-                grid.className = 'zb-grid';
-
-                const leftCol = document.createElement('div');
-                leftCol.className = 'zb-column';
-
-                const rightCol = document.createElement('div');
-                rightCol.className = 'zb-column';
-
-                grid.append(leftCol, rightCol);
-                wrap.append(grid);
-
-                const itemNames = group.items.slice();
-                itemNames.sort((a, b) => collator.compare(a, b));
-
-                const groupRows = [];
-                itemNames.forEach(name => {
-                    let id = slug(name) || 'item';
-                    let n = 2;
-                    while (used.has(id)) id = `${slug(name)}-${n++}`;
-                    used.add(id);
-
-                    const label = document.createElement('label');
-                    label.className = 'zb-item';
-
-                    const box = document.createElement('input');
-                    box.type = 'checkbox';
-                    box.setAttribute('aria-label', name);
-                    box.addEventListener('change', () => setChecked(key, id, box.checked));
-
-                    const text = document.createElement('span');
-                    text.textContent = name;
-
-                    label.append(box, text);
-
-                    const row = { id, name, label, box };
-                    rows.push(row);
-                    groupRows.push(row);
-                });
-
-                // Split sorted items evenly into left and right columns
-                const midpoint = Math.ceil(groupRows.length / 2);
-                const leftRows = groupRows.slice(0, midpoint);
-                const rightRows = groupRows.slice(midpoint);
-
-                leftRows.forEach(row => leftCol.append(row.label));
-                rightRows.forEach(row => rightCol.append(row.label));
-
-                body.append(wrap);
-                group.rows = groupRows;
-                group.el = wrap;
-                group.columns = [leftCol, rightCol];
-            }
+        // One listener per list instead of one per checkbox
+        body.addEventListener('change', e => {
+            if (e.target.dataset.id) setChecked(key, e.target.dataset.id, e.target.checked);
         });
 
-        // Filter items
         section.querySelector('.zb-search').addEventListener('input', e => {
             const q = e.target.value.trim().toLowerCase();
-
-            groups.forEach(group => {
-                if (!group.rows) return;
-                let any = false;
-
-                group.rows.forEach(row => {
-                    const hit = !q || row.name.toLowerCase().includes(q);
-                    row.label.hidden = !hit;
-                    if (hit) any = true;
-                });
-
-                if (group.columns) {
-                    group.columns.forEach(column => {
-                        const hasVisibleItems = Array.from(column.children).some(label => !label.hidden);
-                        column.hidden = !hasVisibleItems;
-                    });
-                }
-
-                group.el.hidden = !any;
-            });
+            rows.forEach(r => (r.label.hidden = !!q && !r.name.toLowerCase().includes(q)));
+            skillEls.forEach(s => (s.el.hidden = s.rows.every(r => r.label.hidden)));
         });
 
         cards[key] = {
@@ -273,9 +179,10 @@ function buildLists() {
             fill: section.querySelector('.zb-bar-fill'),
             count: section.querySelector('.zb-count')
         };
-
-        host.append(section);
+        frag.append(section);
     });
+
+    host.replaceChildren(frag);
 }
 
 function renderChecks() {
@@ -294,15 +201,17 @@ function renderChecks() {
 }
 
 function setChecked(list, id, on) {
+    // Update locally right away; the server then pushes the real state to everyone.
     state[list] = state[list] || {};
     if (on) state[list][id] = true; else delete state[list][id];
+    renderChecks();
 
     fetch(`${CONFIG.api}/check`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
         body: JSON.stringify({ list, id, checked: on })
     }).then(r => { if (!r.ok) throw new Error(r.status); })
-        .catch(() => setSync('Could not save', 'offline'));
+      .catch(() => setSync('Could not save', 'offline'));
 }
 
 /* ---------- Sync + password ---------- */
@@ -312,6 +221,7 @@ function setSync(text, cls) {
     byId('syncDot').className = `indicator-dot ${cls}`;
 }
 
+// Resolves 'ok', 'wrong', 'limited' (too many attempts) or 'error' (service unreachable).
 async function unlock(password) {
     if (!password || password.length > 200) return 'wrong';
     try {
@@ -339,8 +249,9 @@ function startLive() {
         events.onmessage = e => { state = JSON.parse(e.data); renderChecks(); };
         events.onerror = () => {
             setSync('Reconnecting...', 'unknown');
-            if (events.readyState !== EventSource.CLOSED) return;
+            if (events.readyState !== EventSource.CLOSED) return;   // the browser retries by itself
 
+            // The service rejected the connection (restart, new password): log in again.
             let saved = '';
             try { saved = sessionStorage.getItem(SESSION_KEY) || ''; } catch { /* ignore */ }
             const retry = async () => {
@@ -368,6 +279,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const form = byId('gateForm'), input = byId('gateInput'), msg = byId('gateMsg'), btn = byId('gateBtn');
     const say = text => { msg.textContent = text; msg.hidden = !text; };
 
+    // Remembered for this tab only; closing the tab asks again.
     let saved = '';
     try { saved = sessionStorage.getItem(SESSION_KEY) || ''; } catch { /* storage blocked */ }
     if (saved && (await unlock(saved)) === 'ok') { showApp(); return; }
