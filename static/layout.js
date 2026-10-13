@@ -92,10 +92,12 @@
                             <span>Server Panel</span>
                         </a>` : ''}
                         <button type="button" class="btn btn-outline mobile-nav-btn btn-view-servers">
-                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <rect x="2" y="6" width="20" height="12" rx="2"></rect>
-                                <path d="M6 12h4m-2-2v4m7-2h.01m3 0h.01"></path>
-                            </svg>
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="2" y="3" width="20" height="6" rx="1"></rect>
+                                    <rect x="2" y="15" width="20" height="6" rx="1"></rect>
+                                    <line x1="6" y1="6" x2="6.01" y2="6"></line>
+                                    <line x1="6" y1="18" x2="6.01" y2="18"></line>
+                                </svg>
                             <span>View All Servers</span>
                         </button>
                     </nav>`;
