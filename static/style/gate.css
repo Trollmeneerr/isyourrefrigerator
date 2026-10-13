@@ -1,0 +1,201 @@
+/* =========================================================================
+   GATEWAY / PASSWORD SCREEN STYLESHEET
+   Location: /static/style/gate.css
+   Used for: Access gate dialogs, restricted portal authentications
+   ========================================================================= */
+
+/* Gate Backdrop Overlay */
+.zb-gate {
+    position: fixed;
+    inset: 0;
+    z-index: 2000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    background: rgba(1, 6, 14, 0.88);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+}
+
+.zb-gate-card-wrapper {
+    width: 100%;
+    max-width: 440px;
+    position: relative;
+}
+
+/* Glassmorphism Gate Card */
+.zb-gate-card {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 36px 32px;
+    background: #07152b;
+    border: 1px solid rgba(56, 189, 248, 0.35);
+    border-radius: var(--radius-xl);
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.85), 0 0 40px rgba(13, 140, 241, 0.22);
+    position: relative;
+}
+
+/* Restricted Badge */
+.zb-gate-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 5px 12px;
+    background: rgba(56, 189, 248, 0.1);
+    border: 1px solid rgba(56, 189, 248, 0.3);
+    border-radius: 999px;
+    font-size: 0.76rem;
+    font-weight: 600;
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--cyan);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    margin-bottom: 18px;
+}
+
+.zb-gate-badge .indicator-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--cyan);
+    box-shadow: 0 0 10px var(--cyan);
+}
+
+/* Top Glow Icon Container */
+.zb-gate-icon {
+    width: 64px;
+    height: 64px;
+    border-radius: var(--radius-lg);
+    background: linear-gradient(135deg, rgba(19, 59, 120, 0.5) 0%, rgba(13, 140, 241, 0.2) 100%);
+    border: 1px solid rgba(56, 189, 248, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--cyan);
+    margin-bottom: 16px;
+    box-shadow: 0 8px 24px rgba(13, 140, 241, 0.25);
+}
+
+.zb-gate-icon svg {
+    width: 30px;
+    height: 30px;
+}
+
+.zb-gate-card h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 8px;
+    letter-spacing: -0.01em;
+}
+
+.zb-gate-card p {
+    font-size: 0.92rem;
+    color: var(--text-dim);
+    line-height: 1.5;
+    margin-bottom: 22px;
+    max-width: 340px;
+}
+
+/* Input Wrapper & Icon */
+.zb-gate-input-wrap {
+    position: relative;
+    width: 100%;
+    margin-bottom: 16px;
+}
+
+.zb-gate-input-wrap .input-icon {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-faint);
+    pointer-events: none;
+    transition: color 0.2s ease;
+}
+
+.zb-gate-card input {
+    width: 100%;
+    padding: 13px 16px 13px 40px;
+    background: rgba(3, 11, 24, 0.85);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: var(--radius-md);
+    color: #ffffff;
+    font-family: inherit;
+    font-size: 0.95rem;
+    letter-spacing: 0.05em;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+}
+
+.zb-gate-card input:focus-visible {
+    outline: none;
+    border-color: var(--cyan);
+    background: rgba(3, 11, 24, 0.95);
+    box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.25);
+}
+
+.zb-gate-input-wrap:focus-within .input-icon {
+    color: var(--cyan);
+}
+
+/* Submit Action Button */
+.zb-gate-card button[type="submit"] {
+    width: 100%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 13px 20px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    border-radius: var(--radius-md);
+}
+
+.zb-gate-card .btn:disabled {
+    opacity: 0.6;
+    cursor: wait;
+    transform: none !important;
+}
+
+/* Error / Feedback Message */
+.zb-gate-msg {
+    margin-top: 14px;
+    margin-bottom: 0;
+    padding: 10px 14px;
+    width: 100%;
+    border-radius: var(--radius-sm);
+    background: rgba(239, 68, 68, 0.12);
+    border: 1px solid rgba(239, 68, 68, 0.35);
+    color: #fca5a5;
+    font-size: 0.85rem;
+    text-align: center;
+}
+
+/* Footer / Return Navigation */
+.zb-gate-actions {
+    margin-top: 20px;
+    padding-top: 18px;
+    border-top: 1px solid var(--hair);
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.btn-gate-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.82rem;
+    color: var(--text-dim);
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.btn-gate-back:hover {
+    color: var(--cyan);
+}

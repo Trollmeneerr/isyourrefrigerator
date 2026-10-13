@@ -34,12 +34,17 @@ isyourrefrigerator/
 ├── static/
 │   ├── images/               # Logos, banners, avatars
 │   ├── style/
-│   │   └── stylesheet.css    # Core responsive stylesheet
+│   │   ├── stylesheet.css    # Core responsive stylesheet
+│   │   ├── header.css        # Modular site header & navigation stylesheet
+│   │   ├── footer.css        # Modular site footer & legal links stylesheet
+│   │   ├── gate.css          # Access gate & password screen styling
+│   │   └── zomboid.css       # Project Zomboid checklist styling
+│   ├── layout.js             # Modular site layout (header, footer & legal modal) system
 │   ├── script.js             # Client interactivity, dynamic servers & clipboard
 │   └── status.json           # Local server status ping data
 ├── zomboid/
 │   ├── index.html            # Dedicated Project Zomboid page & checklist gate
-│   └── static/               # Zomboid-specific scripts, styles & item data
+│   └── static/               # Zomboid-specific scripts & item list data (items.js, script.js)
 ├── valheim/
 │   └── index.html            # Valheim server portal (under construction)
 ├── minecraft/

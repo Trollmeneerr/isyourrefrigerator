@@ -2210,19 +2210,31 @@ footer.site {
     flex-wrap: wrap;
 }
 
-.footer-brand .wordmark {
-    font-family: 'Space Grotesk', sans-serif;
-    font-weight: 700;
-    font-size: 1.3rem;
+.footer-brand {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
 }
 
-.footer-brand .part-name { color: #ffffff; }
-.footer-brand .part-tld { color: var(--cyan); }
+.footer-brand .brand-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+}
+
+.footer-brand .brand-link img.logo-icon {
+    height: 32px;
+}
+
+.footer-brand .brand-link img.logo-wordmark {
+    height: 52px;
+}
 
 .footer-brand .tagline {
     font-size: 0.88rem;
     color: var(--text-faint);
-    margin-top: 4px;
+    margin: 0;
 }
 
 .footer-nav {
@@ -2232,72 +2244,123 @@ footer.site {
     flex-wrap: wrap;
 }
 
-.footer-nav a {
+.footer-nav a,
+.footer-nav button.footer-nav-btn {
     font-size: 0.9rem;
     color: var(--text-dim);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    font-family: inherit;
+    transition: color 0.2s ease;
+    text-decoration: none;
 }
 
-.footer-nav a:hover {
+.footer-nav a:hover,
+.footer-nav button.footer-nav-btn:hover {
     color: #ffffff;
+}
+
+.footer-sub-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--hair);
+    flex-wrap: wrap;
+}
+
+.footer-sub-links {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.btn-legal-link {
+    background: none;
+    border: none;
+    color: var(--text-dim);
+    font-size: 0.82rem;
+    font-family: inherit;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 8px;
+    border-radius: var(--radius-xs);
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--hair);
+    transition: all 0.2s ease;
+}
+
+.btn-legal-link:hover {
+    color: #ffffff;
+    background: rgba(56, 189, 248, 0.12);
+    border-color: rgba(56, 189, 248, 0.35);
 }
 
 .footer-bottom {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding-top: 24px;
+    padding-top: 20px;
     font-size: 0.82rem;
     color: var(--text-faint);
     flex-wrap: wrap;
     gap: 12px;
 }
 
-/* Footer Hardware Disclaimer */
+/* Footer Hardware Disclaimer (Ultra-compact & minimal) */
 .footer-disclaimer {
-    margin: 24px 0;
-    padding: 16px 20px;
-    background: rgba(10, 25, 48, 0.55);
-    border: 1px solid rgba(56, 189, 248, 0.22);
-    border-radius: var(--radius-md);
+    margin: 12px 0 16px;
+    padding: 6px 12px;
+    background: rgba(10, 25, 48, 0.35);
+    border: 1px solid rgba(56, 189, 248, 0.12);
+    border-radius: var(--radius-xs);
     display: flex;
     align-items: center;
-    gap: 16px;
+    gap: 8px;
     flex-wrap: wrap;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
 }
 
 .disclaimer-badge {
     display: inline-flex;
     align-items: center;
-    gap: 7px;
-    padding: 5px 12px;
+    gap: 4px;
+    padding: 2px 7px;
     border-radius: 999px;
-    background: rgba(13, 140, 241, 0.15);
-    border: 1px solid rgba(56, 189, 248, 0.3);
-    font-size: 0.74rem;
+    background: rgba(13, 140, 241, 0.1);
+    border: 1px solid rgba(56, 189, 248, 0.2);
+    font-size: 0.62rem;
     font-family: 'JetBrains Mono', monospace;
     font-weight: 600;
     color: var(--cyan);
     white-space: nowrap;
-    box-shadow: 0 0 12px rgba(13, 140, 241, 0.12);
+    letter-spacing: 0.02em;
 }
 
 .disclaimer-badge svg {
     color: var(--cyan);
     flex-shrink: 0;
+    width: 10px;
+    height: 10px;
 }
 
 .disclaimer-text {
-    font-size: 0.83rem;
-    color: var(--text-dim);
-    line-height: 1.5;
+    font-size: 0.68rem;
+    color: var(--text-faint);
+    line-height: 1.35;
     margin: 0;
     flex: 1;
-    min-width: 260px;
+    min-width: 220px;
+    opacity: 0.85;
 }
 
 .disclaimer-text strong {
-    color: #ffffff;
+    color: var(--text-dim);
+    font-weight: 600;
 }
 
 /* Copied Button Feedback */

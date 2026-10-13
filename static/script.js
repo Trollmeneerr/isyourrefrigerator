@@ -394,6 +394,12 @@ function initGallery() {
    DOM CONTENT LOADED INITIALIZATION
    ========================================================================= */
 document.addEventListener('DOMContentLoaded', () => {
+    // Ensure layout (header & footer) is mounted first if SiteLayout / SiteComponents is available
+    const layout = window.SiteLayout || window.SiteComponents;
+    if (layout && typeof layout.init === 'function') {
+        layout.init();
+    }
+
     // Console Easter Egg
     console.log(
         '%c❄️ isyourrefrigerator.online%c\nPrivacy-First Homelab: Zero cookies, zero third-party trackers, 100% chilled.',
