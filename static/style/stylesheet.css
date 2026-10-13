@@ -631,13 +631,14 @@ header.site {
     display: grid;
     grid-template-columns: 1.15fr 0.95fr;
     gap: 40px;
-    align-items: center;
+    align-items: stretch;
 }
 
 .hero-content {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+    height: 100%;
 }
 
 .badge {
@@ -779,6 +780,9 @@ header.site {
     box-shadow: var(--shadow-steam);
     position: relative;
     transition: transform 0.3s ease, border-color 0.3s ease;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
 }
 
 .hero-spotlight-card:hover {
@@ -793,6 +797,7 @@ header.site {
     padding: 10px 16px;
     background: rgba(2, 10, 22, 0.85);
     border-bottom: 1px solid var(--hair);
+    flex-shrink: 0;
 }
 
 .spotlight-badge {
@@ -823,7 +828,8 @@ header.site {
 .spotlight-media-frame {
     position: relative;
     display: block;
-    aspect-ratio: 16 / 9;
+    flex: 1;
+    min-height: 240px;
     background: #000000;
     overflow: hidden;
     cursor: pointer;
@@ -873,17 +879,20 @@ header.site {
 
 .spotlight-footer {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: 1fr 1fr 1.35fr;
     gap: 12px;
     padding: 14px 16px;
-    background: rgba(6, 18, 36, 0.8);
+    background: rgba(6, 18, 36, 0.85);
     border-top: 1px solid var(--hair);
+    align-items: center;
+    flex-shrink: 0;
 }
 
 .spotlight-stat {
     display: flex;
     flex-direction: column;
     gap: 2px;
+    min-width: 0;
 }
 
 .stat-label {
@@ -891,6 +900,9 @@ header.site {
     color: var(--text-faint);
     text-transform: uppercase;
     font-family: 'JetBrains Mono', monospace;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .stat-val {
@@ -900,6 +912,8 @@ header.site {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    min-width: 0;
+    display: block;
 }
 
 .stat-val.status-online {
@@ -908,9 +922,17 @@ header.site {
 
 .stat-val.link {
     color: var(--cyan);
+    display: inline-block;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    transition: color 0.2s ease, text-shadow 0.2s ease;
 }
 
 .stat-val.link:hover {
+    color: #ffffff;
+    text-shadow: 0 0 8px var(--cyan-glow);
     text-decoration: underline;
 }
 
@@ -1147,9 +1169,46 @@ section.section-block {
     box-shadow: 0 0 8px var(--cyan);
 }
 
-.server-card h3 {
+.server-card.is-clickable {
+    cursor: pointer;
+}
+
+.server-card.is-clickable:hover {
+    border-color: var(--cyan);
+    box-shadow: var(--shadow-card), 0 0 28px rgba(56, 189, 248, 0.28);
+}
+
+.server-card h3,
+.server-title {
     font-size: 1.3rem;
     color: #ffffff;
+    margin: 0;
+}
+
+.server-title-link {
+    color: #ffffff;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: color 0.2s ease;
+}
+
+.server-card.is-clickable:hover .server-title-link {
+    color: var(--cyan);
+}
+
+.server-link-icon {
+    font-size: 0.85em;
+    opacity: 0.6;
+    display: inline-block;
+    transition: transform 0.2s ease, opacity 0.2s ease, color 0.2s ease;
+}
+
+.server-card.is-clickable:hover .server-link-icon {
+    opacity: 1;
+    transform: translate(2px, -2px);
+    color: var(--cyan);
 }
 
 .server-subtitle {
@@ -1658,7 +1717,7 @@ section.section-block {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 20px;
+    padding: 24px;
     opacity: 0;
     visibility: hidden;
     transition: opacity 0.25s ease, visibility 0.25s ease;
@@ -1674,7 +1733,7 @@ section.section-block {
     border: 1px solid rgba(56, 189, 248, 0.35);
     border-radius: var(--radius-xl);
     width: 100%;
-    max-width: 580px;
+    max-width: 1200px;
     max-height: 90vh;
     overflow-y: auto;
     padding: 32px;
@@ -1689,15 +1748,15 @@ section.section-block {
 }
 
 .modal-servers-card {
-    max-width: 900px;
+    max-width: 1200px;
 }
 
 .modal-privacy-card {
-    max-width: 680px;
+    max-width: 1200px;
 }
 
 .modal-gallery-card {
-    max-width: 860px;
+    max-width: 1200px;
 }
 
 .modal-close-btn {
@@ -2140,6 +2199,73 @@ footer.site {
     gap: 12px;
 }
 
+/* Footer Hardware Disclaimer */
+.footer-disclaimer {
+    margin: 24px 0;
+    padding: 16px 20px;
+    background: rgba(10, 25, 48, 0.55);
+    border: 1px solid rgba(56, 189, 248, 0.22);
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.disclaimer-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 5px 12px;
+    border-radius: 999px;
+    background: rgba(13, 140, 241, 0.15);
+    border: 1px solid rgba(56, 189, 248, 0.3);
+    font-size: 0.74rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 600;
+    color: var(--cyan);
+    white-space: nowrap;
+    box-shadow: 0 0 12px rgba(13, 140, 241, 0.12);
+}
+
+.disclaimer-badge svg {
+    color: var(--cyan);
+    flex-shrink: 0;
+}
+
+.disclaimer-text {
+    font-size: 0.83rem;
+    color: var(--text-dim);
+    line-height: 1.5;
+    margin: 0;
+    flex: 1;
+    min-width: 260px;
+}
+
+.disclaimer-text strong {
+    color: #ffffff;
+}
+
+/* Copied Button Feedback */
+.btn-copy-ip.copied,
+.btn-copy-discord.copied,
+.shelf-action-btn.copied {
+    border-color: var(--green) !important;
+    color: var(--green) !important;
+    background: rgba(34, 197, 94, 0.15) !important;
+    box-shadow: 0 0 16px var(--green-glow) !important;
+}
+
+.btn-copy-ip.copied svg,
+.btn-copy-discord.copied svg {
+    stroke: var(--green) !important;
+}
+
+.server-connect.copied .ip-display {
+    color: var(--green) !important;
+}
+
 /* =========================================================================
    RESPONSIVE BREAKPOINTS (Desktop, Tablet, Mobile)
    ========================================================================= */
@@ -2150,9 +2276,19 @@ footer.site {
         gap: 36px;
     }
 
+    .hero-spotlight-card {
+        height: auto;
+    }
+
+    .spotlight-media-frame {
+        aspect-ratio: 16 / 9;
+        flex: none;
+    }
+
     .hero-content {
         align-items: center;
         text-align: center;
+        height: auto;
     }
 
     .hero-steam .sub {
@@ -2244,6 +2380,11 @@ footer.site {
 
     .hero-steam h1 {
         font-size: 2.2rem;
+    }
+
+    .spotlight-footer {
+        grid-template-columns: 1fr;
+        gap: 10px;
     }
 
     .server-grid {

@@ -11,6 +11,7 @@ const SERVERS = [
     {
         id: 'project-zomboid',
         name: 'Project Zomboid',
+        link: '/zomboid',
         subtitle: 'Build 42 • Modded Survival PvE',
         description: "Subzero zombie apocalypse with curated QoL mods, tuned loot respawn rates, and co-op multiplayer. Don't forget your can opener.",
         managedBy: 'BataTheBear',
@@ -23,19 +24,20 @@ const SERVERS = [
         specs: [
             { label: 'CPU', value: 'I7-6700k 4 Cores' },
             { label: 'RAM', value: 'DDR4 16GB' },
-            { label: 'GPU', value: 'GeForce GTX 1080 8GB' }
+            { label: 'GPU', value: '512GB SSD' }
         ]
     },
     {
         id: 'valheim',
         name: 'Valheim',
+        link: '/valheim',
         subtitle: 'Co-op Survival',
         description: 'A brutal exploration and survival game set in a procedurally generated purgatory.',
         managedBy: 'The Refrigerator',
         icon: 'default',
         host: 'play.isyourrefrigerator.online',
         port: 16271,
-        ip: 'play.isyourrefrigerator.online:16271',
+        ip: 'play.isyourrefrigerator.online:16287',
         status: 'unknown',
         statusCheck: { type: 'endpoint', url: 'static/status.json', key: 'valheim' },
         specs: [
@@ -47,6 +49,7 @@ const SERVERS = [
     {
         id: 'minecraft-26-2',
         name: 'Minecraft 26.2',
+        link: '/minecraft',
         subtitle: 'Fabric • Modded Survival',
         description: 'Fabric-modded survival world running the latest content. Cozy building, exploration, and a light automation modpack.',
         managedBy: 'The Refrigerator',
@@ -65,13 +68,14 @@ const SERVERS = [
     {
         id: 'the-forest',
         name: 'The Forest',
+        link: '/theforest',
         subtitle: 'Co-op Survival',
         description: 'Build, explore, and survive on a mysterious peninsula filled with dangerous mutants.',
         managedBy: 'The Refrigerator',
         icon: 'forest',
         host: 'play.isyourrefrigerator.online',
         port: 27015,
-        ip: 'play.isyourrefrigerator.online:16278',
+        ip: 'play.isyourrefrigerator.online:16291',
         status: 'unknown',
         statusCheck: { type: 'endpoint', url: 'static/status.json', key: 'forest' },
         specs: [
@@ -140,8 +144,11 @@ function renderServerCard(server, context) {
             <span class="ip-display">${escapeHtml(displayIp)}</span>
         </div>`;
 
+    const serverLink = server.link ? escapeHtml(server.link) : '';
+    const hasLink = Boolean(serverLink);
+
     return `
-        <div class="server-card" data-server-id="${escapeHtml(server.id)}">
+        <article class="server-card ${hasLink ? 'is-clickable' : ''}" data-server-id="${escapeHtml(server.id)}" ${hasLink ? `data-server-link="${serverLink}" tabindex="0" role="link"` : ''} aria-label="${escapeHtml(server.name)} server">
             <div class="server-top">
                 <div class="server-icon">${icon}</div>
                 <div class="server-status-pill">
@@ -155,7 +162,9 @@ function renderServerCard(server, context) {
                 </div>
             </div>
 
-            <h3>${escapeHtml(server.name)}</h3>
+            <h3 class="server-title">
+                ${hasLink ? `<a href="${serverLink}" class="server-title-link">${escapeHtml(server.name)} <span class="server-link-icon" aria-hidden="true">↗</span></a>` : escapeHtml(server.name)}
+            </h3>
             ${server.subtitle ? `<div class="server-subtitle">${escapeHtml(server.subtitle)}</div>` : ''}
             <p class="server-desc">${escapeHtml(server.description || '')}</p>
             <p class="managed">Managed by ${escapeHtml(server.managedBy || 'The Refrigerator')}</p>
@@ -163,7 +172,7 @@ function renderServerCard(server, context) {
             <div class="server-specs">${specsHtml}</div>
 
             ${connectHtml}
-        </div>`;
+        </article>`;
 }
 
 function renderRequestCard(context) {
@@ -402,7 +411,7 @@ document.addEventListener('DOMContentLoaded', () => {
     renderServerList(document.getElementById('dynamicServerCards'), 'grid', 2);
     // In All Servers Modal, render all servers AND include Request a Server next to them as well
     renderServerList(document.getElementById('allServersList'), 'modal', null, true);
-    
+
     refreshAllLiveStatuses();
     setInterval(refreshAllLiveStatuses, 60000);
 
@@ -550,24 +559,107 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 2600);
     }
 
-    document.addEventListener('click', async (e) => {
-        const btn = e.target.closest('.btn-copy-ip');
-        if (!btn) return;
+    // Robust clipboard copy with fallback for non-secure / HTTP contexts
+    async function copyText(text) {
+        if (!text) return false;
+        if (navigator.clipboard && window.isSecureContext) {
+            try {
+                await navigator.clipboard.writeText(text);
+                return true;
+            } catch (err) {}
+        }
+        try {
+            const textArea = document.createElement('textarea');
+            textArea.value = text;
+            textArea.style.position = 'fixed';
+            textArea.style.left = '-9999px';
+            textArea.style.top = '-9999px';
+            textArea.style.opacity = '0';
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+            const success = document.execCommand('copy');
+            document.body.removeChild(textArea);
+            if (success) return true;
+        } catch (err) {}
+        return false;
+    }
 
-        const val = btn.getAttribute('data-ip');
+    // Unified click handler for copying IP / Discord
+    document.addEventListener('click', async (e) => {
+        const copyBtn = e.target.closest('.btn-copy-ip, .btn-copy-discord, [data-ip]');
+        if (!copyBtn) return;
+
+        // Prevent triggering parent link or card navigation
+        e.stopPropagation();
+
+        const val = copyBtn.getAttribute('data-ip') || copyBtn.textContent.trim();
         if (!val) return;
 
-        try {
-            await navigator.clipboard.writeText(val);
-            const originalHtml = btn.innerHTML;
-            btn.classList.add('copied');
-            showToast(`Copied ${val} to clipboard!`);
+        const isDiscord = val.includes('@') || copyBtn.classList.contains('btn-copy-discord');
+        const success = await copyText(val);
+
+        if (success) {
+            copyBtn.classList.add('copied');
+            const message = isDiscord ? `Copied Discord tag ${val} to clipboard!` : `Copied ${val} to clipboard!`;
+            showToast(message);
+
+            const span = copyBtn.querySelector('span');
+            const originalSpanText = span ? span.textContent : null;
+            if (span && !copyBtn.classList.contains('server-connect')) {
+                span.textContent = 'Copied!';
+            }
 
             setTimeout(() => {
-                btn.classList.remove('copied');
+                copyBtn.classList.remove('copied');
+                if (span && originalSpanText) {
+                    span.textContent = originalSpanText;
+                }
             }, 2200);
-        } catch (err) {
-            prompt("Copy to clipboard:", val);
+        } else {
+            prompt('Copy to clipboard:', val);
+        }
+    });
+
+    // Keyboard support for copy buttons
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+            const connectBtn = document.activeElement;
+            if (connectBtn && connectBtn.classList.contains('btn-copy-ip')) {
+                e.preventDefault();
+                connectBtn.click();
+            }
+        }
+    });
+
+    // Server card click handler: clicking on a server section links to its page (e.g. /zomboid or /minecraft)
+    document.addEventListener('click', (e) => {
+        // If user clicked inside copy IP or Discord button, do not navigate
+        if (e.target.closest('.server-connect, .btn-copy-ip, .btn-copy-discord, [data-ip]')) {
+            return;
+        }
+        // If user clicked an anchor tag directly, let normal navigation happen
+        if (e.target.closest('a')) {
+            return;
+        }
+        const card = e.target.closest('.server-card.is-clickable');
+        if (!card) return;
+        const link = card.getAttribute('data-server-link');
+        if (link) {
+            window.location.href = link;
+        }
+    });
+
+    // Accessible keyboard navigation for server cards
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+            const card = document.activeElement;
+            if (card && card.classList.contains('server-card') && card.classList.contains('is-clickable')) {
+                const link = card.getAttribute('data-server-link');
+                if (link) {
+                    window.location.href = link;
+                }
+            }
         }
     });
 
