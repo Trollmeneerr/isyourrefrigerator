@@ -673,17 +673,23 @@ header.site {
 .hero-steam h1 {
     font-size: clamp(2.4rem, 4.5vw, 3.8rem);
     letter-spacing: -0.035em;
-    line-height: 1.1;
+    line-height: 1.15;
+    color: #ffffff;
     background: linear-gradient(180deg, #ffffff 40%, rgba(255, 255, 255, 0.75) 100%);
     -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
     margin-bottom: 16px;
 }
 
-.hero-steam h1 span.gradient-text {
+.hero-steam h1 span.gradient-text,
+.gradient-text {
+    display: inline-block;
     background: linear-gradient(135deg, #ffffff 0%, var(--cyan) 50%, var(--t) 100%);
     -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
+    color: var(--cyan);
 }
 
 .hero-steam .sub {
