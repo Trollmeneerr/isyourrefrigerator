@@ -5,19 +5,19 @@
 
 ---
 
-## 🧊 Overview
+## Overview
 
 **IsYourRefrigerator.online** is a personal homelab project hosting dedicated game server instances (Project Zomboid, Valheim, Minecraft, The Forest, etc.) and utilities with zero trackers, zero telemetry, and 100% chilled vibes.
 
-- **Stack**: Vanilla HTML5, CSS3, JavaScript (no heavy frontend frameworks required)
+- **Stack**: Vanilla HTML5, CSS3, JavaScript
 - **Control Panel**: Powered by [Pelican Server Manager](https://pelican.dev)
-- **Deployment**: Debian Linux with Nginx reverse proxy & Docker containerized game servers
+- **Deployment**: Debian Linux with Nginx reverse proxy & separate server for Docker containerized game servers
 
 ---
 
-## 🚀 Features
+## Features
 
-- **Live Server Grid**: Status monitoring, specs display, 1-click IP copying, and direct links to dedicated sub-pages (e.g. `/zomboid`, `/minecraft`).
+- **Live Server Grid**: Status monitoring, specs display, 1-click IP copying, and direct links to dedicated sub-pages.
 - **Pelican Showcase & Examples**: Interactive preview modal showcasing the official Pelican web interface.
 - **Homelab Rental & Tiers**: Transparent hardware specifications with quick Discord contact actions.
 - **Privacy First & GDPR Compliant**: No cookies, no analytics, no third-party CDNs, locally hosted fonts & assets.
@@ -25,7 +25,7 @@
 
 ---
 
-## 📂 Project Structure
+## Project Structure
 
 ```text
 isyourrefrigerator/
@@ -34,32 +34,27 @@ isyourrefrigerator/
 ├── static/
 │   ├── images/               # Logos, banners, avatars
 │   ├── style/
-│   │   └── stylesheet.css    # Core responsive stylesheet
+│   │   ├── stylesheet.css    # Core responsive stylesheet
+│   │   ├── header.css        # Modular site header & navigation stylesheet
+│   │   ├── footer.css        # Modular site footer & legal links stylesheet
+│   │   ├── gate.css          # Access gate & password screen styling
+│   │   └── zomboid.css       # Project Zomboid checklist styling
+│   ├── layout.js             # Modular site layout (header, footer & legal modal) system
 │   ├── script.js             # Client interactivity, dynamic servers & clipboard
 │   └── status.json           # Local server status ping data
-└── zomboid/
-    ├── index.html            # Dedicated Project Zomboid page & checklist gate
-    └── static/               # Zomboid-specific scripts, styles & item data
+├── zomboid/
+│   ├── index.html            # Dedicated Project Zomboid page & checklist gate
+│   └── static/               # Zomboid-specific scripts & item list data (items.js, script.js)
+├── valheim/
+│   └── index.html            # Valheim server portal (under construction)
+├── minecraft/
+│   └── index.html            # Minecraft server portal (under construction)
+└── theforest/
+    └── index.html            # The Forest server portal (under construction)
 ```
 
 ---
 
-## 🛠️ Local Development
-
-Serve the root directory with any static web server:
-
-```bash
-# Python
-python -m http.server 8080
-
-# Node.js
-npx serve -p 8080 .
-```
-
-Open `http://localhost:8080` in your browser.
-
----
-
-## 📜 License
+## License
 
 Licensed under the [MIT License](LICENSE).
