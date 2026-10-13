@@ -1647,6 +1647,53 @@ section.section-block {
 
 .btn-copy-discord {
     flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 8px 14px;
+    border-radius: var(--radius-sm);
+    font-size: 0.8rem;
+    font-weight: 600;
+    font-family: 'Inter', sans-serif;
+    cursor: pointer;
+    white-space: nowrap;
+    background: linear-gradient(135deg, var(--t) 0%, #0b76ce 100%);
+    color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 4px 14px rgba(13, 140, 241, 0.35);
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.btn-copy-discord:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(13, 140, 241, 0.55);
+    background: linear-gradient(135deg, #1fa1ff 0%, var(--t) 100%);
+}
+
+.btn-copy-ip:not(.server-connect) {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 8px 14px;
+    border-radius: var(--radius-sm);
+    font-size: 0.8rem;
+    font-weight: 600;
+    font-family: 'Inter', sans-serif;
+    cursor: pointer;
+    white-space: nowrap;
+    background: linear-gradient(135deg, var(--t) 0%, #0b76ce 100%);
+    color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 4px 14px rgba(13, 140, 241, 0.35);
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.btn-copy-ip:not(.server-connect):hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(13, 140, 241, 0.55);
+    background: linear-gradient(135deg, #1fa1ff 0%, var(--t) 100%);
 }
 
 /* ---------- SECTION 4: The Chill Crew (Steam Friend Roster) ---------- */
