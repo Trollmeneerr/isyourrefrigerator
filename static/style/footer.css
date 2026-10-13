@@ -44,6 +44,12 @@ footer.site {
     width: auto;
 }
 
+.footer-brand .brand-link img.logo-mobile {
+    display: none;
+    height: 32px;
+    width: auto;
+}
+
 .footer-brand .tagline {
     font-size: 0.88rem;
     color: var(--text-faint);
@@ -69,7 +75,15 @@ footer.site {
     cursor: pointer;
     padding: 0;
     font-family: inherit;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
     transition: color 0.2s ease;
+}
+
+.footer-nav-link svg {
+    flex-shrink: 0;
+    color: var(--cyan);
 }
 
 .footer-nav a:hover,
@@ -183,6 +197,14 @@ footer.site {
 
 /* Responsive Footer */
 @media (max-width: 680px) {
+    .footer-brand .brand-link img.logo-wordmark {
+        display: none;
+    }
+
+    .footer-brand .brand-link img.logo-mobile {
+        display: block;
+    }
+
     .footer-inner {
         flex-direction: column;
         align-items: flex-start;

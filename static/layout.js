@@ -104,7 +104,7 @@
             // Subpage header
             return `
                 <div class="wrap site-inner">
-                    <a href="${backHref}" class="brand-link" aria-label="IsYourRefrigerator.online home">
+                    <a href="/" class="brand-link" aria-label="IsYourRefrigerator.online home">
                         <img src="/static/images/isyourrefrigerator.online_logo_small.png" alt="" class="logo-icon">
                         <img src="/static/images/IsYourRefrigerator.online (1).png" alt="" class="logo-wordmark">
                         <img src="/static/images/IsYourRefrigerator.online.png" alt="IsYourRefrigerator.online" class="logo-mobile">
@@ -119,8 +119,14 @@
                             <span>${backText}</span>
                         </a>
                         ${showPanel ? `
-                        <a href="https://panel.isyourrefrigerator.online" class="btn btn-fill btn-server-panel" target="_blank" rel="noopener noreferrer">
-                            <span>Server Panel ↗</span>
+                        <a href="https://panel.isyourrefrigerator.online" class="btn btn-fill btn-server-panel" id="serverPanelLink" target="_blank" rel="noopener noreferrer">
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="2" y="3" width="20" height="6" rx="1"></rect>
+                                <rect x="2" y="15" width="20" height="6" rx="1"></rect>
+                                <line x1="6" y1="6" x2="6.01" y2="6"></line>
+                                <line x1="6" y1="18" x2="6.01" y2="18"></line>
+                            </svg>
+                            <span>Server Panel</span>
                         </a>` : ''}
                     </div>
                 </div>`;
@@ -150,6 +156,7 @@
                                 <a href="/" class="brand-link" aria-label="IsYourRefrigerator.online home">
                                     <img src="/static/images/isyourrefrigerator.online_logo_small.png" alt="" class="logo-icon">
                                     <img src="/static/images/IsYourRefrigerator.online (1).png" alt="" class="logo-wordmark">
+                                    <img src="/static/images/IsYourRefrigerator.online.png" alt="IsYourRefrigerator.online" class="logo-mobile">
                                 </a>
                                 <p class="tagline">Your Freezers. Your Rules.</p>
                             </div>
@@ -160,7 +167,12 @@
                                 <a href="#hosting">Hosting &amp; Rental</a>
                                 <a href="#crew">Crew</a>
                                 <a href="#contact" class="btn-say-hi">Contact</a>
-                                <a href="#privacy" class="footer-nav-link btn-privacy">Privacy &amp; Legal</a>
+                                <a href="#privacy" class="footer-nav-link btn-privacy">
+                                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                                    </svg>
+                                    <span>Privacy &amp; Legal</span>
+                                </a>
                             </div>
                         </div>
 
@@ -194,10 +206,16 @@
                             <a href="/" class="brand-link" aria-label="IsYourRefrigerator.online home">
                                 <img src="/static/images/isyourrefrigerator.online_logo_small.png" alt="" class="logo-icon">
                                 <img src="/static/images/IsYourRefrigerator.online (1).png" alt="" class="logo-wordmark">
+                                <img src="/static/images/IsYourRefrigerator.online.png" alt="IsYourRefrigerator.online" class="logo-mobile">
                             </a>
                         </div>
                         <div class="footer-sub-links">
-                            <a href="#privacy" class="footer-nav-link btn-privacy">Privacy &amp; Legal</a>
+                            <a href="#privacy" class="footer-nav-link btn-privacy">
+                                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                                </svg>
+                                <span>Privacy &amp; Legal</span>
+                            </a>
                         </div>
                     </div>
 
