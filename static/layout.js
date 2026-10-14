@@ -63,7 +63,7 @@
                             </button>
 
                             ${showPanel ? `
-                            <a href="https://panel.isyourrefrigerator.online" class="btn btn-fill btn-server-panel" id="serverPanelLink" target="_blank" rel="noopener noreferrer">
+                            <a href="https://panel.isyourrefrigerator.online" class="btn btn-fill btn-server-panel header-panel-btn" id="serverPanelLink" target="_blank" rel="noopener noreferrer">
                                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                     <rect x="2" y="3" width="20" height="6" rx="1"></rect>
                                     <rect x="2" y="15" width="20" height="6" rx="1"></rect>
@@ -113,15 +113,16 @@
                     </a>
 
                     <div class="header-actions">
-                        <a href="${backHref}" class="btn btn-outline">
+                        <a href="${backHref}" class="btn btn-outline btn-header-back">
                             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <line x1="19" y1="12" x2="5" y2="12"></line>
                                 <polyline points="12 19 5 12 12 5"></polyline>
                             </svg>
-                            <span>${backText}</span>
+                            <span class="back-text-short">Back</span>
+                            ${backText === 'Back to Main Site' ? '<span class="back-text-full">&nbsp;to Main Site</span>' : (backText !== 'Back' ? `<span class="back-text-full">&nbsp;${backText.replace(/^Back\s*/i, '')}</span>` : '')}
                         </a>
                         ${showPanel ? `
-                        <a href="https://panel.isyourrefrigerator.online" class="btn btn-fill btn-server-panel" id="serverPanelLink" target="_blank" rel="noopener noreferrer">
+                        <a href="https://panel.isyourrefrigerator.online" class="btn btn-fill btn-server-panel header-panel-btn" id="serverPanelLink" target="_blank" rel="noopener noreferrer" title="Server Panel">
                             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <rect x="2" y="3" width="20" height="6" rx="1"></rect>
                                 <rect x="2" y="15" width="20" height="6" rx="1"></rect>

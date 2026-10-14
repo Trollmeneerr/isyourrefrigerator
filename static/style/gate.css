@@ -126,7 +126,7 @@
     border-radius: var(--radius-md);
     color: #ffffff;
     font-family: inherit;
-    font-size: 0.95rem;
+    font-size: 16px; /* 16px minimum prevents iOS Safari from auto-zooming the viewport */
     letter-spacing: 0.05em;
     transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
 }
@@ -199,3 +199,19 @@
 .btn-gate-back:hover {
     color: var(--cyan);
 }
+
+@media (max-width: 480px) {
+    .zb-gate {
+        padding: 16px;
+    }
+
+    .zb-gate-card {
+        padding: 28px 18px;
+        border-radius: var(--radius-lg);
+    }
+
+    .zb-gate-card h2 {
+        font-size: 1.3rem;
+    }
+}
+

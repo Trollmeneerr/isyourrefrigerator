@@ -247,7 +247,7 @@
     }
 
     .zb-list {
-        padding: 18px;
+        padding: 16px;
     }
 
     .zb-list-tools {
@@ -260,10 +260,22 @@
         width: 100%;
         min-width: 0;
     }
+
+    .zb-skills {
+        columns: 1;
+    }
 }
 
 @media (max-width: 480px) {
+    .zb-list {
+        padding: 14px 12px;
+    }
+
     .zb-grid {
+        columns: 1;
+    }
+
+    .zb-skills {
         columns: 1;
     }
 
