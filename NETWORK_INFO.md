@@ -28,10 +28,10 @@ When connecting directly via IP without DNS, use `158.101.195.224:<PORT>`:
 
 | Game Server | Protocol | Port | Direct Connection String | Query / Status Port |
 | :--- | :--- | :--- | :--- | :--- |
-| **Minecraft 26.2** (Fabric Survival) | TCP | `25565` | `158.101.195.224:25565` | `25565` |
+| **Minecraft 26.3** (Papper Survival) | TCP | `25565` | `158.101.195.224:25565` | `25565` |
 | **Project Zomboid** (Build 42 PvE) | UDP | `16261` | `158.101.195.224:16261` | `16262` |
-| **Valheim** (Co-op Purgatory) | UDP | `16287` | `158.101.195.224:16287` | `16271` |
-| **The Forest** (Co-op Survival) | UDP | `16291` | `158.101.195.224:16291` | `27015` |
+| **Valheim** (Co-op Purgatory) | UDP | `16287` | `158.101.195.224:16287` | `16288` |
+| **The Forest** (Co-op Survival) | UDP | `16291` | `158.101.195.224:16291` | `16292` |
 
 ---
 
