@@ -2596,3 +2596,171 @@ footer.site {
         padding: 24px 16px !important;
     }
 }
+
+/* =========================================================================
+   SERVER CONNECTION HUB & DIRECT IP PILL STYLING (SEO & DIRECT ACCESS)
+   ========================================================================= */
+.server-connection-hub {
+    margin-bottom: 24px;
+    padding: 16px 20px;
+    background: linear-gradient(135deg, rgba(8, 28, 54, 0.7) 0%, rgba(3, 11, 24, 0.85) 100%);
+    border: 1px solid rgba(56, 189, 248, 0.35);
+    border-radius: var(--radius-md);
+    box-shadow: 0 8px 32px rgba(2, 6, 23, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    position: relative;
+    overflow: hidden;
+}
+
+.server-connection-hub::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+}
+
+.hub-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.hub-pulse {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #22c55e;
+    box-shadow: 0 0 10px #22c55e;
+    animation: pulseGlow 2s infinite ease-in-out;
+}
+
+.hub-badge {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: var(--cyan);
+    text-transform: uppercase;
+}
+
+.hub-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 12px;
+    margin-bottom: 10px;
+}
+
+.hub-item {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.hub-label {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--text-dim);
+}
+
+.hub-copy-box {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 14px;
+    background: rgba(3, 11, 24, 0.85);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.hub-copy-box:hover {
+    border-color: var(--cyan);
+    background: rgba(13, 140, 241, 0.12);
+}
+
+.hub-copy-box code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+    color: #ffffff;
+    font-weight: 600;
+}
+
+.hub-action-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--cyan);
+    background: rgba(56, 189, 248, 0.15);
+    padding: 2px 7px;
+    border-radius: 4px;
+    border: 1px solid rgba(56, 189, 248, 0.3);
+    transition: all 0.15s ease;
+}
+
+.hub-copy-box:hover .hub-action-tag {
+    background: var(--cyan);
+    color: #030b18;
+}
+
+.hub-notice {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 0.78rem;
+    color: var(--text-dim);
+    line-height: 1.4;
+    padding-top: 8px;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.hub-notice svg {
+    color: var(--cyan);
+    flex-shrink: 0;
+}
+
+/* Card connect group & direct IP pill */
+.server-connect-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-top: auto;
+}
+
+.direct-ip-pill {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 5px 10px;
+    background: rgba(2, 6, 23, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: var(--radius-sm);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--text-dim);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.direct-ip-pill:hover {
+    border-color: rgba(56, 189, 248, 0.4);
+    color: var(--cyan);
+    background: rgba(56, 189, 248, 0.08);
+}
+
+.direct-ip-label {
+    opacity: 0.75;
+}
+
+.direct-ip-val {
+    color: #e2e8f0;
+    font-weight: 500;
+}
+
+.direct-ip-pill:hover .direct-ip-val {
+    color: var(--cyan);
+}

@@ -13,6 +13,7 @@ const CONFIG = {
         description: "Subzero zombie apocalypse with curated QoL mods, tuned loot respawn rates, and co-op multiplayer. Don't forget your can opener.",
         managedBy: 'BataTheBear',
         address: 'play.isyourrefrigerator.online:16261',
+        directIp: '158.101.195.224:16261',
         specs: [['CPU', 'I7-6700k 4 Cores'], ['RAM', 'DDR4 16GB'], ['GPU', 'GeForce GTX 1080 8GB']]
     },
     statusUrl: '/static/status.json',
@@ -46,18 +47,28 @@ function renderServer() {
             <p class="server-desc">${esc(s.description)}</p>
             <p class="managed">Managed by ${esc(s.managedBy)}</p>
             <div class="server-specs">${s.specs.map(([k, v]) => `<div class="spec-item"><span class="spec-label">${esc(k)}:</span><span class="spec-val">${esc(v)}</span></div>`).join('')}</div>
-            <div class="server-connect" id="copyAddr" role="button" tabindex="0" title="Click to copy server address"><span class="ip-display">${esc(s.address)}</span></div>
+            <div class="server-connect-group">
+                <div class="server-connect" id="copyAddr" role="button" tabindex="0" title="Click to copy server hostname"><span class="ip-display">${esc(s.address)}</span></div>
+                <div class="direct-ip-pill" id="copyDirectAddr" role="button" tabindex="0" title="Click to copy direct IP"><span class="direct-ip-label">Direct IP:</span><span class="direct-ip-val">${esc(s.directIp)}</span></div>
+            </div>
         </div>`;
 
-    const box = byId('copyAddr');
-    const copy = async () => {
-        const label = box.querySelector('.ip-display');
-        try { await navigator.clipboard.writeText(s.address); label.textContent = 'Copied!'; }
-        catch { label.textContent = 'Press Ctrl+C to copy'; getSelection().selectAllChildren(label); }
-        setTimeout(() => (label.textContent = s.address), 1800);
+    const setupCopy = (elId, text) => {
+        const box = byId(elId);
+        if (!box) return;
+        const copy = async () => {
+            try { await navigator.clipboard.writeText(text); } catch { /* ignore */ }
+            const span = box.querySelector('.ip-display, .direct-ip-val');
+            const orig = span ? span.textContent : text;
+            if (span) span.textContent = 'Copied!';
+            setTimeout(() => { if (span) span.textContent = orig; }, 1800);
+        };
+        box.addEventListener('click', copy);
+        box.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); copy(); } });
     };
-    box.addEventListener('click', copy);
-    box.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); copy(); } });
+
+    setupCopy('copyAddr', s.address);
+    setupCopy('copyDirectAddr', s.directIp);
 
     refreshStatus();
     setInterval(refreshStatus, 60000);
@@ -210,8 +221,17 @@ function setChecked(list, id, on) {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
         body: JSON.stringify({ list, id, checked: on })
-    }).then(r => { if (!r.ok) throw new Error(r.status); })
-      .catch(() => setSync('Could not save', 'offline'));
+    }).then(async r => {
+        if (!r.ok) {
+            const data = await r.json().catch(() => ({}));
+            throw new Error(data.error || `HTTP ${r.status}`);
+        }
+    }).catch(err => {
+        console.error('Failed to save checklist item:', err);
+        setSync('Could not save', 'offline');
+        if (on) delete state[list][id]; else state[list][id] = true;
+        renderChecks();
+    });
 }
 
 /* ---------- Sync + password ---------- */

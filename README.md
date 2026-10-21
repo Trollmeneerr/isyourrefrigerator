@@ -25,12 +25,29 @@
 
 ---
 
+## Server Connection & Network Configuration
+
+- **Primary Hostname:** `play.isyourrefrigerator.online`
+- **Direct Server IPv4:** `158.101.195.224`
+- **Control Panel:** `https://panel.isyourrefrigerator.online`
+- **Offline Network Documentation:** See [`NETWORK_INFO.md`](NETWORK_INFO.md) for local hosts configuration, port tables, and direct offline connection steps.
+
+> [!NOTE]
+> **Authoritative Server Address**: The active server IP is `158.101.195.224` (or `play.isyourrefrigerator.online`). Any older or prior IP addresses have been retired and are permanently offline.
+
+---
+
 ## Project Structure
 
 ```text
 isyourrefrigerator/
 ├── index.nginx-debian.html   # Main website portal
-├── README.md                 # Project documentation
+├── README.md                 # Project documentation & network guide
+├── NETWORK_INFO.md           # Offline server IP & port allocation reference
+├── llms.txt                  # LLM & AI Search discovery standard (GEO)
+├── llms-full.txt             # Comprehensive AI knowledge base
+├── robots.txt                # Search engine & AI bot crawler rules
+├── sitemap.xml               # Canonical XML sitemap
 ├── static/
 │   ├── images/               # Logos, banners, avatars
 │   ├── style/
@@ -46,11 +63,11 @@ isyourrefrigerator/
 │   ├── index.html            # Dedicated Project Zomboid page & checklist gate
 │   └── static/               # Zomboid-specific scripts & item list data (items.js, script.js)
 ├── valheim/
-│   └── index.html            # Valheim server portal (under construction)
+│   └── index.html            # Valheim server portal
 ├── minecraft/
-│   └── index.html            # Minecraft server portal (under construction)
+│   └── index.html            # Minecraft server portal
 └── theforest/
-    └── index.html            # The Forest server portal (under construction)
+    └── index.html            # The Forest server portal
 ```
 
 ---

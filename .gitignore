@@ -1,2 +1,8 @@
 # Ignore status.json
 static/status.json
+
+# Bot and AI crawler discovery files
+llms.txt
+llms-full.txt
+robots.txt
+sitemap.xml

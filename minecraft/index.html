@@ -4,9 +4,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Minecraft 26.2 | IsYourRefrigerator.Online</title>
-    <meta name="description" content="Dedicated Minecraft Fabric Modded Survival Server - IsYourRefrigerator.online">
+    <title>Minecraft 26.2 Dedicated Server | IsYourRefrigerator.online</title>
+    <meta name="description" content="Dedicated Fabric-modded survival Minecraft server on IsYourRefrigerator.online. Direct connect via play.isyourrefrigerator.online:25565 or direct IP 158.101.195.224:25565.">
+    <meta name="keywords" content="Minecraft dedicated server, Minecraft Fabric, IsYourRefrigerator Minecraft, play.isyourrefrigerator.online, 158.101.195.224">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://isyourrefrigerator.online/minecraft/">
     <link rel="icon" type="image/png" href="/static/images/isyourrefrigerator.online_logo_small.png">
+    <link rel="alternate" type="text/plain" href="/llms.txt" title="LLM Knowledge Base">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://isyourrefrigerator.online/minecraft/">
+    <meta property="og:site_name" content="IsYourRefrigerator.online">
+    <meta property="og:title" content="Minecraft 26.2 Dedicated Server | IsYourRefrigerator.online">
+    <meta property="og:description" content="Dedicated Fabric modded survival world. Connect using play.isyourrefrigerator.online:25565 or direct IP 158.101.195.224:25565.">
+    <meta property="og:image" content="https://isyourrefrigerator.online/static/images/IsYourRefrigerator.online.png">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Minecraft 26.2 Dedicated Server | IsYourRefrigerator.online">
+    <meta name="twitter:description" content="Join our cozy Fabric survival Minecraft world. Address: play.isyourrefrigerator.online:25565 or 158.101.195.224:25565.">
+    <meta name="twitter:image" content="https://isyourrefrigerator.online/static/images/IsYourRefrigerator.online.png">
 
     <!-- Typography -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -20,6 +38,23 @@
     <link rel="stylesheet" href="/static/style/footer.css">
     <script src="/static/layout.js" defer></script>
     <script src="/static/script.js" defer></script>
+
+    <!-- Schema.org JSON-LD -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "GameServer",
+        "name": "IsYourRefrigerator Minecraft 26.2 Server",
+        "game": {
+            "@type": "VideoGame",
+            "name": "Minecraft"
+        },
+        "url": "https://isyourrefrigerator.online/minecraft/",
+        "serverStatus": "Online",
+        "address": "play.isyourrefrigerator.online:25565",
+        "description": "Fabric-modded survival world hosted on local homelab hardware. Direct connect address: play.isyourrefrigerator.online:25565 or direct IP 158.101.195.224:25565. All prior legacy IP addresses are obsolete."
+    }
+    </script>
 </head>
 
 <body>
@@ -73,10 +108,20 @@
                     <!-- Quick Connect Box -->
                     <div style="width: 100%; max-width: 480px; margin-bottom: 28px;">
                         <span class="stat-label" style="display: block; margin-bottom: 6px;">Server Address (Click to Copy):</span>
-                        <div class="server-connect btn-copy-ip" data-ip="play.isyourrefrigerator.online:25565"
-                            title="Click to copy server address" role="button" tabindex="0">
-                            <span class="ip-display">play.isyourrefrigerator.online:25565</span>
+                        <div class="server-connect-group">
+                            <div class="server-connect btn-copy-ip" data-ip="play.isyourrefrigerator.online:25565"
+                                title="Click to copy server hostname" role="button" tabindex="0">
+                                <span class="ip-display">play.isyourrefrigerator.online:25565</span>
+                            </div>
+                            <div class="direct-ip-pill btn-copy-ip" data-ip="158.101.195.224:25565"
+                                title="Click to copy direct IP" role="button" tabindex="0">
+                                <span class="direct-ip-label">Direct IP:</span>
+                                <span class="direct-ip-val">158.101.195.224:25565</span>
+                            </div>
                         </div>
+                        <p style="font-size: 0.78rem; color: var(--text-faint); margin-top: 8px;">
+                            Connect via <strong>play.isyourrefrigerator.online</strong> or direct IP <strong>158.101.195.224</strong>. All previous IP addresses are permanently retired.
+                        </p>
                     </div>
 
                     <!-- Under Construction Status Pill -->

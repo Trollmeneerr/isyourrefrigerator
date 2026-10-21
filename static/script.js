@@ -19,6 +19,7 @@ const SERVERS = [
         host: 'play.isyourrefrigerator.online',
         port: 16261,
         ip: 'play.isyourrefrigerator.online:16261',
+        directIp: '158.101.195.224:16261',
         status: 'unknown',
         statusCheck: { type: 'endpoint', url: 'static/status.json', key: 'zomboid' },
         specs: [
@@ -38,6 +39,7 @@ const SERVERS = [
         host: 'play.isyourrefrigerator.online',
         port: 16271,
         ip: 'play.isyourrefrigerator.online:16287',
+        directIp: '158.101.195.224:16287',
         status: 'unknown',
         statusCheck: { type: 'endpoint', url: 'static/status.json', key: 'valheim' },
         specs: [
@@ -57,6 +59,7 @@ const SERVERS = [
         host: 'play.isyourrefrigerator.online',
         port: 25565,
         ip: 'play.isyourrefrigerator.online:25565',
+        directIp: '158.101.195.224:25565',
         status: 'unknown',
         statusCheck: { type: 'endpoint', url: 'static/status.json', key: 'minecraft' },
         specs: [
@@ -76,6 +79,7 @@ const SERVERS = [
         host: 'play.isyourrefrigerator.online',
         port: 27015,
         ip: 'play.isyourrefrigerator.online:16291',
+        directIp: '158.101.195.224:16291',
         status: 'unknown',
         statusCheck: { type: 'endpoint', url: 'static/status.json', key: 'forest' },
         specs: [
@@ -137,11 +141,18 @@ function renderServerCard(server, context) {
         </div>`).join('');
 
     const displayIp = server.ip || 'play.isyourrefrigerator.online:25565';
+    const directIp = server.directIp || (server.port ? `158.101.195.224:${server.port}` : '158.101.195.224');
 
-    // Clean IP display without join button (click to copy)
+    // Clean IP display with primary host and direct IP sub-pill (1-click copy)
     const connectHtml = `
-        <div class="server-connect btn-copy-ip" data-ip="${escapeHtml(displayIp)}" title="Click to copy server address" role="button" tabindex="0">
-            <span class="ip-display">${escapeHtml(displayIp)}</span>
+        <div class="server-connect-group">
+            <div class="server-connect btn-copy-ip" data-ip="${escapeHtml(displayIp)}" title="Click to copy host address (${escapeHtml(displayIp)})" role="button" tabindex="0">
+                <span class="ip-display">${escapeHtml(displayIp)}</span>
+            </div>
+            <div class="direct-ip-pill btn-copy-ip" data-ip="${escapeHtml(directIp)}" title="Click to copy direct IP (${escapeHtml(directIp)})" role="button" tabindex="0">
+                <span class="direct-ip-label">Direct IP:</span>
+                <span class="direct-ip-val">${escapeHtml(directIp)}</span>
+            </div>
         </div>`;
 
     const serverLink = server.link ? escapeHtml(server.link) : '';
