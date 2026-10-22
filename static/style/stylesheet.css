@@ -677,6 +677,30 @@ header.site {
     animation: pulse 2s infinite;
 }
 
+.pulse-dot.degraded {
+    background: var(--amber);
+    box-shadow: 0 0 10px var(--amber);
+}
+
+.pulse-dot.offline {
+    background: var(--red);
+    box-shadow: 0 0 10px var(--red);
+}
+
+.badge.badge-degraded {
+    border-color: rgba(245, 158, 11, 0.45);
+    background: rgba(245, 158, 11, 0.12);
+    color: var(--amber);
+    box-shadow: 0 0 20px rgba(245, 158, 11, 0.2);
+}
+
+.badge.badge-offline {
+    border-color: rgba(239, 68, 68, 0.45);
+    background: rgba(239, 68, 68, 0.12);
+    color: var(--red);
+    box-shadow: 0 0 20px rgba(239, 68, 68, 0.2);
+}
+
 @keyframes pulse {
     0%, 100% { opacity: 1; transform: scale(1); }
     50% { opacity: 0.4; transform: scale(0.85); }
@@ -1334,15 +1358,36 @@ section.section-block {
     border: 1px solid rgba(56, 189, 248, 0.3);
     border-radius: var(--radius-xl);
     padding: 32px;
-    margin-bottom: 34px;
+    margin-bottom: 28px;
     box-shadow: var(--shadow-steam);
     position: relative;
     overflow: hidden;
+    display: grid;
+    grid-template-columns: 1.25fr 0.75fr;
+    gap: 32px;
+    align-items: stretch;
+}
+
+.pelican-showcase-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.pelican-showcase-tier {
+    display: flex;
+    flex-direction: column;
+}
+
+.pelican-showcase-tier .rental-card-shelf {
+    height: 100%;
+    margin-bottom: 0;
+    background: rgba(3, 11, 24, 0.65);
+    border: 1px solid rgba(56, 189, 248, 0.28);
 }
 
 .pelican-box-header {
     margin-bottom: 22px;
-    max-width: 800px;
 }
 
 .pelican-badge-tag {
@@ -1387,28 +1432,7 @@ section.section-block {
     align-items: center;
     gap: 14px;
     flex-wrap: wrap;
-}
-
-/* Server Rental & Pricing Shelf */
-.server-rental-showcase {
-    margin-top: 10px;
-}
-
-.rental-intro-banner {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 20px;
-    padding: 22px 26px;
-    background: var(--p-surface);
-    border: 1px solid var(--glass-border);
-    border-radius: var(--radius-lg);
-    margin-bottom: 24px;
-    flex-wrap: wrap;
-}
-
-.rental-intro-left {
-    max-width: 620px;
+    margin-top: 24px;
 }
 
 .rental-label {
@@ -1418,29 +1442,6 @@ section.section-block {
     text-transform: uppercase;
     letter-spacing: 0.1em;
     font-weight: 600;
-}
-
-.rental-intro-left h4 {
-    font-size: 1.45rem;
-    color: #ffffff;
-    margin: 4px 0 8px;
-}
-
-.rental-intro-left p {
-    font-size: 1rem;
-    color: var(--text-dim);
-}
-
-.rental-intro-left strong {
-    color: #ffffff;
-}
-
-/* Steam Hardware Tier Cards Grid */
-.rental-plans-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 18px;
-    margin-bottom: 24px;
 }
 
 .rental-card-shelf {
@@ -1459,45 +1460,6 @@ section.section-block {
     transform: translateY(-4px);
     border-color: var(--glass-hover-border);
     box-shadow: var(--shadow-card), 0 0 20px rgba(13, 140, 241, 0.25);
-}
-
-.rental-card-shelf.featured {
-    border-color: var(--cyan);
-    background: rgba(14, 34, 68, 0.85);
-    box-shadow: var(--shadow-card), 0 0 24px rgba(56, 189, 248, 0.25);
-}
-
-.shelf-popular-badge {
-    position: absolute;
-    top: -10px;
-    right: 18px;
-    background: linear-gradient(135deg, var(--cyan) 0%, var(--t) 100%);
-    color: #030b18;
-    font-size: 0.68rem;
-    font-weight: 700;
-    font-family: 'JetBrains Mono', monospace;
-    padding: 3px 8px;
-    border-radius: 999px;
-    letter-spacing: 0.06em;
-}
-
-.shelf-top {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 12px;
-}
-
-.shelf-pill {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.72rem;
-    color: var(--text-faint);
-    text-transform: uppercase;
-}
-
-.shelf-pill.highlight {
-    color: var(--cyan);
-    font-weight: 600;
 }
 
 .plan-ram {
@@ -1889,38 +1851,6 @@ section.section-block {
     margin-bottom: 24px;
 }
 
-/* Modal Rental Redirect Banner */
-.modal-rental-banner-link {
-    display: block;
-    background: rgba(13, 140, 241, 0.12);
-    border: 1px solid rgba(56, 189, 248, 0.35);
-    border-radius: var(--radius-md);
-    padding: 16px 18px;
-    transition: all 0.2s ease;
-}
-
-.modal-rental-banner-link:hover {
-    background: rgba(13, 140, 241, 0.22);
-    border-color: var(--cyan);
-    transform: translateY(-2px);
-}
-
-.modal-rental-banner-text {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-}
-
-.modal-rental-banner-text strong {
-    color: #ffffff;
-    font-size: 1rem;
-}
-
-.modal-rental-banner-text span {
-    color: var(--text-dim);
-    font-size: 0.86rem;
-}
-
 /* Pelican Gallery Popup Module Styles */
 .pelican-gallery-module {
     background: rgba(2, 9, 20, 0.85);
@@ -2292,28 +2222,6 @@ footer.site {
     gap: 16px;
 }
 
-.btn-legal-link {
-    background: none;
-    border: none;
-    color: var(--text-dim);
-    font-size: 0.82rem;
-    font-family: inherit;
-    cursor: pointer;
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    padding: 4px 8px;
-    border-radius: var(--radius-xs);
-    background: rgba(255, 255, 255, 0.04);
-    border: 1px solid var(--hair);
-    transition: all 0.2s ease;
-}
-
-.btn-legal-link:hover {
-    color: #ffffff;
-    background: rgba(56, 189, 248, 0.12);
-    border-color: rgba(56, 189, 248, 0.35);
-}
 
 .footer-bottom {
     display: flex;
@@ -2443,10 +2351,6 @@ footer.site {
         grid-template-columns: repeat(2, 1fr);
     }
 
-    .rental-plans-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-
     .referral-contact-combo {
         grid-template-columns: 1fr;
     }
@@ -2465,10 +2369,6 @@ footer.site {
         display: flex;
     }
 
-    .header-contact-btn {
-        display: none;
-    }
-
     .overview-grid {
         grid-template-columns: 1fr;
         gap: 18px;
@@ -2480,6 +2380,8 @@ footer.site {
     }
 
     .pelican-showcase-box {
+        grid-template-columns: 1fr;
+        gap: 24px;
         padding: 24px 18px;
     }
 
@@ -2521,10 +2423,6 @@ footer.site {
         grid-template-columns: 1fr;
     }
 
-    .rental-plans-grid {
-        grid-template-columns: 1fr;
-    }
-
     .section-header-row {
         flex-direction: column;
         align-items: flex-start;
@@ -2541,11 +2439,6 @@ footer.site {
 
     .pelican-box-actions .btn {
         width: 100%;
-    }
-
-    .rental-intro-banner {
-        flex-direction: column;
-        align-items: flex-start;
     }
 
     .footer-inner {
@@ -2598,129 +2491,8 @@ footer.site {
 }
 
 /* =========================================================================
-   SERVER CONNECTION HUB & DIRECT IP PILL STYLING (SEO & DIRECT ACCESS)
+   SERVER CONNECT GROUP & DIRECT IP PILL STYLING
    ========================================================================= */
-.server-connection-hub {
-    margin-bottom: 24px;
-    padding: 16px 20px;
-    background: linear-gradient(135deg, rgba(8, 28, 54, 0.7) 0%, rgba(3, 11, 24, 0.85) 100%);
-    border: 1px solid rgba(56, 189, 248, 0.35);
-    border-radius: var(--radius-md);
-    box-shadow: 0 8px 32px rgba(2, 6, 23, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.08);
-    position: relative;
-    overflow: hidden;
-}
-
-.server-connection-hub::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 2px;
-    background: linear-gradient(90deg, transparent, var(--cyan), transparent);
-}
-
-.hub-header {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-bottom: 12px;
-}
-
-.hub-pulse {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: #22c55e;
-    box-shadow: 0 0 10px #22c55e;
-    animation: pulseGlow 2s infinite ease-in-out;
-}
-
-.hub-badge {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.72rem;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    color: var(--cyan);
-    text-transform: uppercase;
-}
-
-.hub-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 12px;
-    margin-bottom: 10px;
-}
-
-.hub-item {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-}
-
-.hub-label {
-    font-family: 'Inter', sans-serif;
-    font-size: 0.75rem;
-    font-weight: 500;
-    color: var(--text-dim);
-}
-
-.hub-copy-box {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 8px 14px;
-    background: rgba(3, 11, 24, 0.85);
-    border: 1px solid var(--glass-border);
-    border-radius: var(--radius-sm);
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-
-.hub-copy-box:hover {
-    border-color: var(--cyan);
-    background: rgba(13, 140, 241, 0.12);
-}
-
-.hub-copy-box code {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.85rem;
-    color: #ffffff;
-    font-weight: 600;
-}
-
-.hub-action-tag {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.7rem;
-    color: var(--cyan);
-    background: rgba(56, 189, 248, 0.15);
-    padding: 2px 7px;
-    border-radius: 4px;
-    border: 1px solid rgba(56, 189, 248, 0.3);
-    transition: all 0.15s ease;
-}
-
-.hub-copy-box:hover .hub-action-tag {
-    background: var(--cyan);
-    color: #030b18;
-}
-
-.hub-notice {
-    display: flex;
-    align-items: center;
-    gap: 7px;
-    font-size: 0.78rem;
-    color: var(--text-dim);
-    line-height: 1.4;
-    padding-top: 8px;
-    border-top: 1px solid rgba(255, 255, 255, 0.05);
-}
-
-.hub-notice svg {
-    color: var(--cyan);
-    flex-shrink: 0;
-}
 
 /* Card connect group & direct IP pill */
 .server-connect-group {

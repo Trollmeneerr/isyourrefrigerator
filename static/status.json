@@ -1,8 +1,11 @@
 {
     "online": true,
+    "panel": {
+        "online": true
+    },
     "server_ip": "158.101.195.224",
     "server_host": "play.isyourrefrigerator.online",
-    "checked_at": "2026-10-21T21:45:00Z",
+    "checked_at": "2026-10-22T18:30:00Z",
     "minecraft": {
         "online": true
     },

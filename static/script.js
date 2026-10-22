@@ -103,10 +103,6 @@ const SERVER_ICONS = {
     forest: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <path d="M12 2L4 15h5l-3 6h12l-3-6h5L12 2z"></path>
     </svg>`,
-    racing: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <circle cx="12" cy="12" r="10"></circle>
-        <path d="M12 6v6l4 2"></path>
-    </svg>`,
     default: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <rect x="3" y="3" width="18" height="18" rx="2"></rect>
     </svg>`
@@ -141,17 +137,12 @@ function renderServerCard(server, context) {
         </div>`).join('');
 
     const displayIp = server.ip || 'play.isyourrefrigerator.online:25565';
-    const directIp = server.directIp || (server.port ? `158.101.195.224:${server.port}` : '158.101.195.224');
 
-    // Clean IP display with primary host and direct IP sub-pill (1-click copy)
+    // Clean IP display with primary host (1-click copy)
     const connectHtml = `
         <div class="server-connect-group">
             <div class="server-connect btn-copy-ip" data-ip="${escapeHtml(displayIp)}" title="Click to copy host address (${escapeHtml(displayIp)})" role="button" tabindex="0">
                 <span class="ip-display">${escapeHtml(displayIp)}</span>
-            </div>
-            <div class="direct-ip-pill btn-copy-ip" data-ip="${escapeHtml(directIp)}" title="Click to copy direct IP (${escapeHtml(directIp)})" role="button" tabindex="0">
-                <span class="direct-ip-label">Direct IP:</span>
-                <span class="direct-ip-val">${escapeHtml(directIp)}</span>
             </div>
         </div>`;
 
@@ -288,8 +279,129 @@ async function refreshLiveStatus(server) {
     }
 }
 
+function applySystemStatus({ state, statusText, heroText, color }) {
+    // 1. Update footer status indicators (main page and subpages)
+    document.querySelectorAll('.system-status-indicator, #systemStatusFooter, #systemStatusFooterSub').forEach(el => {
+        el.style.color = color;
+        el.textContent = `● ${statusText}`;
+    });
+
+    // 2. Update hero status badge and pulsing dot (main landing page)
+    const heroDot = document.getElementById('systemStatusDot');
+    const heroBadge = document.getElementById('systemStatusBadge');
+    const heroTextEl = document.getElementById('systemStatusText');
+
+    if (heroDot) {
+        heroDot.classList.remove('degraded', 'offline');
+        if (state === 'degraded') heroDot.classList.add('degraded');
+        if (state === 'offline') heroDot.classList.add('offline');
+    }
+
+    if (heroBadge) {
+        heroBadge.classList.remove('badge-degraded', 'badge-offline');
+        if (state === 'degraded') heroBadge.classList.add('badge-degraded');
+        if (state === 'offline') heroBadge.classList.add('badge-offline');
+    }
+
+    if (heroTextEl) {
+        heroTextEl.textContent = heroText;
+    }
+}
+
+async function refreshOverallSystemStatus() {
+    let panelOnline = true;
+    let anyServerOffline = false;
+    let allServersOffline = false;
+    let statusData = null;
+
+    try {
+        const res = await fetch('/static/status.json', { cache: 'no-store' });
+        if (res.ok) statusData = await res.json();
+    } catch (_) {
+        try {
+            const res = await fetch('static/status.json', { cache: 'no-store' });
+            if (res.ok) statusData = await res.json();
+        } catch (__) {}
+    }
+
+    if (statusData) {
+        if (statusData.panel && statusData.panel.online === false) {
+            panelOnline = false;
+        }
+        if (statusData.online === false) {
+            panelOnline = false;
+            allServersOffline = true;
+        }
+
+        const serverKeys = ['minecraft', 'valheim', 'zomboid', 'forest'];
+        let count = 0;
+        let onlineCount = 0;
+        serverKeys.forEach(key => {
+            if (statusData[key]) {
+                count++;
+                if (statusData[key].online) onlineCount++;
+            }
+        });
+        if (count > 0) {
+            if (onlineCount === 0) allServersOffline = true;
+            else if (onlineCount < count) anyServerOffline = true;
+        }
+    }
+
+    // Active live check for Pelican Panel:
+    // If statusData hasn't explicitly set panel.online = false, probe the live panel endpoint
+    if (panelOnline) {
+        try {
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 3500);
+            await fetch('https://panel.isyourrefrigerator.online', {
+                method: 'GET',
+                mode: 'no-cors',
+                cache: 'no-store',
+                signal: controller.signal
+            });
+            clearTimeout(timeoutId);
+        } catch (probeErr) {
+            // Live probe failed (timeout, network down, DNS failure, connection refused)
+            panelOnline = false;
+        }
+    }
+
+    // Evaluate overall health state
+    if (allServersOffline && !panelOnline) {
+        applySystemStatus({
+            state: 'offline',
+            statusText: 'Systems Offline',
+            heroText: 'System Status: Systems Offline',
+            color: '#ef4444'
+        });
+    } else if (!panelOnline) {
+        applySystemStatus({
+            state: 'degraded',
+            statusText: 'Degraded Service (Panel Offline)',
+            heroText: 'System Status: Degraded Service (Panel Offline)',
+            color: '#f59e0b'
+        });
+    } else if (anyServerOffline) {
+        applySystemStatus({
+            state: 'degraded',
+            statusText: 'Degraded Service',
+            heroText: 'System Status: Degraded Service',
+            color: '#f59e0b'
+        });
+    } else {
+        applySystemStatus({
+            state: 'operational',
+            statusText: 'All Systems Operational',
+            heroText: 'System Status: 100% Chilled & Running',
+            color: '#22c55e'
+        });
+    }
+}
+
 function refreshAllLiveStatuses() {
     SERVERS.filter(s => s.statusCheck).forEach(refreshLiveStatus);
+    refreshOverallSystemStatus();
 }
 
 function closeMobileNav() {
@@ -532,7 +644,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const targetId = this.getAttribute('href');
             closeMobileNav();
 
-            if (targetId === '#' || !targetId || targetId === '#contact' || targetId === '#privacy') return;
+            if (targetId === '#' || !targetId || targetId === '#privacy') return;
 
             // If inside a modal, close all modals before scrolling
             if (this.closest('.modal-backdrop')) {
@@ -583,7 +695,7 @@ document.addEventListener('DOMContentLoaded', () => {
             try {
                 await navigator.clipboard.writeText(text);
                 return true;
-            } catch (err) {}
+            } catch (err) { }
         }
         try {
             const textArea = document.createElement('textarea');
@@ -598,7 +710,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const success = document.execCommand('copy');
             document.body.removeChild(textArea);
             if (success) return true;
-        } catch (err) {}
+        } catch (err) { }
         return false;
     }
 
@@ -699,21 +811,6 @@ document.addEventListener('DOMContentLoaded', () => {
     function closeAllModals() {
         document.querySelectorAll('.modal-backdrop').forEach(modal => {
             closeModal(modal);
-        });
-    }
-
-    // Modal Triggers: Contact Modal
-    document.querySelectorAll('.btn-say-hi').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-            e.preventDefault();
-            openModalById('contactModal');
-        });
-    });
-
-    const closeContactBtn = document.getElementById('closeContactModal');
-    if (closeContactBtn) {
-        closeContactBtn.addEventListener('click', () => {
-            closeModal(document.getElementById('contactModal'));
         });
     }
 

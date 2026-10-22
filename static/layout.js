@@ -38,17 +38,11 @@
                         <nav class="site-nav" aria-label="Main Navigation">
                             <a href="#overview" class="nav-link">Overview</a>
                             <a href="#servers" class="nav-link">Game Servers</a>
-                            <a href="#hosting" class="nav-link">Hosting &amp; Rental</a>
-                            <a href="#crew" class="nav-link">The Crew</a>
+                            <a href="#crew" class="nav-link">Community</a>
+                            <a href="#hosting" class="nav-link">Homelab &amp; Infrastructure</a>
                         </nav>
 
                         <div class="header-actions">
-                            <button type="button" class="btn btn-outline btn-say-hi header-contact-btn" aria-label="Contact Trollmeneerr">
-                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-                                </svg>
-                                <span>Say Hi</span>
-                            </button>
 
                             <button type="button" class="btn-mobile-menu" id="mobileMenuToggle" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="mobileNav">
                                 <svg class="icon-menu" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -79,8 +73,9 @@
                     <nav class="mobile-nav" id="mobileNav" aria-hidden="true" aria-label="Mobile Navigation">
                         <a href="#overview" class="mobile-nav-link nav-link">Overview</a>
                         <a href="#servers" class="mobile-nav-link nav-link">Game Servers</a>
-                        <a href="#hosting" class="mobile-nav-link nav-link">Hosting &amp; Rental</a>
-                        <a href="#crew" class="mobile-nav-link nav-link">The Crew</a>
+                        <a href="#crew" class="mobile-nav-link nav-link">Community</a>
+                        <a href="#hosting" class="mobile-nav-link nav-link">Homelab &amp; Infrastructure</a>
+                        <a href="#contact" class="mobile-nav-link nav-link">Contact</a>
                         ${showPanel ? `
                         <a href="https://panel.isyourrefrigerator.online" class="btn btn-fill mobile-nav-btn btn-server-panel" id="serverPanelLinkMobile" target="_blank" rel="noopener noreferrer">
                             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -167,9 +162,9 @@
                             <div class="footer-nav">
                                 <a href="#overview">Overview</a>
                                 <a href="#servers">Game Servers</a>
-                                <a href="#hosting">Hosting &amp; Rental</a>
-                                <a href="#crew">Crew</a>
-                                <a href="#contact" class="btn-say-hi">Contact</a>
+                                <a href="#crew">Community</a>
+                                <a href="#hosting">Homelab &amp; Infrastructure</a>
+                                <a href="#contact">Contact</a>
                                 <a href="#privacy" class="footer-nav-link btn-privacy">
                                     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                         <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
@@ -196,7 +191,7 @@
 
                         <div class="footer-bottom">
                             <div>&copy; <span class="current-year">${year}</span> IsYourRefrigerator.online — Hosted with love &amp; electricity.</div>
-                            <div>Status: <span style="color: #22c55e;">● ${statusText}</span></div>
+                            <div>Status: <span id="systemStatusFooter" class="system-status-indicator" style="color: #22c55e;">● ${statusText}</span></div>
                         </div>
                     </div>`;
             }
@@ -239,7 +234,7 @@
 
                     <div class="footer-bottom">
                         <div>&copy; <span class="current-year">${year}</span> IsYourRefrigerator.online — Hosted with love &amp; electricity.</div>
-                        <div>Status: <span style="color: #22c55e;">● ${statusText}</span></div>
+                        <div>Status: <span id="systemStatusFooterSub" class="system-status-indicator" style="color: #22c55e;">● ${statusText}</span></div>
                     </div>
                 </div>`;
         },

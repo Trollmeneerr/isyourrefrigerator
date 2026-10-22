@@ -178,10 +178,6 @@ header.site {
         display: flex;
     }
 
-    .header-contact-btn {
-        display: none;
-    }
-
     /* On mobile viewports, the Server Panel button is available in the mobile drawer */
     .header-actions .header-panel-btn {
         display: none;

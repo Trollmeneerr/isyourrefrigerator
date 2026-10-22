@@ -19,9 +19,20 @@
 
 - **Live Server Grid**: Status monitoring, specs display, 1-click IP copying, and direct links to dedicated sub-pages.
 - **Pelican Showcase & Examples**: Interactive preview modal showcasing the official Pelican web interface.
-- **Homelab Rental & Tiers**: Transparent hardware specifications with quick Discord contact actions.
+- **Homelab Infrastructure & Starter Tier**: Integrated Pelican Server Manager spotlight side-by-side with the Free Starter Tier card, plus direct Discord contact.
+- **Live System Status Monitoring**: Dynamic real-time probing of game ports and Pelican control panel health, reporting "All Systems Operational", "Degraded Service" (e.g. when the panel is offline), or "Systems Offline".
 - **Privacy First & GDPR Compliant**: No cookies, no analytics, no third-party CDNs, locally hosted fonts & assets.
 - **Hardware Disclaimer**: Run on actual homelab iron with standard thermal cooling — no real food or refrigerators harmed!
+
+---
+
+## Navigation & Section Flow
+
+1. **01 // Overview** (`#overview`) — Story, feature tags, terminal daemon, quick actions.
+2. **02 // Game Servers** (`#servers`) — Live server status cards and specs.
+3. **03 // Community** (`#crew`) — The chill community and friends shelf.
+4. **04 // Homelab & Infrastructure** (`#hosting`) — Pelican Manager + Starter Tier side-by-side.
+5. **Contact** (`#contact`) — Referral note and 1-click Discord handle copy card.
 
 ---
 
@@ -41,7 +52,7 @@
 
 ```text
 isyourrefrigerator/
-├── index.nginx-debian.html   # Main website portal
+├── index.html                # Main website portal
 ├── README.md                 # Project documentation & network guide
 ├── NETWORK_INFO.md           # Offline server IP & port allocation reference
 ├── llms.txt                  # LLM & AI Search discovery standard (GEO)

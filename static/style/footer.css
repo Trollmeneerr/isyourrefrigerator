@@ -114,8 +114,7 @@ footer.site {
 }
 
 .footer-sub-links a,
-.footer-sub-links button,
-.btn-legal-link {
+.footer-sub-links button {
     font-size: 0.88rem;
     font-weight: 500;
     color: var(--text-dim);
@@ -132,8 +131,7 @@ footer.site {
 }
 
 .footer-sub-links a:hover,
-.footer-sub-links button:hover,
-.btn-legal-link:hover {
+.footer-sub-links button:hover {
     color: #ffffff;
 }
 
