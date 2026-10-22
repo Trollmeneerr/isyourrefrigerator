@@ -859,6 +859,17 @@ header.site {
     border-radius: 50%;
     background: var(--green);
     box-shadow: 0 0 8px var(--green);
+    transition: background-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.spotlight-live-dot.offline {
+    background: var(--red);
+    box-shadow: 0 0 8px var(--red);
+}
+
+.spotlight-live-dot.degraded {
+    background: var(--amber);
+    box-shadow: 0 0 8px var(--amber);
 }
 
 .spotlight-node-tag {
@@ -920,13 +931,12 @@ header.site {
 }
 
 .spotlight-footer {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1.35fr;
-    gap: 12px;
-    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 18px;
     background: rgba(6, 18, 36, 0.85);
     border-top: 1px solid var(--hair);
-    align-items: center;
     flex-shrink: 0;
 }
 
@@ -935,6 +945,15 @@ header.site {
     flex-direction: column;
     gap: 2px;
     min-width: 0;
+}
+
+.spotlight-stat-url {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    gap: 12px;
 }
 
 .stat-label {
@@ -2433,8 +2452,13 @@ footer.site {
     }
 
     .spotlight-footer {
-        grid-template-columns: 1fr;
-        gap: 10px;
+        padding: 12px 14px;
+    }
+
+    .spotlight-stat-url {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
     }
 
     .server-grid {

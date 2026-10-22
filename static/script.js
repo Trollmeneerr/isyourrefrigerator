@@ -309,7 +309,7 @@ async function refreshLiveStatus(server) {
     }
 }
 
-function applySystemStatus({ state, statusText, heroText, color }) {
+function applySystemStatus({ state, statusText, heroText, color, panelOnline }) {
     // 1. Update footer status indicators (main page and subpages)
     document.querySelectorAll('.system-status-indicator, #systemStatusFooter, #systemStatusFooterSub').forEach(el => {
         el.style.color = color;
@@ -336,6 +336,15 @@ function applySystemStatus({ state, statusText, heroText, color }) {
     if (heroTextEl) {
         heroTextEl.textContent = heroText;
     }
+
+    // 3. Update spotlight live dot reflecting Pelican panel status
+    const spotlightDot = document.querySelector('.spotlight-live-dot');
+    if (spotlightDot) {
+        spotlightDot.classList.remove('offline', 'degraded');
+        if (panelOnline === false) {
+            spotlightDot.classList.add('offline');
+        }
+    }
 }
 
 async function refreshOverallSystemStatus() {
@@ -345,40 +354,52 @@ async function refreshOverallSystemStatus() {
     let statusData = null;
 
     try {
-        const res = await fetch('/static/status.json', { cache: 'no-store' });
-        if (res.ok) statusData = await res.json();
+        let res = await fetch('/static/status.json', { cache: 'no-store' });
+        if (!res.ok) {
+            res = await fetch('static/status.json', { cache: 'no-store' });
+        }
+        if (res.ok) {
+            statusData = await res.json();
+        }
     } catch (_) {
         try {
-            const res = await fetch('static/status.json', { cache: 'no-store' });
-            if (res.ok) statusData = await res.json();
+            const fallbackRes = await fetch('static/status.json', { cache: 'no-store' });
+            if (fallbackRes.ok) statusData = await fallbackRes.json();
         } catch (__) {}
     }
 
     if (statusData) {
-        // Pelican Panel is managed via status.json like the other services
-        if (statusData.panel) {
-            panelOnline = statusData.panel.online === true;
+        // Pelican Panel status is read directly from its dedicated field in status.json
+        if (statusData.panel !== undefined) {
+            if (typeof statusData.panel === 'boolean') {
+                panelOnline = statusData.panel;
+            } else if (statusData.panel && typeof statusData.panel.online === 'boolean') {
+                panelOnline = statusData.panel.online;
+            } else if (statusData.panel && typeof statusData.panel.status === 'string') {
+                panelOnline = statusData.panel.status.toLowerCase() === 'online';
+            }
         } else if (statusData.online === false) {
             panelOnline = false;
         }
 
-        if (statusData.online === false) {
-            allServersOffline = true;
-            panelOnline = false;
-        }
-
+        // Dedicated game server instances status
         const serverKeys = ['minecraft', 'valheim', 'zomboid', 'forest', 'chess'];
         let count = 0;
         let onlineCount = 0;
         serverKeys.forEach(key => {
             if (statusData[key]) {
                 count++;
-                if (statusData[key].online) onlineCount++;
+                if (statusData[key].online === true || statusData[key].online === 'true') {
+                    onlineCount++;
+                }
             }
         });
+
         if (count > 0) {
             if (onlineCount === 0) allServersOffline = true;
             else if (onlineCount < count) anyServerOffline = true;
+        } else if (statusData.online === false) {
+            allServersOffline = true;
         }
     }
 
@@ -388,28 +409,40 @@ async function refreshOverallSystemStatus() {
             state: 'offline',
             statusText: 'Systems Offline',
             heroText: 'System Status: Systems Offline',
-            color: '#ef4444'
+            color: '#ef4444',
+            panelOnline
         });
     } else if (!panelOnline) {
         applySystemStatus({
             state: 'degraded',
             statusText: 'Degraded Service (Panel Offline)',
             heroText: 'System Status: Degraded Service (Panel Offline)',
-            color: '#f59e0b'
+            color: '#f59e0b',
+            panelOnline
+        });
+    } else if (allServersOffline) {
+        applySystemStatus({
+            state: 'degraded',
+            statusText: 'Game Servers Offline',
+            heroText: 'System Status: Game Servers Offline',
+            color: '#f59e0b',
+            panelOnline
         });
     } else if (anyServerOffline) {
         applySystemStatus({
             state: 'degraded',
             statusText: 'Degraded Service',
             heroText: 'System Status: Degraded Service',
-            color: '#f59e0b'
+            color: '#f59e0b',
+            panelOnline
         });
     } else {
         applySystemStatus({
             state: 'operational',
             statusText: 'All Systems Operational',
             heroText: 'System Status: 100% Chilled & Running',
-            color: '#22c55e'
+            color: '#22c55e',
+            panelOnline
         });
     }
 }
