@@ -551,8 +551,8 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Render Servers:
-    // Render all servers dynamically on main grid; 5 servers + Request a Server = exactly 6 cards (2 rows of 3)
-    renderServerList(document.getElementById('dynamicServerCards'), 'grid');
+    // On the main Freezer section grid: always show 2 servers + Request a Server card (making 3 cards in the grid)
+    renderServerList(document.getElementById('dynamicServerCards'), 'grid', 2);
     // In All Servers Modal, render all servers AND include Request a Server next to them as well
     renderServerList(document.getElementById('allServersList'), 'modal', null, true);
 
