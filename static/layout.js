@@ -162,6 +162,7 @@
                             <div class="footer-nav">
                                 <a href="#overview">Overview</a>
                                 <a href="#servers">Game Servers</a>
+                                <a href="https://chess.isyourrefrigerator.online" target="_blank" rel="noopener noreferrer">Chess ↗</a>
                                 <a href="#crew">Community</a>
                                 <a href="#hosting">Homelab &amp; Infrastructure</a>
                                 <a href="#contact">Contact</a>
@@ -208,6 +209,7 @@
                             </a>
                         </div>
                         <div class="footer-sub-links">
+                            <a href="https://chess.isyourrefrigerator.online" target="_blank" rel="noopener noreferrer">Chess ↗</a>
                             <a href="#privacy" class="footer-nav-link btn-privacy">
                                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                     <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>

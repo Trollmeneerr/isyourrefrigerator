@@ -17,5 +17,8 @@
     },
     "forest": {
         "online": true
+    },
+    "chess": {
+        "online": true
     }
 }

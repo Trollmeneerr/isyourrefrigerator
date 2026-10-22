@@ -7,7 +7,7 @@
 
 ## Overview
 
-**IsYourRefrigerator.online** is a personal homelab project hosting dedicated game server instances (Project Zomboid, Valheim, Minecraft, The Forest, etc.) and utilities with zero trackers, zero telemetry, and 100% chilled vibes.
+**IsYourRefrigerator.online** is a personal homelab project hosting dedicated game server instances and web services (Project Zomboid, Valheim, Minecraft, The Forest, Chess, etc.) and utilities with zero trackers, zero telemetry, and 100% chilled vibes.
 
 - **Stack**: Vanilla HTML5, CSS3, JavaScript
 - **Control Panel**: Powered by [Pelican Server Manager](https://pelican.dev)
@@ -77,8 +77,10 @@ isyourrefrigerator/
 │   └── index.html            # Valheim server portal
 ├── minecraft/
 │   └── index.html            # Minecraft server portal
-└── theforest/
-    └── index.html            # The Forest server portal
+├── theforest/
+│   └── index.html            # The Forest server portal
+└── chess/
+    └── index.html            # Chess web service redirect & portal
 ```
 
 ---

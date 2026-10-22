@@ -1336,6 +1336,24 @@ section.section-block {
     font-weight: 500;
 }
 
+a.server-connect.server-web-link {
+    text-decoration: none;
+    color: var(--cyan);
+}
+
+a.server-connect.server-web-link:hover {
+    border-color: var(--cyan);
+    background: rgba(13, 140, 241, 0.2);
+    box-shadow: 0 0 16px rgba(56, 189, 248, 0.25);
+}
+
+a.server-connect.server-web-link .ip-display {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-weight: 600;
+}
+
 /* Request Card */
 .request-card {
     border-style: dashed;

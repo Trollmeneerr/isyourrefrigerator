@@ -87,10 +87,34 @@ const SERVERS = [
             { label: 'RAM', value: 'DDR4 6GB' },
             { label: 'DISK', value: '50GB SSD' }
         ]
+    },
+    {
+        id: 'chess',
+        name: 'Chess',
+        link: 'https://chess.isyourrefrigerator.online',
+        subtitle: 'Web • Real-time Multiplayer',
+        description: 'Casual and competitive chess matches hosted directly on the web. No port or client installation required — play straight from your browser.',
+        managedBy: 'The Refrigerator',
+        icon: 'chess',
+        isWeb: true,
+        host: 'chess.isyourrefrigerator.online',
+        ip: 'chess.isyourrefrigerator.online',
+        status: 'online',
+        statusCheck: { type: 'endpoint', url: 'static/status.json', key: 'chess' },
+        specs: [
+            { label: 'Platform', value: 'Web Browser' },
+            { label: 'Protocol', value: 'HTTPS' },
+            { label: 'Type', value: 'PvP Multiplayer' }
+        ]
     }
 ];
 
 const SERVER_ICONS = {
+    chess: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M8 20h8"></path>
+        <path d="M7 16h10"></path>
+        <path d="M12 4a3 3 0 0 0-3 3c0 .8.3 1.5.8 2L8 16h8l-1.8-7c.5-.5.8-1.2.8-2a3 3 0 0 0-3-3z"></path>
+    </svg>`,
     minecraft: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <rect x="3" y="3" width="7" height="7"></rect>
         <rect x="14" y="3" width="7" height="7"></rect>
@@ -138,9 +162,14 @@ function renderServerCard(server, context) {
 
     const displayIp = server.ip || 'play.isyourrefrigerator.online:25565';
 
-    // Clean IP display with primary host (1-click copy)
-    const connectHtml = `
-        <div class="server-connect-group">
+    // Clean IP display with primary host (1-click copy) or direct web button for web-based services
+    const connectHtml = server.isWeb
+        ? `<div class="server-connect-group">
+            <a href="${escapeHtml(server.link || 'https://chess.isyourrefrigerator.online')}" target="_blank" rel="noopener noreferrer" class="server-connect server-web-link" title="Open ${escapeHtml(server.name)} website in a new tab">
+                <span class="ip-display">Open Website ↗</span>
+            </a>
+        </div>`
+        : `<div class="server-connect-group">
             <div class="server-connect btn-copy-ip" data-ip="${escapeHtml(displayIp)}" title="Click to copy host address (${escapeHtml(displayIp)})" role="button" tabindex="0">
                 <span class="ip-display">${escapeHtml(displayIp)}</span>
             </div>
@@ -148,6 +177,7 @@ function renderServerCard(server, context) {
 
     const serverLink = server.link ? escapeHtml(server.link) : '';
     const hasLink = Boolean(serverLink);
+    const linkTarget = server.isWeb ? ' target="_blank" rel="noopener noreferrer"' : '';
 
     return `
         <article class="server-card ${hasLink ? 'is-clickable' : ''}" data-server-id="${escapeHtml(server.id)}" ${hasLink ? `data-server-link="${serverLink}" tabindex="0" role="link"` : ''} aria-label="${escapeHtml(server.name)} server">
@@ -165,7 +195,7 @@ function renderServerCard(server, context) {
             </div>
 
             <h3 class="server-title">
-                ${hasLink ? `<a href="${serverLink}" class="server-title-link">${escapeHtml(server.name)} <span class="server-link-icon" aria-hidden="true">↗</span></a>` : escapeHtml(server.name)}
+                ${hasLink ? `<a href="${serverLink}"${linkTarget} class="server-title-link">${escapeHtml(server.name)} <span class="server-link-icon" aria-hidden="true">↗</span></a>` : escapeHtml(server.name)}
             </h3>
             ${server.subtitle ? `<div class="server-subtitle">${escapeHtml(server.subtitle)}</div>` : ''}
             <p class="server-desc">${escapeHtml(server.description || '')}</p>
@@ -325,15 +355,19 @@ async function refreshOverallSystemStatus() {
     }
 
     if (statusData) {
-        if (statusData.panel && statusData.panel.online === false) {
+        // Pelican Panel is managed via status.json like the other services
+        if (statusData.panel) {
+            panelOnline = statusData.panel.online === true;
+        } else if (statusData.online === false) {
             panelOnline = false;
-        }
-        if (statusData.online === false) {
-            panelOnline = false;
-            allServersOffline = true;
         }
 
-        const serverKeys = ['minecraft', 'valheim', 'zomboid', 'forest'];
+        if (statusData.online === false) {
+            allServersOffline = true;
+            panelOnline = false;
+        }
+
+        const serverKeys = ['minecraft', 'valheim', 'zomboid', 'forest', 'chess'];
         let count = 0;
         let onlineCount = 0;
         serverKeys.forEach(key => {
@@ -345,25 +379,6 @@ async function refreshOverallSystemStatus() {
         if (count > 0) {
             if (onlineCount === 0) allServersOffline = true;
             else if (onlineCount < count) anyServerOffline = true;
-        }
-    }
-
-    // Active live check for Pelican Panel:
-    // If statusData hasn't explicitly set panel.online = false, probe the live panel endpoint
-    if (panelOnline) {
-        try {
-            const controller = new AbortController();
-            const timeoutId = setTimeout(() => controller.abort(), 3500);
-            await fetch('https://panel.isyourrefrigerator.online', {
-                method: 'GET',
-                mode: 'no-cors',
-                cache: 'no-store',
-                signal: controller.signal
-            });
-            clearTimeout(timeoutId);
-        } catch (probeErr) {
-            // Live probe failed (timeout, network down, DNS failure, connection refused)
-            panelOnline = false;
         }
     }
 
@@ -536,8 +551,8 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Render Servers:
-    // On the main page, render 2 servers so Request a Server is #3 in the 3-column row
-    renderServerList(document.getElementById('dynamicServerCards'), 'grid', 2);
+    // Render all servers dynamically on main grid; 5 servers + Request a Server = exactly 6 cards (2 rows of 3)
+    renderServerList(document.getElementById('dynamicServerCards'), 'grid');
     // In All Servers Modal, render all servers AND include Request a Server next to them as well
     renderServerList(document.getElementById('allServersList'), 'modal', null, true);
 
@@ -775,7 +790,11 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!card) return;
         const link = card.getAttribute('data-server-link');
         if (link) {
-            window.location.href = link;
+            if (link.startsWith('http://') || link.startsWith('https://')) {
+                window.open(link, '_blank', 'noopener,noreferrer');
+            } else {
+                window.location.href = link;
+            }
         }
     });
 
@@ -786,7 +805,11 @@ document.addEventListener('DOMContentLoaded', () => {
             if (card && card.classList.contains('server-card') && card.classList.contains('is-clickable')) {
                 const link = card.getAttribute('data-server-link');
                 if (link) {
-                    window.location.href = link;
+                    if (link.startsWith('http://') || link.startsWith('https://')) {
+                        window.open(link, '_blank', 'noopener,noreferrer');
+                    } else {
+                        window.location.href = link;
+                    }
                 }
             }
         }
