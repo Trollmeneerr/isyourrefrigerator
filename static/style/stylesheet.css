@@ -933,27 +933,68 @@ header.site {
 .spotlight-footer {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    padding: 12px 18px;
+    padding: 12px 16px;
     background: rgba(6, 18, 36, 0.85);
     border-top: 1px solid var(--hair);
     flex-shrink: 0;
 }
 
-.spotlight-stat {
+.spotlight-server-connect {
+    width: 100%;
     display: flex;
-    flex-direction: column;
-    gap: 2px;
-    min-width: 0;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    padding: 10px 16px;
+    background: rgba(3, 11, 24, 0.8);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-sm);
+    color: var(--cyan);
+    text-decoration: none;
+    transition: all 0.25s ease;
 }
 
-.spotlight-stat-url {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
-    gap: 12px;
+.spotlight-server-connect:hover {
+    border-color: var(--cyan);
+    background: rgba(13, 140, 241, 0.16);
+    box-shadow: 0 0 18px rgba(56, 189, 248, 0.28);
+    color: #ffffff;
+}
+
+.spotlight-server-connect svg {
+    color: var(--cyan);
+    transition: color 0.2s ease, transform 0.2s ease;
+    flex-shrink: 0;
+}
+
+.spotlight-server-connect:hover svg {
+    color: #ffffff;
+    transform: scale(1.06);
+}
+
+.spotlight-server-connect .ip-display {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.86rem;
+    font-weight: 500;
+    color: var(--cyan);
+    transition: color 0.2s ease;
+}
+
+.spotlight-server-connect:hover .ip-display {
+    color: #ffffff;
+    text-shadow: 0 0 8px var(--cyan-glow);
+}
+
+.spotlight-connect-arrow {
+    font-size: 0.9em;
+    opacity: 0.7;
+    transition: transform 0.2s ease, opacity 0.2s ease, color 0.2s ease;
+}
+
+.spotlight-server-connect:hover .spotlight-connect-arrow {
+    opacity: 1;
+    transform: translate(2px, -2px);
+    color: #ffffff;
 }
 
 .stat-label {
@@ -2453,12 +2494,6 @@ footer.site {
 
     .spotlight-footer {
         padding: 12px 14px;
-    }
-
-    .spotlight-stat-url {
-        flex-direction: row;
-        align-items: center;
-        justify-content: space-between;
     }
 
     .server-grid {
