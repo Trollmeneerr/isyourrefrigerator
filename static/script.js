@@ -1,14 +1,9 @@
 // =============================================================================
-// IsYourRefrigerator.online - Dynamic SVG Icon Loader & Interactive Scripts
+// IsYourRefrigerator.online - Lightweight Native SVG Sprite Loader
 // =============================================================================
 
-(function () {
-    const iconCache = new Map();
-    let iconsLoaded = false;
-    let fetchPromise = null;
-
-    // Embedded fallback sprite so icons load reliably even when opened via file:// protocol
-    const FALLBACK_SPRITE = `<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+(() => {
+    const FALLBACK_SPRITE = `<svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true">
         <defs>
             <symbol id="icon-server" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <rect x="2" y="2" width="20" height="8" rx="2" ry="2"></rect>
@@ -17,10 +12,6 @@
                 <line x1="6" y1="18" x2="6.01" y2="18"></line>
             </symbol>
             <symbol id="icon-terminal" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                <polyline points="4 17 10 12 4 7"></polyline>
-                <line x1="12" y1="19" x2="20" y2="19"></line>
-            </symbol>
-            <symbol id="icon-terminal-prompt" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                 <polyline points="4 17 10 12 4 7"></polyline>
                 <line x1="12" y1="19" x2="20" y2="19"></line>
             </symbol>
@@ -58,10 +49,6 @@
                 <line x1="7" y1="17" x2="17" y2="7"></line>
                 <polyline points="7 7 17 7 17 17"></polyline>
             </symbol>
-            <symbol id="open-link" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <line x1="7" y1="17" x2="17" y2="7"></line>
-                <polyline points="7 7 17 7 17 17"></polyline>
-            </symbol>
             <symbol id="icon-shield" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
             </symbol>
@@ -78,188 +65,173 @@
                 <line x1="1" y1="14" x2="4" y2="14"></line>
             </symbol>
             <symbol id="icon-ram" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M6 19v-3"></path>
-                <path d="M10 19v-3"></path>
-                <path d="M14 19v-3"></path>
-                <path d="M18 19v-3"></path>
+                <path d="M6 19v-3M10 19v-3M14 19v-3M18 19v-3"></path>
                 <rect x="2" y="5" width="20" height="11" rx="2"></rect>
             </symbol>
             <symbol id="icon-panel" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <rect x="3" y="3" width="18" height="18" rx="2"></rect>
-                <path d="M3 9h18"></path>
-                <path d="M9 21V9"></path>
+                <path d="M3 9h18M9 21V9"></path>
             </symbol>
         </defs>
     </svg>`;
 
-    /**
-     * Populate cache from SVG XML text.
-     */
-    function parseAndCacheSymbols(svgText) {
-        const parser = new DOMParser();
-        const xmlDoc = parser.parseFromString(svgText, 'image/svg+xml');
-        const symbols = xmlDoc.querySelectorAll('symbol, [id]');
+    async function loadSprite() {
+        if (document.getElementById('svg-sprite-container')) return;
 
-        symbols.forEach(symbol => {
-            const id = symbol.id;
-            if (!id) return;
-
-            // Raw ID
-            iconCache.set(id, symbol);
-
-            // Normalized short ID without 'icon-' prefix
-            if (id.startsWith('icon-')) {
-                iconCache.set(id.substring(5), symbol);
-            } else {
-                iconCache.set(`icon-${id}`, symbol);
-            }
-        });
-
-        // Also inject into DOM once if not already present
-        if (!document.getElementById('svg-sprite-container')) {
-            const spriteContainer = document.createElement('div');
-            spriteContainer.id = 'svg-sprite-container';
-            spriteContainer.style.display = 'none';
-            spriteContainer.setAttribute('aria-hidden', 'true');
-            spriteContainer.innerHTML = svgText;
-            document.body.insertBefore(spriteContainer, document.body.firstChild);
-        }
-
-        iconsLoaded = true;
-    }
-
-    /**
-     * Fetch the central SVG sprite file or fall back to embedded sprite.
-     */
-    async function fetchIconSprite() {
-        if (fetchPromise) return fetchPromise;
-
-        const candidatePaths = [
-            'static/icons.svg',
-            '/static/icons.svg',
-            '../static/icons.svg'
-        ];
-
-        fetchPromise = (async () => {
-            let svgText = null;
-
-            // Only attempt fetch if running over HTTP/HTTPS
-            if (window.location.protocol.startsWith('http')) {
-                for (const path of candidatePaths) {
-                    try {
-                        const response = await fetch(path);
-                        if (response.ok) {
-                            svgText = await response.text();
-                            break;
-                        }
-                    } catch (_) {
-                        // Candidate failed, proceed to next
-                    }
-                }
-            }
-
-            // Fallback for file:// protocol or offline environments
-            if (!svgText) {
-                svgText = FALLBACK_SPRITE;
-            }
-
-            parseAndCacheSymbols(svgText);
-            renderIcons();
-        })();
-
-        return fetchPromise;
-    }
-
-    /**
-     * Create an inline <svg> clone element from a cached <symbol>.
-     */
-    function createSvgFromSymbol(symbol) {
-        const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-        svg.setAttribute('viewBox', symbol.getAttribute('viewBox') || '0 0 24 24');
-
-        const inheritedAttributes = [
-            'fill',
-            'stroke',
-            'stroke-width',
-            'stroke-linecap',
-            'stroke-linejoin'
-        ];
-
-        inheritedAttributes.forEach(attr => {
-            if (symbol.hasAttribute(attr)) {
-                svg.setAttribute(attr, symbol.getAttribute(attr));
-            }
-        });
-
-        svg.innerHTML = symbol.innerHTML;
-        return svg;
-    }
-
-    /**
-     * Resolve icon key from an element via data-icon, data-svg, id, or icon-* class.
-     */
-    function resolveIconKey(el) {
-        if (el.dataset.icon) return el.dataset.icon;
-        if (el.dataset.svg) return el.dataset.svg;
-
-        // Check if element's id directly matches an icon
-        if (el.id && iconCache.has(el.id)) {
-            return el.id;
-        }
-
-        // Check classes like 'icon-game', 'server-icon', etc.
-        for (const cls of el.classList) {
-            if (cls.startsWith('icon-') && iconCache.has(cls)) {
-                return cls;
-            }
-            if (iconCache.has(cls)) {
-                return cls;
+        let svgText = FALLBACK_SPRITE;
+        if (window.location.protocol.startsWith('http')) {
+            try {
+                const res = await fetch('static/icons.svg');
+                if (res.ok) svgText = await res.text();
+            } catch (_) {
+                // Uses embedded fallback sprite
             }
         }
 
-        return null;
+        const container = document.createElement('div');
+        container.id = 'svg-sprite-container';
+        container.style.position = 'absolute';
+        container.style.width = '0';
+        container.style.height = '0';
+        container.style.overflow = 'hidden';
+        container.setAttribute('aria-hidden', 'true');
+        container.innerHTML = svgText;
+        document.body.prepend(container);
     }
 
-    /**
-     * Scan DOM and render SVGs into all requesting elements.
-     */
     function renderIcons(root = document) {
-        if (!iconsLoaded) return;
-
-        const targets = root.querySelectorAll('[data-icon], [data-svg], .icon, .terminal-btn, .terminal-title-icon');
-
-        targets.forEach(el => {
-            if (el.querySelector('svg') || (el.tagName.toLowerCase() === 'svg' && el.innerHTML.trim().length > 0)) {
-                return;
-            }
-
-            const iconKey = resolveIconKey(el);
-            if (!iconKey) return;
-
-            const symbol = iconCache.get(iconKey);
-            if (!symbol) return;
-
-            if (el.tagName.toLowerCase() === 'svg') {
-                el.setAttribute('viewBox', symbol.getAttribute('viewBox') || '0 0 24 24');
-                ['fill', 'stroke', 'stroke-width', 'stroke-linecap', 'stroke-linejoin'].forEach(attr => {
-                    if (symbol.hasAttribute(attr)) el.setAttribute(attr, symbol.getAttribute(attr));
-                });
-                el.innerHTML = symbol.innerHTML;
+        root.querySelectorAll('[data-icon]').forEach(el => {
+            if (el.querySelector('svg')) return;
+            const rawName = el.dataset.icon.replace(/^icon-/, '');
+            const symbol = document.getElementById(`icon-${rawName}`) || document.getElementById(rawName);
+            if (symbol) {
+                const viewBox = symbol.getAttribute('viewBox') || '0 0 24 24';
+                const strokeWidth = symbol.getAttribute('stroke-width') || '2';
+                const strokeLinecap = symbol.getAttribute('stroke-linecap') || 'round';
+                const strokeLinejoin = symbol.getAttribute('stroke-linejoin') || 'round';
+                el.innerHTML = `<svg viewBox="${viewBox}" fill="none" stroke="currentColor" stroke-width="${strokeWidth}" stroke-linecap="${strokeLinecap}" stroke-linejoin="${strokeLinejoin}" aria-hidden="true">${symbol.innerHTML}</svg>`;
             } else {
-                el.innerHTML = '';
-                el.appendChild(createSvgFromSymbol(symbol));
+                el.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#icon-${rawName}"></use></svg>`;
             }
         });
     }
 
-    // Expose global APIs
-    window.renderIcons = renderIcons;
-    window.loadIcons = fetchIconSprite;
+    async function init() {
+        await loadSprite();
+        renderIcons();
+    }
 
-    // Initialize on DOM load
+    window.renderIcons = renderIcons;
+
     if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', fetchIconSprite);
+        document.addEventListener('DOMContentLoaded', init);
     } else {
-        fetchIconSprite();
+        init();
     }
 })();
+
+// =============================================================================
+// IsYourRefrigerator.online - Servers Data
+// =============================================================================
+
+const SERVERS = [
+    {
+        id: 'project-zomboid',
+        name: 'Project Zomboid',
+        link: '/zomboid',
+        subtitle: 'Build 42 • Modded Survival PvE',
+        description: "Subzero zombie apocalypse with curated QoL mods, tuned loot respawn rates, and co-op multiplayer. Don't forget your can opener.",
+        managedBy: 'BataTheBear',
+        icon: 'zomboid',
+        host: 'play.isyourrefrigerator.online',
+        port: 16261,
+        ip: 'play.isyourrefrigerator.online:16261',
+        directIp: '158.101.195.224:16261',
+        status: 'unknown',
+        statusCheck: { type: 'endpoint', url: 'static/status.json', key: 'zomboid' },
+        specs: [
+            { label: 'CPU', value: 'I7-6700k 4 Cores' },
+            { label: 'RAM', value: 'DDR4 16GB' },
+            { label: 'GPU', value: '512GB SSD' }
+        ]
+    },
+    {
+        id: 'valheim',
+        name: 'Valheim',
+        link: '/valheim',
+        subtitle: 'Co-op Survival',
+        description: 'A brutal exploration and survival game set in a procedurally generated purgatory.',
+        managedBy: 'The Refrigerator',
+        icon: 'default',
+        host: 'play.isyourrefrigerator.online',
+        port: 16271,
+        ip: 'play.isyourrefrigerator.online:16287',
+        directIp: '158.101.195.224:16287',
+        status: 'unknown',
+        statusCheck: { type: 'endpoint', url: 'static/status.json', key: 'valheim' },
+        specs: [
+            { label: 'CPU', value: 'i5-10300H 3 Threads' },
+            { label: 'RAM', value: 'DDR4 6GB' },
+            { label: 'DISK', value: '50GB SSD' }
+        ]
+    },
+    {
+        id: 'minecraft-26-2',
+        name: 'Minecraft 26.2',
+        link: '/minecraft',
+        subtitle: 'Fabric • Modded Survival',
+        description: 'Fabric-modded survival world running the latest content. Cozy building, exploration, and a light automation modpack.',
+        managedBy: 'The Refrigerator',
+        icon: 'minecraft',
+        host: 'play.isyourrefrigerator.online',
+        port: 25565,
+        ip: 'play.isyourrefrigerator.online:25565',
+        directIp: '158.101.195.224:25565',
+        status: 'unknown',
+        statusCheck: { type: 'endpoint', url: 'static/status.json', key: 'minecraft' },
+        specs: [
+            { label: 'CPU', value: 'i5-10300H 2 Threads' },
+            { label: 'RAM', value: 'DDR4 4GB' },
+            { label: 'DISK', value: '50GB SSD' }
+        ]
+    },
+    {
+        id: 'the-forest',
+        name: 'The Forest',
+        link: '/theforest',
+        subtitle: 'Co-op Survival',
+        description: 'Build, explore, and survive on a mysterious peninsula filled with dangerous mutants.',
+        managedBy: 'The Refrigerator',
+        icon: 'forest',
+        host: 'play.isyourrefrigerator.online',
+        port: 27015,
+        ip: 'play.isyourrefrigerator.online:16291',
+        directIp: '158.101.195.224:16291',
+        status: 'unknown',
+        statusCheck: { type: 'endpoint', url: 'static/status.json', key: 'forest' },
+        specs: [
+            { label: 'CPU', value: 'i5-10300H 3 Threads' },
+            { label: 'RAM', value: 'DDR4 6GB' },
+            { label: 'DISK', value: '50GB SSD' }
+        ]
+    },
+    {
+        id: 'chess',
+        name: 'Chess',
+        link: 'https://chess.isyourrefrigerator.online',
+        subtitle: 'Web • Real-time Multiplayer',
+        description: 'Casual and competitive chess matches hosted directly on the web. No port or client installation required — play straight from your browser.',
+        managedBy: 'The Refrigerator',
+        icon: 'chess',
+        isWeb: true,
+        host: 'chess.isyourrefrigerator.online',
+        ip: 'chess.isyourrefrigerator.online',
+        status: 'online',
+        statusCheck: { type: 'endpoint', url: 'static/status.json', key: 'chess' },
+        specs: [
+            { label: 'Platform', value: 'Web Browser' },
+            { label: 'Protocol', value: 'HTTPS' },
+            { label: 'Type', value: 'PvP Multiplayer' }
+        ]
+    }
+];
