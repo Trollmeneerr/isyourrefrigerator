@@ -1,5 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Cascadia+Code:ital,wght@0,200..700;1,200..700&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap");
 @font-face {
   font-family: spartan;
   src: url(/static/font/league-spartan.bold.otf);
@@ -20,13 +21,19 @@ body {
   background-position: center;
 }
 
-h1 {
+h1, h2 {
   font-family: spartan, sans-serif;
   color: #ffffff;
 }
 
 h3 {
+  color: #ffffff;
+  font-family: inter;
+}
+
+h4 {
   color: #28b9f1;
+  font-family: "JetBrains", monospace;
 }
 
 p, a {
@@ -132,7 +139,7 @@ p, a {
   display: flex;
   justify-content: space-between;
   height: 7vh;
-  padding: 0 15vw;
+  padding: 0 20vw;
 }
 .site-header .header-section {
   display: flex;
@@ -384,7 +391,7 @@ p, a {
   }
 }
 main {
-  margin: 5vw 15vw;
+  margin: 5vw 20vw;
   display: flex;
   flex-direction: column;
   row-gap: 6vw;
@@ -456,23 +463,122 @@ main {
   display: block;
 }
 
-.overview-section h4 {
+.overview-section {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+.overview-section .section-header-text {
+  font-family: "Cascadia Code", monospace;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
   color: #28b9f1;
+  margin-bottom: 8px;
+}
+.overview-section .section-header-title {
+  font-family: spartan, sans-serif;
+  font-size: clamp(28px, 3.2vw, 40px);
+  color: #ffffff;
+  line-height: 1.2;
+  margin-bottom: 12px;
+}
+.overview-section .section-text {
+  font-size: 16px;
+  font-weight: 500;
+  color: #94a3b8;
+  line-height: 1.6;
+  max-width: 680px;
 }
 
 .principles-section {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
   align-items: center;
   text-align: center;
+}
+.principles-section .section-text {
+  max-width: 720px;
+  margin-bottom: 36px;
+}
+.principles-section .principles-boxes {
+  width: 100%;
+  gap: 24px;
+}
+.principles-section .principles-box {
+  padding: 30px 26px;
+}
+.principles-section .principles-box .principles-header-text {
+  font-family: "Cascadia Code", monospace;
+  font-size: 12px;
+  font-weight: 700;
+  color: rgb(56, 189, 248);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+.principles-section .principles-box .principles-header-title {
+  font-family: spartan, sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: #ffffff;
+  line-height: 1.25;
+  margin-bottom: 14px;
+}
+.principles-section .principles-box .principles-text {
+  font-family: Inter, sans-serif;
+  font-size: 14.5px;
+  font-weight: 400;
+  line-height: 1.65;
+  color: rgb(185, 185, 185);
+  flex-grow: 1;
+  margin-bottom: 24px;
+}
+.principles-section .principles-box .principles-footer {
+  margin-top: auto;
+  padding-top: 14px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  font-size: 13px;
+  font-family: "Cascadia Code", monospace;
+  color: #94a3b8;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.principles-section .principles-box .principles-footer::before {
+  content: "";
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: #28b9f1;
+  flex-shrink: 0;
 }
 
 .boxes {
   display: flex;
   justify-content: space-evenly;
-  align-items: center;
+  align-items: stretch;
   gap: 2vw;
+  width: 100%;
+}
+
+.box {
+  flex: 1;
+  border: #132a4a solid 2px;
+  background-color: rgba(10, 25, 48, 0.78);
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  padding: 24px;
+  backdrop-filter: blur(12px);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.25);
+  transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+}
+.box:hover {
+  border-color: #148dc0;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35), 0 0 20px rgba(40, 185, 241, 0.15);
 }
 
 .community-section .boxes {
@@ -500,6 +606,9 @@ main {
   .intro-media .intro-image {
     height: 280px;
   }
+  .principles-boxes.boxes {
+    gap: 16px;
+  }
 }
 @media (max-width: 768px) {
   main {
@@ -511,5 +620,9 @@ main {
   #terminal {
     min-width: 100%;
     width: 100%;
+  }
+  .principles-boxes.boxes {
+    flex-direction: column;
+    gap: 20px;
   }
 }/*# sourceMappingURL=stylesheet.css.map */
