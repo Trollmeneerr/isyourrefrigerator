@@ -273,8 +273,11 @@ main {
   align-items: center;
   gap: 8px;
 }
-.terminal-header .terminal-title svg {
+.terminal-header .terminal-title svg, .terminal-header .terminal-title .terminal-title-icon {
   color: #28b9f1;
+  display: inline-flex;
+  width: 13px;
+  height: 13px;
 }
 .terminal-header .terminal-title p {
   color: #94a3b8;
@@ -328,7 +331,7 @@ main {
   width: 100%;
   justify-content: center;
   padding: 8px 14px;
-  font-size: 12px;
+  font-size: 15px;
 }
 
 #terminal-text {
