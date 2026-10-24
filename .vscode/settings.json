@@ -1,0 +1,7 @@
+{
+  "vscodeScssAlias": {
+    "aliases": {
+      "@core": "/static/style/"
+    }
+  }
+}

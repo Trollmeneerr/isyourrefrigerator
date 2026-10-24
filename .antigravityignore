@@ -1,0 +1,6 @@
+# Antigravity Ignore
+# Exclude compiled stylesheet CSS and source maps
+static/style/stylesheet.css
+static/style/stylesheet.css.map
+stylesheet.css
+stylesheet.css.map
