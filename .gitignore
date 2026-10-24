@@ -1,5 +1,7 @@
 # Ignore status.json
-status.json
+static/status.json
+static/style/stylesheet.css.map
+static/style/stylesheet.scss
 
 # Bot and AI crawler discovery files
 llms.txt
