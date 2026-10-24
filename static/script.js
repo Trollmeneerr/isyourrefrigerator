@@ -147,7 +147,7 @@ const SERVERS = [
         port: 16261,
         ip: 'play.isyourrefrigerator.online:16261',
         directIp: '158.101.195.224:16261',
-        status: 'unknown',
+        status: 'offline',
         statusCheck: { type: 'endpoint', url: 'static/status.json', key: 'zomboid' },
         specs: [
             { label: 'CPU', value: 'I7-6700k 4 Cores' },
@@ -167,7 +167,7 @@ const SERVERS = [
         port: 16271,
         ip: 'play.isyourrefrigerator.online:16287',
         directIp: '158.101.195.224:16287',
-        status: 'unknown',
+        status: 'offline',
         statusCheck: { type: 'endpoint', url: 'static/status.json', key: 'valheim' },
         specs: [
             { label: 'CPU', value: 'i5-10300H 3 Threads' },
@@ -187,7 +187,7 @@ const SERVERS = [
         port: 25565,
         ip: 'play.isyourrefrigerator.online:25565',
         directIp: '158.101.195.224:25565',
-        status: 'unknown',
+        status: 'online',
         statusCheck: { type: 'endpoint', url: 'static/status.json', key: 'minecraft' },
         specs: [
             { label: 'CPU', value: 'i5-10300H 2 Threads' },
@@ -207,31 +207,149 @@ const SERVERS = [
         port: 27015,
         ip: 'play.isyourrefrigerator.online:16291',
         directIp: '158.101.195.224:16291',
-        status: 'unknown',
+        status: 'offline',
         statusCheck: { type: 'endpoint', url: 'static/status.json', key: 'forest' },
         specs: [
             { label: 'CPU', value: 'i5-10300H 3 Threads' },
             { label: 'RAM', value: 'DDR4 6GB' },
             { label: 'DISK', value: '50GB SSD' }
         ]
-    },
-    {
-        id: 'chess',
-        name: 'Chess',
-        link: 'https://chess.isyourrefrigerator.online',
-        subtitle: 'Web • Real-time Multiplayer',
-        description: 'Casual and competitive chess matches hosted directly on the web. No port or client installation required — play straight from your browser.',
-        managedBy: 'The Refrigerator',
-        icon: 'chess',
-        isWeb: true,
-        host: 'chess.isyourrefrigerator.online',
-        ip: 'chess.isyourrefrigerator.online',
-        status: 'online',
-        statusCheck: { type: 'endpoint', url: 'static/status.json', key: 'chess' },
-        specs: [
-            { label: 'Platform', value: 'Web Browser' },
-            { label: 'Protocol', value: 'HTTPS' },
-            { label: 'Type', value: 'PvP Multiplayer' }
-        ]
     }
 ];
+
+const FALLBACK_STATUS = {
+    minecraft: { online: 'Unknown' },
+    valheim: { online: 'Unknown' },
+    forest: { online: 'Unknown' },
+    zomboid: { online: 'Unknown' },
+    panel: { online: 'Unknown' },
+    chess: { online: 'Unknown' }
+};
+
+async function getStatusJson() {
+    try {
+        const response = await fetch('static/status.json', { cache: 'no-store' });
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.warn('Could not fetch status.json directly, using fallback status:', error);
+        return FALLBACK_STATUS;
+    }
+}
+
+function updateStatusBar(statusJson) {
+    const statusEl = document.getElementById('status');
+    if (!statusEl) return;
+
+    const data = statusJson || FALLBACK_STATUS;
+    const services = Object.values(data);
+    const total = services.length;
+    const onlineCount = services.filter(s => s && s.online === true).length;
+
+    let statusText = 'Degraded Service';
+    let statusClass = 'degraded';
+
+    if (onlineCount === total) {
+        statusText = 'All Systems Operational';
+        statusClass = 'online';
+    } else if (onlineCount === 0) {
+        statusText = 'Systems Offline';
+        statusClass = 'offline';
+    } else {
+        statusText = 'Degraded Service';
+        statusClass = 'degraded';
+    }
+
+    statusEl.className = `status-indicator ${statusClass}`;
+    statusEl.innerHTML = `<span class="indicator-dot ${statusClass}"></span>${statusText}`;
+}
+
+async function setStatus(data) {
+    const statusJson = data || await getStatusJson();
+    if (statusJson) {
+        SERVERS.forEach(server => {
+            const key = server.statusCheck?.key || server.id;
+            if (statusJson[key] !== undefined) {
+                server.status = statusJson[key].online ? 'online' : 'offline';
+            }
+        });
+    }
+
+    updateStatusBar(statusJson);
+    return statusJson;
+}
+
+async function createServersCardsSortedByOnlineStatus() {
+    const status = await getStatusJson();
+    await setStatus(status);
+
+    const container = document.getElementById('freezers-boxes');
+    if (!container) return;
+    container.innerHTML = '';
+
+    // Sort so online servers appear first
+    const sortedServers = [...SERVERS].sort((a, b) => {
+        if (a.status === 'online' && b.status !== 'online') return -1;
+        if (a.status !== 'online' && b.status === 'online') return 1;
+        return 0;
+    });
+
+    sortedServers.slice(0, 2).forEach(server => {
+        const card = document.createElement('div');
+        card.className = 'freezers-box box';
+        card.innerHTML = `
+            <div class="server-header">
+                <h3 class="server-name">${server.name}</h3>
+                <span class="server-status ${server.status}">
+                    <span class="indicator-dot ${server.status}"></span>${server.status}
+                </span>
+            </div>
+            <div class="server-body">
+                <p class="server-description">${server.description}</p>
+            </div>
+            <div class="server-specs">
+                <span class="server-cpu">${server.specs[0].label}: ${server.specs[0].value} </span>
+                <span class="server-ram">${server.specs[1].label}: ${server.specs[1].value} </span>
+                <span class="server-disk">${server.specs[2].label}: ${server.specs[2].value} </span>
+            </div>
+            <div class="server-footer">
+                <span class="server-ip">${server.ip}</span>
+            </div>
+        `;
+        container.appendChild(card);
+    });
+
+    const requestCard = document.createElement('div');
+    requestCard.className = 'freezers-box box';
+    requestCard.innerHTML = `
+            <div class="server-header">
+                <h3 class="server-name">Request a Server</h3>
+                <span class="server-status available">
+                    <span class="indicator-dot available"></span>Available
+                </span>
+            </div>
+            <div class="server-body">
+                <p class="server-description">Want a specific game or modpack running in the freezer?
+                    Contact me to request and spin up a dedicated instance.</p>
+            </div>
+            <div class="server-specs">
+                <span class="server-cpu">CPU: Ryzen 9 5900X</span>
+                <span class="server-ram">RAM: 24GB</span>
+                <span class="server-disk">Disk: 512GB SSD</span>
+            </div>
+            <div class="server-footer">
+                <a class="server-ip" href="#hosting">Contact me!</a>
+            </div>
+    `;
+    container.appendChild(requestCard);
+}
+
+// Initial status bar update
+updateStatusBar(FALLBACK_STATUS);
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', createServersCardsSortedByOnlineStatus);
+} else {
+    createServersCardsSortedByOnlineStatus();
+}
