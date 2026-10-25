@@ -5,7 +5,7 @@
 (() => {
     const FALLBACK_SPRITE = `<svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true">
         <defs>
-            <symbol id="icon-server" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <symbol id="icon-freezer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <rect x="2" y="2" width="20" height="8" rx="2" ry="2"></rect>
                 <rect x="2" y="14" width="20" height="8" rx="2" ry="2"></rect>
                 <line x1="6" y1="6" x2="6.01" y2="6"></line>
@@ -72,6 +72,41 @@
                 <rect x="3" y="3" width="18" height="18" rx="2"></rect>
                 <path d="M3 9h18M9 21V9"></path>
             </symbol>
+            <symbol id="icon-server-management" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="3" width="18" height="18" rx="3"></rect>
+                <line x1="7" y1="8" x2="17" y2="8"></line>
+                <line x1="7" y1="12" x2="17" y2="12"></line>
+                <line x1="7" y1="16" x2="13" y2="16"></line>
+            </symbol>
+            <symbol id="icon-cpu-core" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="3" width="18" height="18" rx="2"></rect>
+                <rect x="8" y="8" width="8" height="8" rx="1"></rect>
+            </symbol>
+            <symbol id="icon-ram-layers" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+                <polyline points="2 17 12 22 22 17"></polyline>
+                <polyline points="2 12 12 17 22 12"></polyline>
+            </symbol>
+            <symbol id="icon-panel-backups" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <polyline points="12 6 12 12 16 14"></polyline>
+            </symbol>
+            <symbol id="icon-user-plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+                <circle cx="9" cy="7" r="4"></circle>
+                <line x1="19" y1="8" x2="19" y2="14"></line>
+                <line x1="22" y1="11" x2="16" y2="11"></line>
+            </symbol>
+            <symbol id="icon-discord" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994.021-.041.001-.09-.041-.106a13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.929 1.793 8.18 1.793 12.061 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.893.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.028zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"></path>
+            </symbol>
+            <symbol id="icon-copy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+            </symbol>
+            <symbol id="icon-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="20 6 9 17 4 12"></polyline>
+            </symbol>
         </defs>
     </svg>`;
 
@@ -131,10 +166,10 @@
 })();
 
 // =============================================================================
-// IsYourRefrigerator.online - Servers Data
+// IsYourRefrigerator.online - Freezers Data
 // =============================================================================
 
-const SERVERS = [
+const FREEZERS = [
     {
         id: 'project-zomboid',
         name: 'Project Zomboid',
@@ -176,11 +211,11 @@ const SERVERS = [
         ]
     },
     {
-        id: 'minecraft-26-2',
-        name: 'Minecraft 26.2',
+        id: 'minecraft-26-3',
+        name: 'Minecraft 26.3',
         link: '/minecraft',
-        subtitle: 'Fabric • Modded Survival',
-        description: 'Fabric-modded survival world running the latest content. Cozy building, exploration, and a light automation modpack.',
+        subtitle: 'Paper • Survival',
+        description: 'Paper survival freezer running the latest updates. <br> ',
         managedBy: 'The Refrigerator',
         icon: 'minecraft',
         host: 'play.isyourrefrigerator.online',
@@ -268,10 +303,10 @@ function updateStatusBar(statusJson) {
 async function setStatus(data) {
     const statusJson = data || await getStatusJson();
     if (statusJson) {
-        SERVERS.forEach(server => {
-            const key = server.statusCheck?.key || server.id;
+        FREEZERS.forEach(freezer => {
+            const key = freezer.statusCheck?.key || freezer.id;
             if (statusJson[key] !== undefined) {
-                server.status = statusJson[key].online ? 'online' : 'offline';
+                freezer.status = statusJson[key].online ? 'online' : 'offline';
             }
         });
     }
@@ -280,7 +315,7 @@ async function setStatus(data) {
     return statusJson;
 }
 
-async function createServersCardsSortedByOnlineStatus() {
+async function createFreezersCardsSortedByOnlineStatus() {
     const status = await getStatusJson();
     await setStatus(status);
 
@@ -288,33 +323,37 @@ async function createServersCardsSortedByOnlineStatus() {
     if (!container) return;
     container.innerHTML = '';
 
-    // Sort so online servers appear first
-    const sortedServers = [...SERVERS].sort((a, b) => {
+    // Sort so online freezers appear first
+    const sortedFreezers = [...FREEZERS].sort((a, b) => {
         if (a.status === 'online' && b.status !== 'online') return -1;
         if (a.status !== 'online' && b.status === 'online') return 1;
         return 0;
     });
 
-    sortedServers.slice(0, 2).forEach(server => {
+    sortedFreezers.slice(0, 2).forEach(freezer => {
         const card = document.createElement('div');
         card.className = 'freezers-box box';
         card.innerHTML = `
-            <div class="server-header">
-                <h3 class="server-name">${server.name}</h3>
-                <span class="server-status ${server.status}">
-                    <span class="indicator-dot ${server.status}"></span>${server.status}
+            <div class="freezer-header">
+                <h3 class="freezer-name">${freezer.name}</h3>
+                <span class="freezer-status ${freezer.status}">
+                    <span class="indicator-dot ${freezer.status}"></span>${freezer.status}
                 </span>
             </div>
-            <div class="server-body">
-                <p class="server-description">${server.description}</p>
+            <div class="freezer-body">
+                <h4 class="freezer-subtitle">${freezer.subtitle}</h4>
+                <p class="freezer-description">${freezer.description}</p>
+                <div class="freezer-managed">
+                    Managed by ${freezer.managedBy}
+                </div>
             </div>
-            <div class="server-specs">
-                <span class="server-cpu">${server.specs[0].label}: ${server.specs[0].value} </span>
-                <span class="server-ram">${server.specs[1].label}: ${server.specs[1].value} </span>
-                <span class="server-disk">${server.specs[2].label}: ${server.specs[2].value} </span>
+            <div class="freezer-specs">
+                <span class="freezer-cpu">${freezer.specs[0].label}: ${freezer.specs[0].value} </span>
+                <span class="freezer-ram">${freezer.specs[1].label}: ${freezer.specs[1].value} </span>
+                <span class="freezer-disk">${freezer.specs[2].label}: ${freezer.specs[2].value} </span>
             </div>
-            <div class="server-footer">
-                <span class="server-ip">${server.ip}</span>
+            <div class="freezer-footer">
+                <span class="freezer-ip">${freezer.ip}</span>
             </div>
         `;
         container.appendChild(card);
@@ -323,23 +362,27 @@ async function createServersCardsSortedByOnlineStatus() {
     const requestCard = document.createElement('div');
     requestCard.className = 'freezers-box box';
     requestCard.innerHTML = `
-            <div class="server-header">
-                <h3 class="server-name">Request a Server</h3>
-                <span class="server-status available">
+            <div class="freezer-header">
+                <h3 class="freezer-name">Request a Freezer</h3>
+                <span class="freezer-status available">
                     <span class="indicator-dot available"></span>Available
                 </span>
             </div>
-            <div class="server-body">
-                <p class="server-description">Want a specific game or modpack running in the freezer?
+            <div class="freezer-body">
+                <h4 class="freezer-subtitle">Request a Freezer</h4>
+                <p class="freezer-description">Want a specific game or modpack running in the freezer?
                     Contact me to request and spin up a dedicated instance.</p>
+                <div class="freezer-managed">
+                    Managed by The Refrigerator
+                </div>
             </div>
-            <div class="server-specs">
-                <span class="server-cpu">CPU: Ryzen 9 5900X</span>
-                <span class="server-ram">RAM: 24GB</span>
-                <span class="server-disk">Disk: 512GB SSD</span>
+            <div class="freezer-specs">
+                <span class="freezer-cpu">CPU: Ryzen 9 5900X</span>
+                <span class="freezer-ram">RAM: 24GB</span>
+                <span class="freezer-disk">Disk: 512GB SSD</span>
             </div>
-            <div class="server-footer">
-                <a class="server-ip" href="#hosting">Contact me!</a>
+            <div class="freezer-footer">
+                <a class="freezer-ip" href="#hosting">See hosting option!</a>
             </div>
     `;
     container.appendChild(requestCard);
@@ -348,8 +391,59 @@ async function createServersCardsSortedByOnlineStatus() {
 // Initial status bar update
 updateStatusBar(FALLBACK_STATUS);
 
+function setupHostingInteractions() {
+    const copyDiscordBtn = document.getElementById('btn-copy-discord');
+    if (copyDiscordBtn) {
+        copyDiscordBtn.addEventListener('click', async () => {
+            const copyText = copyDiscordBtn.getAttribute('data-copy') || 'Trollmeneerr';
+            try {
+                await navigator.clipboard.writeText(copyText);
+                const textSpan = copyDiscordBtn.querySelector('.btn-copy-text');
+                const prevText = textSpan ? textSpan.textContent : 'Copy';
+
+                copyDiscordBtn.classList.add('copied');
+                if (textSpan) textSpan.textContent = 'Copied!';
+
+                const iconSpan = copyDiscordBtn.querySelector('.icon');
+                if (iconSpan) {
+                    iconSpan.setAttribute('data-icon', 'check');
+                    if (window.renderIcons) window.renderIcons(copyDiscordBtn);
+                }
+
+                setTimeout(() => {
+                    copyDiscordBtn.classList.remove('copied');
+                    if (textSpan) textSpan.textContent = prevText;
+                    if (iconSpan) {
+                        iconSpan.setAttribute('data-icon', 'copy');
+                        if (window.renderIcons) window.renderIcons(copyDiscordBtn);
+                    }
+                }, 2000);
+            } catch (err) {
+                console.warn('Clipboard write failed:', err);
+            }
+        });
+    }
+
+    const chooseTierBtn = document.getElementById('btn-choose-tier');
+    if (chooseTierBtn) {
+        chooseTierBtn.addEventListener('click', (e) => {
+            const contactCard = document.getElementById('contact');
+            if (contactCard) {
+                e.preventDefault();
+                contactCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                contactCard.classList.add('highlight-pulse');
+                setTimeout(() => contactCard.classList.remove('highlight-pulse'), 1500);
+            }
+        });
+    }
+}
+
 if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', createServersCardsSortedByOnlineStatus);
+    document.addEventListener('DOMContentLoaded', () => {
+        createFreezersCardsSortedByOnlineStatus();
+        setupHostingInteractions();
+    });
 } else {
-    createServersCardsSortedByOnlineStatus();
+    createFreezersCardsSortedByOnlineStatus();
+    setupHostingInteractions();
 }
