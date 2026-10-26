@@ -333,6 +333,7 @@ async function createFreezersCardsSortedByOnlineStatus() {
     sortedFreezers.slice(0, 2).forEach(freezer => {
         const card = document.createElement('div');
         card.className = 'freezers-box box';
+        const cleanIp = (freezer.ip || '').replace(/^#\s*/, '');
         card.innerHTML = `
             <div class="freezer-header">
                 <h3 class="freezer-name">${freezer.name}</h3>
@@ -353,7 +354,7 @@ async function createFreezersCardsSortedByOnlineStatus() {
                 <span class="freezer-disk">${freezer.specs[2].label}: ${freezer.specs[2].value} </span>
             </div>
             <div class="freezer-footer">
-                <span class="freezer-ip">${freezer.ip}</span>
+                <span class="freezer-ip" data-copy="${cleanIp}" title="${cleanIp}">${cleanIp}</span>
             </div>
         `;
         container.appendChild(card);
@@ -386,6 +387,7 @@ async function createFreezersCardsSortedByOnlineStatus() {
             </div>
     `;
     container.appendChild(requestCard);
+    truncateOverflowButtons();
 }
 
 // Initial status bar update
@@ -417,6 +419,7 @@ function setupHostingInteractions() {
                         iconSpan.setAttribute('data-icon', 'copy');
                         if (window.renderIcons) window.renderIcons(copyDiscordBtn);
                     }
+                    fitButtonText(copyDiscordBtn);
                 }, 2000);
             } catch (err) {
                 console.warn('Clipboard write failed:', err);
@@ -438,12 +441,158 @@ function setupHostingInteractions() {
     }
 }
 
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => {
-        createFreezersCardsSortedByOnlineStatus();
-        setupHostingInteractions();
+function setupFreezerIpInteractions() {
+    document.addEventListener('click', async (e) => {
+        const ipBtn = e.target.closest('.freezer-ip');
+        if (!ipBtn) return;
+        if (ipBtn.tagName === 'A') return;
+
+        const copyText = ipBtn.getAttribute('data-copy') || ipBtn.dataset.originalText || ipBtn.textContent.trim();
+        if (!copyText) return;
+
+        try {
+            await navigator.clipboard.writeText(copyText);
+            ipBtn.classList.add('copied');
+            const prevText = ipBtn.textContent;
+            ipBtn.textContent = 'Copied!';
+
+            setTimeout(() => {
+                ipBtn.classList.remove('copied');
+                ipBtn.textContent = prevText;
+                fitButtonText(ipBtn);
+            }, 1800);
+        } catch (err) {
+            console.warn('Clipboard write failed:', err);
+        }
     });
-} else {
-    createFreezersCardsSortedByOnlineStatus();
+}
+
+/**
+ * Truncates button text when it overflows its container, replacing
+ * the overflowed portion with '...' (e.g. "text displa...").
+ */
+function fitButtonText(btn) {
+    if (!btn) return;
+
+    // Resolve or wrap the text container
+    let textEl = btn.querySelector('.btn-text, .btn-copy-text');
+    if (!textEl) {
+        if (btn.children.length === 0) {
+            textEl = btn;
+        } else {
+            for (const node of Array.from(btn.childNodes)) {
+                if (node.nodeType === Node.TEXT_NODE && node.textContent.trim().length > 0) {
+                    const span = document.createElement('span');
+                    span.className = 'btn-text';
+                    span.textContent = node.textContent.trim();
+                    btn.replaceChild(span, node);
+                    textEl = span;
+                    break;
+                }
+            }
+        }
+    }
+    if (!textEl) textEl = btn;
+
+    if (!textEl.dataset.originalText) {
+        textEl.dataset.originalText = textEl.textContent.trim();
+    }
+    const originalText = textEl.dataset.originalText;
+    if (!originalText) return;
+
+    if (btn.offsetWidth === 0 && btn.offsetHeight === 0) return;
+
+    // Reset to original text before measurement
+    textEl.textContent = originalText;
+
+    const isOverflowing = () => {
+        if (btn.scrollWidth > btn.clientWidth + 1) return true;
+        if (textEl !== btn && textEl.scrollWidth > textEl.clientWidth + 1) return true;
+
+        const parent = btn.parentElement;
+        if (parent) {
+            const pStyle = window.getComputedStyle(parent);
+            const padLeft = parseFloat(pStyle.paddingLeft || 0);
+            const padRight = parseFloat(pStyle.paddingRight || 0);
+            const maxAllowedWidth = parent.clientWidth - padLeft - padRight;
+            if (btn.offsetWidth > maxAllowedWidth + 1 || btn.scrollWidth > maxAllowedWidth + 1) {
+                return true;
+            }
+            const btnRect = btn.getBoundingClientRect();
+            const pRect = parent.getBoundingClientRect();
+            if (btnRect.right > (pRect.right - padRight + 1) || btnRect.left < (pRect.left + padLeft - 1)) {
+                return true;
+            }
+        }
+
+        const bRect = btn.getBoundingClientRect();
+        const winWidth = window.innerWidth || document.documentElement.clientWidth;
+        if (bRect.right > winWidth - 2) return true;
+
+        return false;
+    };
+
+    if (!isOverflowing()) {
+        textEl.textContent = originalText;
+        if (btn.dataset.originalTitle) {
+            btn.setAttribute('title', btn.dataset.originalTitle);
+        } else if (btn.getAttribute('title') === originalText) {
+            btn.removeAttribute('title');
+        }
+        return;
+    }
+
+    if (btn.hasAttribute('title') && !btn.dataset.originalTitle) {
+        btn.dataset.originalTitle = btn.getAttribute('title');
+    }
+    btn.setAttribute('title', originalText);
+
+    // Binary search for maximum substring that fits with ellipsis
+    let low = 1;
+    let high = originalText.length - 1;
+    let best = 1;
+
+    while (low <= high) {
+        const mid = Math.floor((low + high) / 2);
+        textEl.textContent = originalText.slice(0, mid).trimEnd() + '...';
+        if (!isOverflowing()) {
+            best = mid;
+            low = mid + 1;
+        } else {
+            high = mid - 1;
+        }
+    }
+
+    textEl.textContent = originalText.slice(0, best).trimEnd() + '...';
+}
+
+function truncateOverflowButtons() {
+    const buttons = document.querySelectorAll('.btn, .freezer-ip, button, [role="button"]');
+    buttons.forEach(fitButtonText);
+}
+
+window.fitButtonText = fitButtonText;
+window.truncateOverflowButtons = truncateOverflowButtons;
+
+let resizeDebounce;
+window.addEventListener('resize', () => {
+    clearTimeout(resizeDebounce);
+    resizeDebounce = setTimeout(truncateOverflowButtons, 60);
+});
+
+if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(truncateOverflowButtons);
+}
+
+async function initApp() {
     setupHostingInteractions();
+    setupFreezerIpInteractions();
+    await createFreezersCardsSortedByOnlineStatus();
+    truncateOverflowButtons();
+}
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initApp);
+} else {
+    initApp();
 }
