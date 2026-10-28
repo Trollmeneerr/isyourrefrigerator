@@ -315,10 +315,9 @@ async function setStatus(data) {
     return statusJson;
 }
 
-async function createFreezersCardsSortedByOnlineStatus() {
-    const status = await getStatusJson();
-    await setStatus(status);
+let isAllServersShown = false;
 
+function renderFreezersCards(showAll = false) {
     const container = document.getElementById('freezers-boxes');
     if (!container) return;
     container.innerHTML = '';
@@ -330,9 +329,12 @@ async function createFreezersCardsSortedByOnlineStatus() {
         return 0;
     });
 
-    sortedFreezers.slice(0, 2).forEach(freezer => {
+    const freezersToRender = showAll ? sortedFreezers : sortedFreezers.slice(0, 2);
+
+    freezersToRender.forEach((freezer, index) => {
         const card = document.createElement('div');
-        card.className = 'freezers-box box';
+        const serverNumber = `server-${index + 1}`;
+        card.className = `freezers-box box ${serverNumber}`;
         const cleanIp = (freezer.ip || '').replace(/^#\s*/, '');
         card.innerHTML = `
             <div class="freezer-header">
@@ -361,7 +363,7 @@ async function createFreezersCardsSortedByOnlineStatus() {
     });
 
     const requestCard = document.createElement('div');
-    requestCard.className = 'freezers-box box';
+    requestCard.className = 'freezers-box box request-box';
     requestCard.innerHTML = `
             <div class="freezer-header">
                 <h3 class="freezer-name">Request a Freezer</h3>
@@ -388,6 +390,69 @@ async function createFreezersCardsSortedByOnlineStatus() {
     `;
     container.appendChild(requestCard);
     truncateOverflowButtons();
+}
+
+async function createFreezersCardsSortedByOnlineStatus() {
+    const status = await getStatusJson();
+    await setStatus(status);
+    renderFreezersCards(isAllServersShown);
+}
+
+function updateToggleServersButton() {
+    const btn = document.getElementById('btn-view-freezers');
+    if (!btn) return;
+
+    let textSpan = btn.querySelector('.btn-text');
+    if (!textSpan) {
+        for (const node of Array.from(btn.childNodes)) {
+            if (node.nodeType === Node.TEXT_NODE && node.textContent.trim().length > 0) {
+                const span = document.createElement('span');
+                span.className = 'btn-text';
+                span.textContent = node.textContent.trim();
+                btn.replaceChild(span, node);
+                textSpan = span;
+                break;
+            }
+        }
+    }
+
+    const newText = isAllServersShown ? 'Show Less' : 'View All Freezers';
+    if (textSpan) {
+        textSpan.textContent = newText;
+        textSpan.dataset.originalText = newText;
+    }
+    btn.dataset.originalTitle = newText;
+    btn.setAttribute('title', newText);
+
+    if (window.renderIcons) {
+        window.renderIcons(btn);
+    }
+    fitButtonText(btn);
+}
+
+function toggleAllServers() {
+    const btn = document.getElementById('btn-view-freezers');
+    if (!btn) return;
+
+    if (!btn.dataset.toggleInitialized) {
+        btn.dataset.toggleInitialized = 'true';
+        btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            toggleAllServers();
+        });
+        return;
+    }
+
+    isAllServersShown = !isAllServersShown;
+    renderFreezersCards(isAllServersShown);
+    updateToggleServersButton();
+
+    if (!isAllServersShown) {
+        const freezersSection = document.getElementById('freezers');
+        if (freezersSection) {
+            freezersSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    }
 }
 
 // Initial status bar update
@@ -587,6 +652,7 @@ if (document.fonts && document.fonts.ready) {
 async function initApp() {
     setupHostingInteractions();
     setupFreezerIpInteractions();
+    toggleAllServers();
     await createFreezersCardsSortedByOnlineStatus();
     truncateOverflowButtons();
 }

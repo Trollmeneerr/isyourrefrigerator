@@ -15,6 +15,12 @@
   box-sizing: border-box;
 }
 
+html {
+  scroll-snap-type: y proximity; /* was: mandatory */
+  scroll-behavior: smooth;
+  scroll-padding-top: 10px;
+}
+
 body {
   background-color: #0e203a;
   background-image: linear-gradient(0deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
@@ -141,7 +147,7 @@ p, a {
   display: flex;
   justify-content: space-between;
   height: 7vh;
-  padding: 0 10vw;
+  padding: 0 15vw;
 }
 .site-header .header-section {
   display: flex;
@@ -394,7 +400,7 @@ p, a {
   }
 }
 main {
-  margin: clamp(32px, 3vw, 48px) 10vw;
+  margin: clamp(32px, 3vw, 48px) 15vw;
   display: flex;
   flex-direction: column;
   row-gap: clamp(48px, 4vw, 64px);
@@ -609,15 +615,26 @@ main {
 }
 
 .freezers-boxes {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 24px;
+  width: 100%;
+}
+@media (max-width: 1050px) {
+  .freezers-boxes {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 850px) {
+  .freezers-boxes {
+    grid-template-columns: 1fr;
+  }
 }
 
 .freezers-box {
   display: flex;
   flex-direction: column;
-  min-width: 280px;
+  min-width: 0;
 }
 
 .freezer-header {
@@ -1198,7 +1215,7 @@ main {
 footer.site {
   background-color: #060f1f;
   border-top: 1px solid rgba(255, 255, 255, 0.08);
-  padding: 36px 10vw 24px;
+  padding: 36px 15vw 24px;
   display: flex;
   flex-direction: column;
   margin-top: auto;
@@ -1295,7 +1312,15 @@ footer.site .footer-copyright .status-indicator {
   margin-left: 0;
 }
 
+@media (min-width: 1520px) {
+  #freezers, #community, #hosting {
+    scroll-snap-align: center;
+  }
+}
 @media (max-width: 1520px) {
+  #freezers, #community, #hosting {
+    scroll-snap-align: start;
+  }
   .site-header {
     padding: 0 5vw;
   }
