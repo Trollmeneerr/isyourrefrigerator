@@ -2,6 +2,8 @@
 @import url("https://fonts.googleapis.com/css2?family=Cascadia+Code:ital,wght@0,200..700;1,200..700&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap");
+@import "header.css";
+@import "footer.css";
 @font-face {
   font-family: spartan;
   src: url(/static/font/league-spartan.bold.otf);
@@ -142,30 +144,7 @@ p, a {
   display: block;
 }
 
-.site-header {
-  background-color: #060f1f;
-  display: flex;
-  justify-content: space-between;
-  height: 7vh;
-  padding: 0 15vw;
-}
-.site-header .header-section {
-  display: flex;
-  align-items: center;
-}
-
-.brand-link {
-  display: flex;
-  align-items: center;
-}
-.brand-link .brand-pic, .brand-link #pic {
-  width: 50px;
-  margin-right: 10px;
-}
-.brand-link .brand-logo, .brand-link #logo {
-  padding-top: 10px;
-  font-size: 30px;
-}
+/* Header styling is modularized in header.css */
 
 .icon {
   display: inline-flex;
@@ -1211,106 +1190,7 @@ main {
   animation: cardPulse 1.2s ease;
 }
 
-.site-footer,
-footer.site {
-  background-color: #060f1f;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
-  padding: 36px 15vw 24px;
-  display: flex;
-  flex-direction: column;
-  margin-top: auto;
-  width: 100%;
-  box-sizing: border-box;
-}
-.site-footer .footer-header,
-footer.site .footer-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 24px;
-  margin-bottom: 24px;
-}
-.site-footer .footer-logo-slogan,
-footer.site .footer-logo-slogan {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-.site-footer .footer-logo-slogan .brand-link .brand-logo,
-footer.site .footer-logo-slogan .brand-link .brand-logo {
-  padding-top: 0;
-  font-size: clamp(20px, 1.4vw, 24px);
-  line-height: 1.2;
-}
-.site-footer .footer-logo-slogan p,
-footer.site .footer-logo-slogan p {
-  font-size: 14px;
-  font-weight: 500;
-  color: #94a3b8;
-  margin: 0;
-}
-.site-footer .footer-privacy-link,
-footer.site .footer-privacy-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  font-family: Inter, sans-serif;
-  font-size: 13.5px;
-  font-weight: 600;
-  color: #94a3b8;
-  padding: 9px 18px;
-  border-radius: 8px;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  background-color: rgba(255, 255, 255, 0.03);
-  transition: all 0.2s ease;
-}
-.site-footer .footer-privacy-link .icon,
-footer.site .footer-privacy-link .icon {
-  width: 16px;
-  height: 16px;
-  color: inherit;
-}
-.site-footer .footer-privacy-link:hover,
-footer.site .footer-privacy-link:hover {
-  color: #28b9f1;
-  border-color: rgba(40, 185, 241, 0.4);
-  background-color: rgba(40, 185, 241, 0.08);
-  box-shadow: 0 0 14px rgba(40, 185, 241, 0.2);
-  transform: translateY(-1px);
-}
-.site-footer .underline,
-footer.site .underline {
-  border: none;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
-  width: 100%;
-  display: block;
-  margin: 0;
-}
-.site-footer .footer-copyright,
-footer.site .footer-copyright {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 16px;
-  padding: 22px 0 0;
-}
-.site-footer .footer-copyright p,
-footer.site .footer-copyright p {
-  font-family: Inter, sans-serif;
-  font-size: 13.5px;
-  font-weight: 500;
-  color: rgb(185, 185, 185);
-  margin: 0;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-}
-.site-footer .footer-copyright .status-indicator,
-footer.site .footer-copyright .status-indicator {
-  margin-left: 0;
-}
+/* Footer styling is modularized in footer.css */
 
 @media (min-width: 1520px) {
   #freezers, #community, #hosting {
@@ -1367,25 +1247,7 @@ footer.site .footer-copyright .status-indicator {
   }
 }
 @media (max-width: 850px) {
-  .site-header {
-    justify-content: center;
-    align-items: center;
-    height: auto;
-    min-height: 56px;
-    padding: 10px 5vw;
-  }
-  .site-header .header-section:last-child,
-  .site-header #btn-freezer-panel {
-    display: none;
-  }
-  .site-header .brand-link .brand-pic, .site-header .brand-link #pic {
-    width: 32px;
-    margin-right: 8px;
-  }
-  .site-header .brand-link .brand-logo, .site-header .brand-link #logo {
-    font-size: 17px;
-    padding-top: 0;
-  }
+
   .boxes {
     display: flex;
     flex-direction: column;
@@ -1411,44 +1273,5 @@ footer.site .footer-copyright .status-indicator {
   }
   .hosting-subcards .discord-card {
     width: 100%;
-  }
-  .site-footer,
-  footer.site {
-    text-align: center;
-    align-items: center;
-  }
-  .site-footer .footer-header,
-  footer.site .footer-header {
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    gap: 16px;
-  }
-  .site-footer .footer-logo-slogan,
-  footer.site .footer-logo-slogan {
-    align-items: center;
-    text-align: center;
-  }
-  .site-footer .footer-logo-slogan .brand-link,
-  footer.site .footer-logo-slogan .brand-link {
-    justify-content: center;
-  }
-  .site-footer .footer-privacy-link,
-  footer.site .footer-privacy-link {
-    justify-content: center;
-  }
-  .site-footer .footer-copyright,
-  footer.site .footer-copyright {
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    gap: 12px;
-  }
-  .site-footer .footer-copyright p,
-  footer.site .footer-copyright p {
-    justify-content: center;
-    text-align: center;
   }
 }/*# sourceMappingURL=stylesheet.css.map */

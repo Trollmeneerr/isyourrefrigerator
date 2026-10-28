@@ -1,0 +1,157 @@
+/* =============================================================================
+   IsYourRefrigerator.online - Header Stylesheet
+   Location: /static/style/header.css
+   ============================================================================= */
+
+.site-header {
+  background-color: #060f1f;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 7vh;
+  min-height: 56px;
+  padding: 0 15vw;
+  box-sizing: border-box;
+  width: 100%;
+  position: relative;
+  z-index: 100;
+}
+
+.site-header .header-section {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.site-header .brand-link {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: inherit;
+}
+
+.site-header .brand-link .brand-pic,
+.site-header .brand-link #pic {
+  width: 50px;
+  height: auto;
+  margin-right: 10px;
+  display: block;
+}
+
+.site-header .brand-link .brand-logo,
+.site-header .brand-link #logo {
+  font-family: spartan, Inter, sans-serif;
+  font-weight: 700;
+  padding-top: 10px;
+  font-size: 30px;
+  color: #ffffff;
+  margin: 0;
+  line-height: 1;
+}
+
+.site-header .text-ice-blue {
+  color: #28b9f1;
+}
+
+/* Header Buttons & Controls */
+.site-header .btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  font-family: Inter, sans-serif;
+  font-weight: 600;
+  border-radius: 6px;
+  padding: 10px 20px;
+  font-size: 14px;
+  cursor: pointer;
+  text-decoration: none;
+  box-sizing: border-box;
+  white-space: nowrap;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+.site-header .btn:hover {
+  transform: scale(1.005);
+}
+
+.site-header .btn-blue {
+  background-color: #0d8cf1;
+  color: #ffffff;
+  border: 1px solid transparent;
+}
+
+.site-header .btn-blue:hover {
+  background-color: rgb(31, 149, 243);
+  box-shadow: 0 0 18px rgba(13, 140, 241, 0.45);
+}
+
+.site-header .btn-gray {
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background-color: rgba(255, 255, 255, 0.05);
+  color: #ffffff;
+}
+
+.site-header .btn-gray:hover {
+  border-color: rgba(255, 255, 255, 0.35);
+  background-color: rgba(255, 255, 255, 0.12);
+  box-shadow: 0 0 16px rgba(255, 255, 255, 0.2);
+}
+
+.site-header .icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 15px;
+  height: 15px;
+  color: inherit;
+  flex-shrink: 0;
+}
+
+.site-header .icon svg,
+.site-header .btn svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* Responsive Breakpoints */
+@media (max-width: 1520px) {
+  .site-header {
+    padding: 0 5vw;
+  }
+}
+
+@media (max-width: 1100px) {
+  .site-header {
+    padding: 0 5vw;
+  }
+}
+
+@media (max-width: 850px) {
+  .site-header {
+    justify-content: center;
+    align-items: center;
+    height: auto;
+    min-height: 56px;
+    padding: 10px 5vw;
+  }
+
+  .site-header .header-section:last-child,
+  .site-header #btn-freezer-panel,
+  .site-header #btn-header-back {
+    display: none !important;
+  }
+
+  .site-header .brand-link .brand-pic,
+  .site-header .brand-link #pic {
+    width: 32px;
+    margin-right: 8px;
+  }
+
+  .site-header .brand-link .brand-logo,
+  .site-header .brand-link #logo {
+    font-size: 17px;
+    padding-top: 0;
+  }
+}
