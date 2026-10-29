@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minecraft Dedicated Server &amp; Live Map | IsYourRefrigerator.online</title>
+    <meta name="description"
+        content="Dedicated Minecraft Paper Survival server on IsYourRefrigerator.online. Direct connect via play.isyourrefrigerator.online:25565 or direct IP 158.101.195.224:25565. View the live world map.">
+    <meta name="keywords"
+        content="Minecraft dedicated server, Minecraft Paper Survival, IsYourRefrigerator Minecraft, play.isyourrefrigerator.online, 158.101.195.224, Minecraft live map">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://isyourrefrigerator.online/minecraft/">
+    <link rel="shortcut icon" href="../static/images/isyourrefrigerator.online_logo_small.png" type="image/x-icon"
+        onerror="this.onerror=null;this.href='/static/images/isyourrefrigerator.online_logo_small.png'">
+
+    <!-- Typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cascadia+Code:ital,wght@0,200..700;1,200..700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap"
+        rel="stylesheet">
+
+    <!-- Active Site Stylesheet -->
+    <link rel="stylesheet" href="../static/style/stylesheet.css"
+        onerror="this.onerror=null;this.href='/static/style/stylesheet.css'">
+    <link rel="stylesheet" href="static/stylesheet.css"
+        onerror="this.onerror=null;this.href='/minecraft/static/stylesheet.css'">
+
+    <!-- Global Layout & Site Sprite Scripts -->
+    <script src="../static/layout.js" defer></script>
+    <script src="../static/script.js" defer></script>
+
+    <!-- Minecraft Specific Scripts -->
+    <script src="static/script.js" defer></script>
+</head>
+
+<body>
+
+    <!-- Site Header -->
+    <header id="header" class="site-header"></header>
+
+    <!-- Main Minecraft Content -->
+    <main id="app" class="main-content">
+        <div class="wrap">
+            <section class="mc-intro overview-section">
+                <h4 class="section-header-text">02 // DEDICATED FREEZER</h4>
+                <h1 class="section-header-title">Minecraft</h1>
+                <p class="section-text">Paper survival freezer running the latest updates. Explore the realm, build together, and track player activity on the live world map.</p>
+            </section>
+
+            <!-- Server Information Card -->
+            <section class="mc-server" id="serverBox" aria-label="Server information">
+                <div class="server-card">
+                    <div class="server-top">
+                        <div class="server-icon" title="Minecraft Server">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                                <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                                <line x1="12" y1="22.08" x2="12" y2="12"></line>
+                            </svg>
+                        </div>
+                        <div class="server-status-pill">
+                            <span class="indicator-dot" id="srvDot"></span>
+                            <span id="srvText">Checking...</span>
+                        </div>
+                    </div>
+                    <h3>Minecraft 26.3</h3>
+                    <div class="server-subtitle">Paper Survival &bull; Dedicated PvE</div>
+                    <p class="server-desc">Paper survival freezer running the latest updates. Explore the realm, build together, and track player activity on the live world map.</p>
+                    <p class="managed">Managed by The Refrigerator</p>
+                    <div class="server-specs">
+                        <div class="spec-item"><span class="spec-label">CPU:</span><span class="spec-val">i5-10300H 2 Threads</span></div>
+                        <div class="spec-item"><span class="spec-label">RAM:</span><span class="spec-val">DDR4 4GB</span></div>
+                        <div class="spec-item"><span class="spec-label">DISK:</span><span class="spec-val">50GB SSD</span></div>
+                    </div>
+                    <div class="server-connect-group">
+                        <div class="server-connect" id="copyAddr" role="button" tabindex="0" title="Click to copy server hostname">
+                            <span class="ip-display">play.isyourrefrigerator.online:25565</span>
+                        </div>
+                        <div class="direct-ip-pill" id="copyDirectAddr" role="button" tabindex="0" title="Click to copy direct IP">
+                            <span class="direct-ip-label">Direct IP:</span>
+                            <span class="direct-ip-val">158.101.195.224:25565</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Live Map Section -->
+            <section class="map-section" id="mapSection" aria-label="Live World Map">
+                <div class="map-container">
+                    <div class="map-header">
+                        <div class="map-title-wrap">
+                            <div class="map-icon" aria-hidden="true">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"></polygon>
+                                    <line x1="8" y1="2" x2="8" y2="18"></line>
+                                    <line x1="16" y1="6" x2="16" y2="22"></line>
+                                </svg>
+                            </div>
+                            <div>
+                                <h2>Live World Map</h2>
+                                <p>Real-time view of the Minecraft freezer world</p>
+                            </div>
+                        </div>
+                        <div class="map-actions">
+                            <button type="button" class="btn btn-gray" id="btnMapFullscreen" title="Toggle fullscreen map">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path>
+                                </svg>
+                                <span>Fullscreen</span>
+                            </button>
+                            <a href="https://isyourrefrigerator.online/minecraft/map/" target="_blank" rel="noopener noreferrer" class="btn btn-blue" title="Open map in new tab">
+                                <span>Open Fullscreen</span>
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <line x1="7" y1="17" x2="17" y2="7"></line>
+                                    <polyline points="7 7 17 7 17 17"></polyline>
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="map-frame-wrapper" id="mapWrapper">
+                        <iframe id="mapFrame" class="map-frame" src="https://isyourrefrigerator.online/minecraft/map/" title="Minecraft Live World Map" loading="lazy" allowfullscreen="true" allow="fullscreen">
+                            <p>Your browser does not support iframes. <a href="https://isyourrefrigerator.online/minecraft/map/" target="_blank" rel="noopener noreferrer">Click here to open the live world map</a>.</p>
+                        </iframe>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Site Footer -->
+    <footer id="footer" class="site-footer"></footer>
+
+</body>
+
+</html>
+

@@ -142,7 +142,9 @@ footer.site .footer-copyright .status-indicator {
 }
 
 /* Standalone Status Indicator in Footer */
-.site-footer .status-indicator {
+.site-footer .status-indicator,
+footer.site .status-indicator,
+.status-indicator {
   display: inline-flex;
   align-items: center;
   gap: 8px;
@@ -156,25 +158,33 @@ footer.site .footer-copyright .status-indicator {
   vertical-align: middle;
 }
 
-.site-footer .status-indicator.online {
+.site-footer .status-indicator.online,
+footer.site .status-indicator.online,
+.status-indicator.online {
   color: #4ade80;
   border-color: rgba(74, 222, 128, 0.3);
   background: rgba(74, 222, 128, 0.08);
 }
 
-.site-footer .status-indicator.degraded {
+.site-footer .status-indicator.degraded,
+footer.site .status-indicator.degraded,
+.status-indicator.degraded {
   color: #facc15;
   border-color: rgba(250, 204, 21, 0.3);
   background: rgba(250, 204, 21, 0.08);
 }
 
-.site-footer .status-indicator.offline {
+.site-footer .status-indicator.offline,
+footer.site .status-indicator.offline,
+.status-indicator.offline {
   color: #f87171;
   border-color: rgba(248, 113, 113, 0.3);
   background: rgba(248, 113, 113, 0.08);
 }
 
-.site-footer .status-indicator.available {
+.site-footer .status-indicator.available,
+footer.site .status-indicator.available,
+.status-indicator.available {
   color: rgb(113, 149, 248);
   border-color: rgba(113, 149, 248, 0.3);
   background: rgba(113, 149, 248, 0.08);

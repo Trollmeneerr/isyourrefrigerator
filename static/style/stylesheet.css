@@ -29,6 +29,18 @@ body {
   background-size: 66px 66px;
   background-position: center;
   font-family: Inter, sans-serif;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+main,
+.main-content {
+  flex: 1 0 auto;
 }
 
 h1, h2 {
@@ -772,40 +784,7 @@ main {
   color: #4ade80;
 }
 
-.status-indicator {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  font-family: "Cascadia Code", monospace;
-  font-size: 12.5px;
-  font-weight: 600;
-  padding: 2px 10px;
-  border-radius: 12px;
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  vertical-align: middle;
-  margin-left: 6px;
-}
-.status-indicator.online {
-  color: #4ade80;
-  border-color: rgba(74, 222, 128, 0.3);
-  background: rgba(74, 222, 128, 0.08);
-}
-.status-indicator.degraded {
-  color: #facc15;
-  border-color: rgba(250, 204, 21, 0.3);
-  background: rgba(250, 204, 21, 0.08);
-}
-.status-indicator.offline {
-  color: #f87171;
-  border-color: rgba(248, 113, 113, 0.3);
-  background: rgba(248, 113, 113, 0.08);
-}
-.status-indicator.available {
-  color: rgb(113, 149, 248);
-  border-color: rgba(113, 149, 248, 0.3);
-  background: rgba(113, 149, 248, 0.08);
-}
+/* Status indicator styling is modularized in footer.css */
 
 .indicator-dot {
   display: inline-block;
@@ -1201,14 +1180,8 @@ main {
   #freezers, #community, #hosting {
     scroll-snap-align: start;
   }
-  .site-header {
-    padding: 0 5vw;
-  }
   main {
     margin: clamp(32px, 3vw, 48px) 5vw;
-  }
-  footer.site {
-    padding: 36px 5vw 24px;
   }
 }
 @media (max-width: 1100px) {
@@ -1233,21 +1206,11 @@ main {
   .intro-media {
     max-height: 480px;
   }
-  .site-header {
-    padding: 0 5vw;
-  }
   main {
     margin: clamp(32px, 3vw, 48px) 5vw;
   }
-  footer.site {
-    padding: 36px 5vw 24px;
-  }
-  .brand-logo {
-    font-size: large;
-  }
 }
 @media (max-width: 850px) {
-
   .boxes {
     display: flex;
     flex-direction: column;

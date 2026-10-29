@@ -126,6 +126,11 @@
   .site-header {
     padding: 0 5vw;
   }
+
+  .site-header .brand-link .brand-logo,
+  .site-header .brand-link #logo {
+    font-size: 22px;
+  }
 }
 
 @media (max-width: 850px) {
