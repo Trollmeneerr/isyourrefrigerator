@@ -4,22 +4,87 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IsYourRefrigerator.online</title>
+    <title>IsYourRefrigerator.online | Dedicated Game Freezers &amp; Homelab Hosting</title>
+    <meta name="description"
+        content="Personal homelab and dedicated game freezers. Hosting Minecraft, Project Zomboid, Valheim, and Pelican Panel access with dedicated resources and zero logs.">
+    <meta name="keywords"
+        content="game servers, dedicated hosting, homelab, Pelican panel, Minecraft, Project Zomboid, Valheim, IsYourRefrigerator">
+    <meta name="author" content="The Refrigerator">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://isyourrefrigerator.online/">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://isyourrefrigerator.online/">
+    <meta property="og:title" content="IsYourRefrigerator.online | Dedicated Game Freezers &amp; Hosting">
+    <meta property="og:description"
+        content="Personal homelab and dedicated game freezers. Hosting Minecraft, Project Zomboid, Valheim, and Pelican Panel access.">
+    <meta property="og:image" content="https://isyourrefrigerator.online/static/images/IsYourRefrigerator.online.png">
+    <meta property="og:site_name" content="IsYourRefrigerator.online">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://isyourrefrigerator.online/">
+    <meta name="twitter:title" content="IsYourRefrigerator.online | Dedicated Game Freezers">
+    <meta name="twitter:description"
+        content="Personal homelab and dedicated game freezers. Hosting Minecraft, Project Zomboid, Valheim, and Pelican Panel access.">
+    <meta name="twitter:image" content="https://isyourrefrigerator.online/static/images/IsYourRefrigerator.online.png">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="static/images/isyourrefrigerator.online_logo_small.png">
+    <link rel="apple-touch-icon" href="static/images/isyourrefrigerator.online_logo_small.png">
+
+    <!-- Preconnect & Typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cascadia+Code:ital,wght@0,400..700;1,400..700&family=Inter:ital,opsz,wght@0,14..32,300..900;1,14..32,300..900&family=JetBrains+Mono:ital,wght@0,400..700;1,400..700&display=swap"
+        rel="stylesheet">
+
+    <!-- Active Site Stylesheet -->
     <link rel="stylesheet" href="static/style/stylesheet.css">
+
+    <!-- Scripts -->
     <script src="static/layout.js" defer></script>
     <script src="static/script.js" defer></script>
-    <link rel="shortcut icon" href="/static/images/isyourrefrigerator.online_logo_small.png" type="image/x-icon">
 </head>
 
 <body>
-    <header id="header" class="site-header"></header>
+    <!-- Site Header (Pre-rendered for zero CLS) -->
+    <header id="header" class="site-header">
+        <div class="header-section">
+            <a href="/" class="brand-link" aria-label="IsYourRefrigerator.online Home">
+                <img class="brand-pic" src="static/images/isyourrefrigerator.online_logo_small.png"
+                    alt="IsYourRefrigerator Logo" width="44" height="44" decoding="async">
+                <h1 class="brand-logo">
+                    IsYourRefrigerator<span class="text-ice-blue">.online</span>
+                </h1>
+            </a>
+        </div>
+        <div class="header-section" style="gap: 12px;">
+            <a href="/" id="btn-header-back" class="btn btn-gray btn-header-back" title="Back to Main Site"
+                style="display: none;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <line x1="19" y1="12" x2="5" y2="12"></line>
+                    <polyline points="12 19 5 12 12 5"></polyline>
+                </svg>
+                <span>Back to Main Site</span>
+            </a>
+            <a href="https://panel.isyourrefrigerator.online" target="_blank" rel="noopener noreferrer"
+                id="btn-freezer-panel" class="btn btn-blue transition-fast" title="Open Pelican Freezer Management Panel">
+                <span class="icon" data-icon="freezer"></span>
+                <span>Freezer Panel</span>
+            </a>
+        </div>
+    </header>
 
     <main id="main-content" class="main-content">
         <!-- 00 // INTRO -->
-        <section id="intro" class="intro-section">
+        <section id="intro" class="intro-section" aria-labelledby="intro-header">
             <div class="intro-content">
                 <div class="intro-text-section">
-                    <h1 class="intro-header">
+                    <h1 id="intro-header" class="intro-header">
                         Your <span class="blue-gradient">Freezers</span><br>
                         Your <span class="blue-gradient">Rules.</span>
                     </h1>
@@ -28,24 +93,25 @@
                         appropriate to call them freezers.<br>
                         Hosting my own Website and Game Freezers.
                     </p>
-                    <div id="terminal" class="terminal">
+                    <div id="terminal" class="terminal" aria-label="Simulated Server Terminal">
                         <div class="terminal-header">
                             <div class="terminal-title">
-                                <span class="terminal-title-icon" data-icon="terminal"></span>
+                                <span class="terminal-title-icon" data-icon="terminal" aria-hidden="true"></span>
                                 <p>Fridge Proxy // Bash</p>
                             </div>
                             <div class="terminal-buttons">
-                                <span class="terminal-btn" title="Minimize" aria-label="Minimize"
+                                <span class="terminal-btn" title="Minimize" aria-label="Minimize terminal"
                                     data-icon="min"></span>
-                                <span class="terminal-btn" title="Maximize" aria-label="Maximize"
+                                <span class="terminal-btn" title="Maximize" aria-label="Maximize terminal"
                                     data-icon="expand"></span>
-                                <span class="terminal-btn" title="Close" aria-label="Close" data-icon="close"></span>
+                                <span class="terminal-btn" title="Close" aria-label="Close terminal"
+                                    data-icon="close"></span>
                             </div>
                         </div>
                         <div class="terminal-body">
                             <p class="terminal-text">
                                 <span class="terminal-user">Fridge@IsYourRefrigerator:~$</span>
-                                sudo ./YourFreezers.sh<span class="terminal-cursor"></span>
+                                sudo ./YourFreezers.sh<span class="terminal-cursor" aria-hidden="true"></span>
                             </p>
                         </div>
                     </div>
@@ -59,118 +125,127 @@
 
                 <div class="intro-buttons">
                     <a href="#freezers" id="btn-browse-freezers" class="btn btn-blue">
-                        <span class="icon" data-icon="game"></span>Game Freezers
+                        <span class="icon" data-icon="game" aria-hidden="true"></span>
+                        <span>Game Freezers</span>
                     </a>
                     <a href="#community" id="btn-explore-community" class="btn btn-gray">Meet the Crew</a>
                     <a href="#hosting" id="btn-freezer-hosting" class="btn btn-transparent">
-                        <span class="icon" data-icon="lightning"></span>Hosting
+                        <span class="icon" data-icon="lightning" aria-hidden="true"></span>
+                        <span>Hosting</span>
                     </a>
                 </div>
             </div>
 
-            <div class="intro-media terminal">
+            <div class="intro-media terminal" aria-label="Freezer Management Console Preview">
                 <div class="terminal-header">
                     <div class="terminal-title">
-                        <span class="terminal-title-icon" data-icon="terminal"></span>
+                        <span class="terminal-title-icon" data-icon="terminal" aria-hidden="true"></span>
                         <p>Fridge Proxy // Freezer Management Panel</p>
                     </div>
                     <div class="terminal-buttons">
-                        <span class="terminal-btn" title="Minimize" aria-label="Minimize" data-icon="min"></span>
-                        <span class="terminal-btn" title="Maximize" aria-label="Maximize" data-icon="expand"></span>
-                        <span class="terminal-btn" title="Close" aria-label="Close" data-icon="close"></span>
+                        <span class="terminal-btn" title="Minimize" aria-label="Minimize preview" data-icon="min"></span>
+                        <span class="terminal-btn" title="Maximize" aria-label="Maximize preview" data-icon="expand"></span>
+                        <span class="terminal-btn" title="Close" aria-label="Close preview" data-icon="close"></span>
                     </div>
                 </div>
-                <img src="static/images/freezerconsoled.gif" alt="Freezer Management Panel" class="intro-image">
+                <img src="static/images/freezerconsoled.gif" alt="Freezer Management Panel Demonstration"
+                    class="intro-image" width="2560" height="1305" fetchpriority="high" decoding="async">
                 <div class="terminal-footer">
                     <a href="https://panel.isyourrefrigerator.online" target="_blank" rel="noopener noreferrer"
-                        class="btn btn-transparent">
-                        <span class="icon" data-icon="freezer"></span>
-                        panel.isyourrefrigerator.online
-                        <span class="icon" data-icon="open-link"></span>
+                        class="btn btn-transparent" title="Open Pelican Panel in new tab">
+                        <span class="icon" data-icon="freezer" aria-hidden="true"></span>
+                        <span>panel.isyourrefrigerator.online</span>
+                        <span class="icon" data-icon="open-link" aria-hidden="true"></span>
                     </a>
                 </div>
             </div>
         </section>
 
         <!-- 01 // PRINCIPLES -->
-        <section id="principles" class="overview-section principles-section">
+        <section id="principles" class="overview-section principles-section" aria-labelledby="principles-title">
             <h4 class="section-header-text">01 // MY PRINCIPLES</h4>
-            <h2 class="section-header-title">Overview</h2>
+            <h2 id="principles-title" class="section-header-title">Overview</h2>
             <p class="section-text">
-                How i keep IsYourRefrigerator online for You & Me, why i run the freezers for free.<br>
-                And of course why IsYourRefrigerator is online.
+                How I keep IsYourRefrigerator online for you &amp; me, why I run the freezers for free,
+                and of course why IsYourRefrigerator is online.
             </p>
             <div class="principles-boxes boxes">
-                <div class="principles-box box" id="principle-1">
+                <article class="principles-box box" id="principle-1">
                     <h4 class="principles-header-text">PRINCIPLE #1</h4>
                     <h3 class="principles-header-title">No Cost, Always Free</h3>
-                    <p class="principles-text">No paywalls, no monthly subscriptions, and no surprise invoices. Free
+                    <p class="principles-text">
+                        No paywalls, no monthly subscriptions, and no surprise invoices. Free
                         hosting for my friends, experiments, side projects, and fun little web tools. You can even
                         request a free custom egg for your server if it doesn't require much time to setup and if I have
-                        time.</p>
-
-                    <p class="principles-footer">Always free for me & friends</p>
-                </div>
-                <div class="principles-box box" id="principle-2">
+                        time.
+                    </p>
+                    <p class="principles-footer">Always free for me &amp; friends</p>
+                </article>
+                <article class="principles-box box" id="principle-2">
                     <h4 class="principles-header-text">PRINCIPLE #2</h4>
                     <h3 class="principles-header-title">Fair Share Hosting</h3>
-                    <p class="principles-text">If outsourcing dedicated freezer resources, just keep it fair.
-                        At least pay for the service and the electricity. So I can keep my refrigerator running for
-                        everyone. It won't be much per month but it will keep the freezer cold.</p>
-
+                    <p class="principles-text">
+                        If outsourcing dedicated freezer resources, just keep it fair.
+                        At least pay for the service and the electricity so I can keep my refrigerator running for
+                        everyone. It won't be much per month but it will keep the freezer cold.
+                    </p>
                     <p class="principles-footer">Always keep the refrigerator online</p>
-                </div>
-                <div class="principles-box box" id="principle-3">
+                </article>
+                <article class="principles-box box" id="principle-3">
                     <h4 class="principles-header-text">PRINCIPLE #3</h4>
                     <h3 class="principles-header-title">Hosted with Love</h3>
-                    <p class="principles-text">I do this for the love of the game, for the convenience and will never
+                    <p class="principles-text">
+                        I do this for the love of the game, for the convenience, and will never
                         save any logs about you or anyone. I don't collect any personal information about you, your
-                        friends, your projects, or your servers.</p>
-
+                        friends, your projects, or your servers.
+                    </p>
                     <p class="principles-footer">Always hosting with love</p>
-                </div>
+                </article>
             </div>
         </section>
 
         <!-- 02 // FREEZERS -->
-        <section id="freezers" class="overview-section freezers-section">
+        <section id="freezers" class="overview-section freezers-section" aria-labelledby="freezers-title">
             <div class="freezers-header">
                 <div class="freezers-header-text">
                     <h4 class="section-header-text">02 // Live Dedicated Instances</h4>
-                    <h2 class="section-header-title">Game Freezers in the Freezer</h2>
-                    <p class="section-text">Self-hosted game freezers running on self owned hardware and managed by me.
-                    </p>
+                    <h2 id="freezers-title" class="section-header-title">Game Freezers in the Freezer</h2>
+                    <p class="section-text">Self-hosted game freezers running on self-owned hardware and managed by me.</p>
                 </div>
                 <div class="freezers-header-button">
-                    <a href="#freezers" id="btn-view-freezers" class="btn btn-gray">
-                        <span class="icon" data-icon="game"></span>
+                    <button type="button" id="btn-view-freezers" class="btn btn-gray" aria-expanded="false"
+                        title="Toggle all available freezers">
+                        <span class="icon" data-icon="game" aria-hidden="true"></span>
                         <span class="btn-text">View All Freezers</span>
-                    </a>
+                    </button>
                 </div>
             </div>
-            <div id="freezers-boxes" class="freezers-boxes boxes"></div>
+            <div id="freezers-boxes" class="freezers-boxes boxes" aria-live="polite"></div>
         </section>
 
         <!-- 03 // COMMUNITY -->
-        <section id="community" class="overview-section community-section">
+        <section id="community" class="overview-section community-section" aria-labelledby="community-title">
             <h4 class="section-header-text">03 // The Community</h4>
-            <h2 class="section-header-title">The Chill Crew</h2>
+            <h2 id="community-title" class="section-header-title">The Chill Crew</h2>
             <p class="section-text">The trusted friends and co-hosting Freezers.</p>
             <div class="crew-boxes boxes">
                 <div class="crew-box box" id="crew-refrigerator">
-                    <img src="static/images/pfp-fridge.png" alt="The Refrigerator" class="crew-image">
+                    <img src="static/images/pfp-fridge.png" alt="The Refrigerator avatar" class="crew-image"
+                        width="96" height="96" loading="lazy" decoding="async">
                     <h3 class="crew-header-title">The Refrigerator (Me)</h3>
                     <h4 class="crew-header-text">Cryogenic Evaporator Officer</h4>
                     <p class="crew-footer">"Keeping the freezers cold"</p>
                 </div>
                 <div class="crew-box box" id="crew-bata">
-                    <img src="static/images/pfp-bata.png" alt="BataTheBear" class="crew-image">
+                    <img src="static/images/pfp-bata.png" alt="BataTheBear avatar" class="crew-image"
+                        width="96" height="96" loading="lazy" decoding="async">
                     <h3 class="crew-header-title">BataTheBear</h3>
                     <h4 class="crew-header-text">Cold Thermal Officer</h4>
                     <p class="crew-footer">"Serves your freezer cool"</p>
                 </div>
                 <div class="crew-box box" id="crew-dingus">
-                    <img src="static/images/pfp-dingus.png" alt="Dingus" class="crew-image">
+                    <img src="static/images/pfp-dingus.png" alt="Dingus avatar" class="crew-image"
+                        width="96" height="96" loading="lazy" decoding="async">
                     <h3 class="crew-header-title">Dingus</h3>
                     <h4 class="crew-header-text">Chilled Security Officer</h4>
                     <p class="crew-footer">"Turning coffee into ice coffee"</p>
@@ -179,17 +254,18 @@
         </section>
 
         <!-- 04 // HOSTING -->
-        <section id="hosting" class="overview-section hosting-section">
-            <h4 class="section-header-text">04 // Homelab Hosting & Infrastructure</h4>
-            <h2 class="section-header-title">Hosting & Management</h2>
-            <p class="section-text">Dedicated power, Docker containment, and personal control without the unnecessary
-                price gouge.</p>
+        <section id="hosting" class="overview-section hosting-section" aria-labelledby="hosting-title">
+            <h4 class="section-header-text">04 // Homelab Hosting &amp; Infrastructure</h4>
+            <h2 id="hosting-title" class="section-header-title">Hosting &amp; Management</h2>
+            <p class="section-text">
+                Dedicated power, Docker containment, and personal control without the unnecessary price gouge.
+            </p>
 
             <div class="hosting-main-card">
                 <div class="hosting-info">
                     <div>
                         <div class="hosting-badge">
-                            <span class="icon" data-icon="server-management"></span>
+                            <span class="icon" data-icon="server-management" aria-hidden="true"></span>
                             <span>SERVER MANAGEMENT</span>
                         </div>
                         <h2 class="hosting-title">Manage your own server</h2>
@@ -201,12 +277,14 @@
                     </div>
                     <div class="hosting-actions">
                         <a href="https://pelican.dev" target="_blank" rel="noopener noreferrer" id="btn-panel-examples"
-                            class="btn btn-blue">
-                            <span class="icon" data-icon="pic"></span>View Panel Examples
+                            class="btn btn-blue" title="View Pelican Panel documentation and screenshots">
+                            <span class="icon" data-icon="pic" aria-hidden="true"></span>
+                            <span>View Panel Examples</span>
                         </a>
                         <a href="https://panel.isyourrefrigerator.online" target="_blank" rel="noopener noreferrer"
-                            id="btn-open-panel" class="btn btn-outline">
-                            <span class="icon" data-icon="open-link"></span>Open Pelican Panel ↗
+                            id="btn-open-panel" class="btn btn-outline" title="Access live Pelican Management Panel">
+                            <span class="icon" data-icon="open-link" aria-hidden="true"></span>
+                            <span>Open Pelican Panel &nearr;</span>
                         </a>
                     </div>
                 </div>
@@ -220,18 +298,19 @@
                         </div>
                         <div class="tier-divider"></div>
                         <ul class="tier-features">
-                            <li><span class="icon" data-icon="cpu-core"></span>1 core dedicated CPU</li>
-                            <li><span class="icon" data-icon="ram-layers"></span>4 GB High-Speed RAM</li>
-                            <li><span class="icon" data-icon="panel-backups"></span>Pelican Panel + Backups</li>
+                            <li><span class="icon" data-icon="cpu-core" aria-hidden="true"></span>1 core dedicated CPU</li>
+                            <li><span class="icon" data-icon="ram-layers" aria-hidden="true"></span>4 GB High-Speed RAM</li>
+                            <li><span class="icon" data-icon="panel-backups" aria-hidden="true"></span>Pelican Panel + Backups</li>
                         </ul>
                     </div>
-                    <a href="#contact" id="btn-choose-tier" class="btn btn-blue btn-choose-tier">Choose 4 GB</a>
+                    <a href="#contact" id="btn-choose-tier" class="btn btn-blue btn-choose-tier"
+                        title="Jump to contact details for 4GB Starter Tier">Choose 4 GB</a>
                 </div>
             </div>
 
             <div class="hosting-subcards">
                 <div class="referral-card">
-                    <div class="referral-icon-wrap">
+                    <div class="referral-icon-wrap" aria-hidden="true">
                         <span class="icon" data-icon="user-plus"></span>
                     </div>
                     <div class="referral-text-content">
@@ -243,7 +322,7 @@
 
                 <div class="discord-card" id="contact">
                     <div class="discord-left">
-                        <div class="discord-icon-wrap">
+                        <div class="discord-icon-wrap" aria-hidden="true">
                             <span class="icon" data-icon="discord"></span>
                         </div>
                         <div class="discord-details">
@@ -252,15 +331,37 @@
                         </div>
                     </div>
                     <button type="button" class="btn btn-blue btn-copy-discord" id="btn-copy-discord"
-                        data-copy="Trollmeneerr" title="Click to copy Discord username">
-                        <span class="icon" data-icon="copy"></span>
+                        data-copy="Trollmeneerr" title="Click to copy Discord username" aria-label="Copy Discord username Trollmeneerr">
+                        <span class="icon" data-icon="copy" aria-hidden="true"></span>
                         <span class="btn-copy-text">Copy</span>
                     </button>
                 </div>
             </div>
         </section>
     </main>
-    <footer id="footer" class="site-footer"></footer>
+
+    <!-- Site Footer (Pre-rendered for zero CLS) -->
+    <footer id="footer" class="site-footer">
+        <section class="footer-header">
+            <div class="footer-logo-slogan">
+                <a href="/" class="brand-link" aria-label="IsYourRefrigerator.online Home">
+                    <h1 class="brand-logo">
+                        IsYourRefrigerator<span class="text-ice-blue">.online</span>
+                    </h1>
+                </a>
+                <p class="text-gray">Your Freezers. Your Rules</p>
+            </div>
+            <a href="privacy.html" id="link-privacy" class="footer-privacy-link">
+                <span class="icon" data-icon="shield" aria-hidden="true"></span>
+                <span>Privacy &amp; Hosting</span>
+            </a>
+        </section>
+        <span class="underline"></span>
+        <section id="copyright" class="footer-copyright">
+            <p class="text-gray">&copy; <span class="current-year">2026</span> IsYourRefrigerator.online &mdash; Hosted with love &amp; electricity.</p>
+            <p class="text-gray">status <span id="status" class="status-indicator" role="status" aria-live="polite"></span></p>
+        </section>
+    </footer>
 </body>
 
 </html>

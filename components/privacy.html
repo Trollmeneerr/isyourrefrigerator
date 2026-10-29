@@ -1,0 +1,87 @@
+<!-- Privacy & Hosting Popup Modal Component -->
+<div class="privacy-modal-overlay" id="privacyModal" role="dialog" aria-modal="true" aria-labelledby="privacyModalTitle" hidden>
+  <div class="privacy-modal-backdrop" id="privacyBackdrop"></div>
+  <div class="privacy-modal-card" role="document">
+    <div class="privacy-modal-header">
+      <div class="privacy-badge">
+        <span class="icon" data-icon="shield" aria-hidden="true"></span>
+        <span>GDPR COMPLIANCE &amp; HOSTING</span>
+      </div>
+      <button type="button" class="privacy-modal-close" id="closePrivacyModal" aria-label="Close privacy popup">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+
+    <div class="privacy-modal-body">
+      <h2 id="privacyModalTitle" class="privacy-modal-heading">Privacy &amp; Hosting Policy</h2>
+      <p class="privacy-modal-subtitle">
+        Transparency, privacy, and fair hosting are fundamental to IsYourRefrigerator.online.
+      </p>
+
+      <div class="privacy-content-blocks">
+        <div class="privacy-block">
+          <div class="privacy-block-header">
+            <span class="privacy-num">01</span>
+            <h3>GDPR Compliance</h3>
+          </div>
+          <p>
+            We fully comply with the European Union General Data Protection Regulation (GDPR). As a personal homelab project hosted in Europe, we strictly limit data processing to what is strictly necessary to run game freezers. We never sell, monetize, or profile user data.
+          </p>
+        </div>
+
+        <div class="privacy-block">
+          <div class="privacy-block-header">
+            <span class="privacy-num">02</span>
+            <h3>Zero Website Logs</h3>
+          </div>
+          <p>
+            This website operates with a strict <strong>Zero Logs</strong> policy. We do not store web visitor access logs, browser fingerprints, or IP addresses. We do not use tracking cookies, Google Analytics, or third-party ad networks.
+          </p>
+        </div>
+
+        <div class="privacy-block">
+          <div class="privacy-block-header">
+            <span class="privacy-num">03</span>
+            <h3>Game Server Logs (30-Day Retention)</h3>
+          </div>
+          <p>
+            Dedicated game servers (such as Minecraft, Project Zomboid, Valheim, and The Forest) generate internal technical logs (e.g. console errors, player connect/disconnect events, and crash dumps). 
+            These logs are kept for a maximum of <strong>30 days</strong> solely to monitor server health and check if any technical issues or crashes occur inside the game servers. Logs older than 30 days are automatically purged.
+          </p>
+        </div>
+
+        <div class="privacy-block">
+          <div class="privacy-block-header">
+            <span class="privacy-num">04</span>
+            <h3>Homelab Hosting Terms</h3>
+          </div>
+          <p>
+            Freezer hosting is hosted with love for friends and community experiments. Fair resource usage is requested so the refrigerator stays online for everyone.
+          </p>
+        </div>
+      </div>
+
+      <div class="privacy-contact-box">
+        <div class="privacy-contact-icon">
+          <span class="icon" data-icon="terminal" aria-hidden="true"></span>
+        </div>
+        <div class="privacy-contact-details">
+          <span class="privacy-contact-label">GDPR &amp; PRIVACY CONTACT</span>
+          <a href="mailto:fridge@isyourrefrigerator.online" class="privacy-contact-email">
+            fridge@isyourrefrigerator.online
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="privacy-modal-footer">
+      <button type="button" class="btn btn-blue" id="btnAcknowledgePrivacy">
+        <span>Understood</span>
+      </button>
+    </div>
+  </div>
+</div>
+

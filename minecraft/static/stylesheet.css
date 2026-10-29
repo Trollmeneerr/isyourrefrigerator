@@ -1,346 +1,154 @@
 /* =========================================================================
-   Minecraft Page Styling (Seamless integration with stylesheet.css)
-   isyourrefrigerator.online/minecraft
+   Minecraft Page Styling
+   Location: /minecraft/static/stylesheet.css
+   Inherits design tokens and .server-card from /static/style/stylesheet.css
    ========================================================================= */
 
-[hidden] {
-    display: none !important;
-}
-
 .main-content {
-    min-height: calc(100vh - 7vh - 200px);
+  min-height: calc(100vh - 7vh - 180px);
 }
 
-.mc-intro,
-.zb-intro {
-    padding: 24px 0 16px;
+.mc-intro {
+  padding: 24px 0 16px;
 }
 
-/* ---------- Server Card ---------- */
-.server-card {
-    background-color: rgba(10, 25, 48, 0.78);
-    border: 2px solid #132a4a;
-    border-radius: 12px;
-    padding: 24px;
-    backdrop-filter: blur(12px);
-    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.25);
-    margin-bottom: 28px;
-    transition: border-color 0.25s ease, box-shadow 0.25s ease;
-}
-
-.server-card:hover {
-    border-color: #148dc0;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35), 0 0 20px rgba(40, 185, 241, 0.15);
-}
-
-.server-top {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 14px;
-}
-
-.server-icon {
-    width: 38px;
-    height: 38px;
-    border-radius: 8px;
-    background: rgba(40, 185, 241, 0.08);
-    border: 1px solid rgba(40, 185, 241, 0.25);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #28b9f1;
-}
-
-.server-icon svg {
-    width: 20px;
-    height: 20px;
-}
-
-.server-status-pill {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    font-family: "Cascadia Code", monospace;
-    font-size: 11px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.8px;
-    padding: 4px 10px;
-    border-radius: 12px;
-    color: #4ade80;
-    background: rgba(74, 222, 128, 0.12);
-    border: 1px solid rgba(74, 222, 128, 0.3);
-}
-
-.server-card h3 {
-    font-family: spartan, sans-serif;
-    font-size: 22px;
-    color: #ffffff;
-    margin-bottom: 4px;
-}
-
-.server-subtitle {
-    font-family: "Cascadia Code", monospace;
-    font-size: 13px;
-    font-weight: 600;
-    color: #28b9f1;
-    margin-bottom: 10px;
-}
-
-.server-desc {
-    color: #94a3b8;
-    font-size: 14px;
-    line-height: 1.6;
-    margin-bottom: 12px;
-}
-
-.server-card .managed {
-    font-family: "Cascadia Code", monospace;
-    font-size: 11px;
-    font-weight: 500;
-    color: rgb(185, 185, 185);
-    margin-bottom: 14px;
-}
-
-.server-specs {
-    background-color: #000f24;
-    border: 1px solid rgba(40, 185, 241, 0.22);
-    border-radius: 8px;
-    padding: 10px 14px;
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    margin-bottom: 16px;
-    box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.55);
-}
-
-.spec-item {
-    display: flex;
-    align-items: center;
-    font-family: "Cascadia Code", monospace;
-    font-size: 11.5px;
-    color: #cbd5e1;
-}
-
-.spec-item::before {
-    content: "$";
-    color: #28b9f1;
-    font-weight: 700;
-    margin-right: 8px;
-    opacity: 0.9;
-}
-
-.spec-label {
-    color: #28b9f1;
-    margin-right: 6px;
-    font-weight: 600;
-}
-
-.spec-val {
-    color: #cbd5e1;
-}
-
-.server-connect-group {
-    display: flex;
-    gap: 12px;
-    flex-wrap: wrap;
-    padding-top: 10px;
-    border-top: 1px solid rgba(255, 255, 255, 0.07);
-}
-
-.server-connect,
-.direct-ip-pill {
-    flex: 1;
-    min-width: 220px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 8px;
-    font-family: "Cascadia Code", monospace;
-    font-size: 12px;
-    font-weight: 600;
-    color: #28b9f1;
-    background: rgba(40, 185, 241, 0.08);
-    border: 1px solid rgba(40, 185, 241, 0.22);
-    padding: 10px 16px;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    user-select: none;
-    text-align: center;
-}
-
-.server-connect:hover,
-.direct-ip-pill:hover {
-    background: rgba(40, 185, 241, 0.18);
-    border-color: #28b9f1;
-    color: #ffffff;
-    box-shadow: 0 0 12px rgba(40, 185, 241, 0.35);
-}
-
-.direct-ip-label {
-    color: #94a3b8;
-    margin-right: 4px;
-}
-
-/* ---------- Map Section & Iframe ---------- */
+/* Map Section & Interactive Iframe Container */
 .map-section {
-    width: 100%;
-    margin-bottom: 32px;
+  width: 100%;
+  margin-bottom: 32px;
 }
 
 .map-container {
-    background-color: rgba(10, 25, 48, 0.78);
-    border: 2px solid #132a4a;
-    border-radius: 12px;
-    padding: 24px;
-    backdrop-filter: blur(12px);
-    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.25);
-    display: flex;
-    flex-direction: column;
-    gap: 18px;
-    transition: border-color 0.25s ease, box-shadow 0.25s ease;
+  background-color: var(--bg-card, rgba(10, 25, 48, 0.78));
+  border: 2px solid var(--border-color, #132a4a);
+  border-radius: 12px;
+  padding: 24px;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: var(--shadow-card, 0 4px 24px rgba(0, 0, 0, 0.25));
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  transition: border-color var(--transition-smooth, 0.25s ease), box-shadow var(--transition-smooth, 0.25s ease);
 }
 
 .map-container:hover {
-    border-color: #148dc0;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35), 0 0 20px rgba(40, 185, 241, 0.15);
+  border-color: var(--border-card-hover, #148dc0);
+  box-shadow: var(--shadow-card-hover, 0 10px 30px rgba(0, 0, 0, 0.35));
 }
 
 .map-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 14px;
 }
 
 .map-title-wrap {
-    display: flex;
-    align-items: center;
-    gap: 14px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
 }
 
 .map-icon {
-    width: 38px;
-    height: 38px;
-    border-radius: 8px;
-    background: rgba(40, 185, 241, 0.08);
-    border: 1px solid rgba(40, 185, 241, 0.25);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #28b9f1;
-    flex-shrink: 0;
+  width: 38px;
+  height: 38px;
+  border-radius: 8px;
+  background: rgba(40, 185, 241, 0.08);
+  border: 1px solid rgba(40, 185, 241, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent-ice-blue, #28b9f1);
+  flex-shrink: 0;
 }
 
 .map-icon svg {
-    width: 20px;
-    height: 20px;
+  width: 20px;
+  height: 20px;
 }
 
 .map-header h2 {
-    font-family: spartan, sans-serif;
-    font-size: 20px;
-    color: #ffffff;
-    margin: 0 0 4px;
+  font-family: var(--font-spartan, spartan, Inter, sans-serif);
+  font-size: 20px;
+  color: #ffffff;
+  margin: 0 0 4px;
 }
 
 .map-header p {
-    font-family: "Cascadia Code", monospace;
-    font-size: 12.5px;
-    color: #94a3b8;
-    margin: 0;
+  font-family: var(--font-mono, "Cascadia Code", monospace);
+  font-size: 12.5px;
+  color: var(--text-muted, #94a3b8);
+  margin: 0;
 }
 
 .map-actions {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    flex-wrap: wrap;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
 }
 
 .map-frame-wrapper {
-    position: relative;
-    width: 100%;
-    height: 720px;
-    min-height: 480px;
-    border-radius: 8px;
-    overflow: hidden;
-    background: #000f24;
-    border: 1px solid rgba(40, 185, 241, 0.22);
-    box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.55);
+  position: relative;
+  width: 100%;
+  height: 720px;
+  min-height: 440px;
+  border-radius: 8px;
+  overflow: hidden;
+  background: var(--bg-terminal, #000f24);
+  border: 1px solid var(--border-card, rgba(40, 185, 241, 0.22));
+  box-shadow: var(--shadow-terminal, inset 0 2px 10px rgba(0, 0, 0, 0.55));
 }
 
-.map-frame-wrapper:fullscreen {
-    width: 100vw;
-    height: 100vh;
-    border-radius: 0;
-    border: none;
-    padding: 0;
-}
-
+.map-frame-wrapper:fullscreen,
 .map-frame-wrapper:-webkit-full-screen {
-    width: 100vw;
-    height: 100vh;
-    border-radius: 0;
-    border: none;
-    padding: 0;
+  width: 100vw;
+  height: 100vh;
+  border-radius: 0;
+  border: none;
+  padding: 0;
 }
 
 .map-frame {
-    width: 100%;
-    height: 100%;
-    border: none;
-    display: block;
-    background: #000f24;
+  width: 100%;
+  height: 100%;
+  border: none;
+  display: block;
+  background: var(--bg-terminal, #000f24);
 }
 
-/* ---------- Responsive Layout ---------- */
+/* Responsive Overrides */
 @media (max-width: 900px) {
-    .map-frame-wrapper {
-        height: 580px;
-    }
+  .map-frame-wrapper {
+    height: 540px;
+  }
 }
 
 @media (max-width: 640px) {
-    .map-header {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-
-    .map-actions {
-        width: 100%;
-    }
-
-    .map-actions .btn {
-        flex: 1;
-        justify-content: center;
-    }
-
-    .map-frame-wrapper {
-        height: 460px;
-    }
-
-    .server-connect-group {
-        flex-direction: column;
-    }
-
-    .server-connect,
-    .direct-ip-pill {
-        min-width: 100%;
-    }
+  .map-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .map-actions {
+    width: 100%;
+  }
+  .map-actions .btn {
+    flex: 1;
+    justify-content: center;
+  }
+  .map-frame-wrapper {
+    height: 440px;
+  }
 }
 
 @media (max-width: 480px) {
-    .server-card,
-    .map-container {
-        padding: 16px 14px;
-    }
-
-    .map-frame-wrapper {
-        height: 400px;
-    }
+  .map-container {
+    padding: 16px 14px;
+  }
+  .map-frame-wrapper {
+    height: 380px;
+    min-height: 320px;
+  }
 }
-

@@ -9,43 +9,74 @@
         content="Dedicated Minecraft Paper Survival server on IsYourRefrigerator.online. Direct connect via play.isyourrefrigerator.online:25565 or direct IP 158.101.195.224:25565. View the live world map.">
     <meta name="keywords"
         content="Minecraft dedicated server, Minecraft Paper Survival, IsYourRefrigerator Minecraft, play.isyourrefrigerator.online, 158.101.195.224, Minecraft live map">
+    <meta name="author" content="The Refrigerator">
     <meta name="robots" content="index, follow">
     <link rel="canonical" href="https://isyourrefrigerator.online/minecraft/">
-    <link rel="shortcut icon" href="../static/images/isyourrefrigerator.online_logo_small.png" type="image/x-icon"
-        onerror="this.onerror=null;this.href='/static/images/isyourrefrigerator.online_logo_small.png'">
 
-    <!-- Typography -->
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://isyourrefrigerator.online/minecraft/">
+    <meta property="og:title" content="Minecraft Dedicated Server &amp; Live Map | IsYourRefrigerator.online">
+    <meta property="og:description"
+        content="Paper survival freezer running latest updates. Direct connect and view the live world map.">
+    <meta property="og:image" content="https://isyourrefrigerator.online/static/images/IsYourRefrigerator.online.png">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="../static/images/isyourrefrigerator.online_logo_small.png">
+    <link rel="apple-touch-icon" href="../static/images/isyourrefrigerator.online_logo_small.png">
+
+    <!-- Preconnect & Typography -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css2?family=Cascadia+Code:ital,wght@0,200..700;1,200..700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Cascadia+Code:ital,wght@0,400..700;1,400..700&family=Inter:ital,opsz,wght@0,14..32,300..900;1,14..32,300..900&family=JetBrains+Mono:ital,wght@0,400..700;1,400..700&display=swap"
         rel="stylesheet">
 
-    <!-- Active Site Stylesheet -->
-    <link rel="stylesheet" href="../static/style/stylesheet.css"
-        onerror="this.onerror=null;this.href='/static/style/stylesheet.css'">
-    <link rel="stylesheet" href="static/stylesheet.css"
-        onerror="this.onerror=null;this.href='/minecraft/static/stylesheet.css'">
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="../static/style/stylesheet.css">
+    <link rel="stylesheet" href="static/stylesheet.css">
 
-    <!-- Global Layout & Site Sprite Scripts -->
+    <!-- Layout & Minecraft Specific Scripts -->
     <script src="../static/layout.js" defer></script>
-    <script src="../static/script.js" defer></script>
-
-    <!-- Minecraft Specific Scripts -->
     <script src="static/script.js" defer></script>
 </head>
 
 <body>
 
-    <!-- Site Header -->
-    <header id="header" class="site-header"></header>
+    <!-- Site Header (Pre-rendered for zero CLS) -->
+    <header id="header" class="site-header">
+        <div class="header-section">
+            <a href="../" class="brand-link" aria-label="IsYourRefrigerator.online Home">
+                <img class="brand-pic" src="../static/images/isyourrefrigerator.online_logo_small.png"
+                    alt="IsYourRefrigerator Logo" width="44" height="44" decoding="async">
+                <h1 class="brand-logo">
+                    IsYourRefrigerator<span class="text-ice-blue">.online</span>
+                </h1>
+            </a>
+        </div>
+        <div class="header-section" style="gap: 12px;">
+            <a href="../" id="btn-header-back" class="btn btn-gray btn-header-back" title="Back to Main Site">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <line x1="19" y1="12" x2="5" y2="12"></line>
+                    <polyline points="12 19 5 12 12 5"></polyline>
+                </svg>
+                <span>Back to Main Site</span>
+            </a>
+            <a href="https://panel.isyourrefrigerator.online" target="_blank" rel="noopener noreferrer"
+                id="btn-freezer-panel" class="btn btn-blue transition-fast" title="Open Pelican Freezer Management Panel">
+                <span class="icon" data-icon="freezer"></span>
+                <span>Freezer Panel</span>
+            </a>
+        </div>
+    </header>
 
     <!-- Main Minecraft Content -->
     <main id="app" class="main-content">
         <div class="wrap">
-            <section class="mc-intro overview-section">
+            <section class="mc-intro overview-section" aria-labelledby="mc-title">
                 <h4 class="section-header-text">02 // DEDICATED FREEZER</h4>
-                <h1 class="section-header-title">Minecraft</h1>
+                <h1 id="mc-title" class="section-header-title">Minecraft</h1>
                 <p class="section-text">Paper survival freezer running the latest updates. Explore the realm, build together, and track player activity on the live world map.</p>
             </section>
 
@@ -54,14 +85,14 @@
                 <div class="server-card">
                     <div class="server-top">
                         <div class="server-icon" title="Minecraft Server">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                                 <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
                                 <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
                                 <line x1="12" y1="22.08" x2="12" y2="12"></line>
                             </svg>
                         </div>
                         <div class="server-status-pill">
-                            <span class="indicator-dot" id="srvDot"></span>
+                            <span class="indicator-dot" id="srvDot" aria-hidden="true"></span>
                             <span id="srvText">Checking...</span>
                         </div>
                     </div>
@@ -75,10 +106,10 @@
                         <div class="spec-item"><span class="spec-label">DISK:</span><span class="spec-val">50GB SSD</span></div>
                     </div>
                     <div class="server-connect-group">
-                        <div class="server-connect" id="copyAddr" role="button" tabindex="0" title="Click to copy server hostname">
+                        <div class="server-connect" id="copyAddr" role="button" tabindex="0" title="Click to copy server hostname" aria-label="Copy server hostname: play.isyourrefrigerator.online:25565">
                             <span class="ip-display">play.isyourrefrigerator.online:25565</span>
                         </div>
-                        <div class="direct-ip-pill" id="copyDirectAddr" role="button" tabindex="0" title="Click to copy direct IP">
+                        <div class="direct-ip-pill" id="copyDirectAddr" role="button" tabindex="0" title="Click to copy direct IP" aria-label="Copy direct IP: 158.101.195.224:25565">
                             <span class="direct-ip-label">Direct IP:</span>
                             <span class="direct-ip-val">158.101.195.224:25565</span>
                         </div>
@@ -105,14 +136,14 @@
                         </div>
                         <div class="map-actions">
                             <button type="button" class="btn btn-gray" id="btnMapFullscreen" title="Toggle fullscreen map">
-                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                                     <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path>
                                 </svg>
                                 <span>Fullscreen</span>
                             </button>
                             <a href="https://isyourrefrigerator.online/minecraft/map/" target="_blank" rel="noopener noreferrer" class="btn btn-blue" title="Open map in new tab">
                                 <span>Open Fullscreen</span>
-                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                                     <line x1="7" y1="17" x2="17" y2="7"></line>
                                     <polyline points="7 7 17 7 17 17"></polyline>
                                 </svg>
@@ -120,7 +151,7 @@
                         </div>
                     </div>
                     <div class="map-frame-wrapper" id="mapWrapper">
-                        <iframe id="mapFrame" class="map-frame" src="https://isyourrefrigerator.online/minecraft/map/" title="Minecraft Live World Map" loading="lazy" allowfullscreen="true" allow="fullscreen">
+                        <iframe id="mapFrame" class="map-frame" src="https://isyourrefrigerator.online/minecraft/map/" title="Minecraft Live World Map" loading="lazy" allowfullscreen="true">
                             <p>Your browser does not support iframes. <a href="https://isyourrefrigerator.online/minecraft/map/" target="_blank" rel="noopener noreferrer">Click here to open the live world map</a>.</p>
                         </iframe>
                     </div>
@@ -129,10 +160,29 @@
         </div>
     </main>
 
-    <!-- Site Footer -->
-    <footer id="footer" class="site-footer"></footer>
+    <!-- Site Footer (Pre-rendered for zero CLS) -->
+    <footer id="footer" class="site-footer">
+        <section class="footer-header">
+            <div class="footer-logo-slogan">
+                <a href="../" class="brand-link" aria-label="IsYourRefrigerator.online Home">
+                    <h1 class="brand-logo">
+                        IsYourRefrigerator<span class="text-ice-blue">.online</span>
+                    </h1>
+                </a>
+                <p class="text-gray">Your Freezers. Your Rules</p>
+            </div>
+            <a href="../privacy.html" id="link-privacy" class="footer-privacy-link">
+                <span class="icon" data-icon="shield"></span>
+                <span>Privacy &amp; Hosting</span>
+            </a>
+        </section>
+        <span class="underline"></span>
+        <section id="copyright" class="footer-copyright">
+            <p class="text-gray">&copy; <span class="current-year">2026</span> IsYourRefrigerator.online &mdash; Hosted with love &amp; electricity.</p>
+            <p class="text-gray">status <span id="status" class="status-indicator" role="status" aria-live="polite"></span></p>
+        </section>
+    </footer>
 
 </body>
 
 </html>
-
