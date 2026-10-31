@@ -14,6 +14,7 @@ const CONFIG = {
     managedBy: 'BataTheBear',
     address: 'play.isyourrefrigerator.online:16261',
     directIp: '158.101.195.224:16261',
+    workshopUrl: '#',
     specs: [
       ['CPU', 'I7-6700k 4 Cores'],
       ['RAM', 'DDR4 16GB'],
@@ -44,37 +45,70 @@ function renderServer() {
   if (!box) return;
 
   box.innerHTML = `
-    <div class="server-card">
-      <div class="server-top">
-        <div class="server-icon" title="Project Zomboid Server">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <path d="M12 2v4m0 12v4M4.93 4.93l2.83 2.83m8.48 8.48l2.83 2.83M2 12h4m12 0h4M4.93 19.07l2.83-2.83m8.48-8.48l2.83-2.83"></path>
-          </svg>
-        </div>
-        <div class="server-status-pill">
-          <span class="indicator-dot" id="srvDot"></span>
-          <span id="srvText">Checking...</span>
-        </div>
-      </div>
-      <h3>${esc(s.name)}</h3>
-      <div class="server-subtitle">${esc(s.subtitle)}</div>
-      <p class="server-desc">${esc(s.description)}</p>
-      <p class="managed">Managed by ${esc(s.managedBy)}</p>
-      <div class="server-specs">
-        ${s.specs.map(([k, v]) => `
-          <div class="spec-item">
-            <span class="spec-label">${esc(k)}:</span>
-            <span class="spec-val">${esc(v)}</span>
+    <div class="server-card server-main-card">
+      <div class="server-info">
+        <div>
+          <div class="server-top">
+            <div class="server-icon" data-icon="crosshair" title="Project Zomboid Server"></div>
+            <div class="server-status-pill">
+              <span class="indicator-dot" id="srvDot" aria-hidden="true"></span>
+              <span id="srvText">Checking...</span>
+            </div>
           </div>
-        `).join('')}
-      </div>
-      <div class="server-connect-group">
-        <div class="server-connect" id="copyAddr" role="button" tabindex="0" title="Click to copy server hostname" aria-label="Copy server hostname: ${esc(s.address)}">
-          <span class="ip-display">${esc(s.address)}</span>
+          <h3>${esc(s.name)}</h3>
+          <div class="server-subtitle">${esc(s.subtitle)}</div>
+          <p class="server-desc">${esc(s.description)}</p>
+          <p class="managed">Managed by ${esc(s.managedBy)}</p>
+          <div class="server-specs">
+            ${s.specs.map(([k, v]) => `
+              <div class="spec-item">
+                <span class="spec-label">${esc(k)}:</span>
+                <span class="spec-val">${esc(v)}</span>
+              </div>
+            `).join('')}
+          </div>
         </div>
-        <div class="direct-ip-pill" id="copyDirectAddr" role="button" tabindex="0" title="Click to copy direct IP" aria-label="Copy direct IP: ${esc(s.directIp)}">
-          <span class="direct-ip-label">Direct IP:</span>
-          <span class="direct-ip-val">${esc(s.directIp)}</span>
+        <div class="server-connect-group">
+          <div class="server-connect" id="copyAddr" role="button" tabindex="0" title="Click to copy server hostname" aria-label="Copy server hostname: ${esc(s.address)}">
+            <span class="ip-display">${esc(s.address)}</span>
+          </div>
+          <div class="direct-ip-pill" id="copyDirectAddr" role="button" tabindex="0" title="Click to copy direct IP" aria-label="Copy direct IP: ${esc(s.directIp)}">
+            <span class="direct-ip-label">Direct IP:</span>
+            <span class="direct-ip-val">${esc(s.directIp)}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Workshop / Mod Collection Nested Card -->
+      <div class="server-downloads-card" aria-label="Server Mod Collection">
+        <div>
+          <div class="downloads-card-header">
+            <span class="spec-label">WORKSHOP</span>
+            <span class="downloads-card-badge">Build 42</span>
+          </div>
+          <div class="downloads-card-title">Mod Collection</div>
+          <div class="tier-divider"></div>
+          <ul class="downloads-features">
+            <li>
+              <span class="icon" data-icon="ram-layers"></span>
+              <span>Curated QoL &amp; Survival Mods</span>
+            </li>
+            <li>
+              <span class="icon" data-icon="game"></span>
+              <span>Auto-Installs On Connect</span>
+            </li>
+            <li>
+              <span class="icon" data-icon="shield"></span>
+              <span>Recommended &amp; Tested</span>
+            </li>
+          </ul>
+        </div>
+        <div class="downloads-card-buttons">
+          <!-- Set your workshop collection link in CONFIG.server.workshopUrl -->
+          <a href="${esc(s.workshopUrl || '#')}" class="btn btn-blue btn-download" title="View Steam Workshop Collection" target="_blank" rel="noopener noreferrer">
+            <span class="icon" data-icon="download"></span>
+            <span>Workshop Collection</span>
+          </a>
         </div>
       </div>
     </div>`;
@@ -110,7 +144,7 @@ function renderServer() {
 
   setupCopy('copyAddr', s.address);
   setupCopy('copyDirectAddr', s.directIp);
-
+  if (window.renderIcons) window.renderIcons(box);
   refreshStatus();
 }
 
