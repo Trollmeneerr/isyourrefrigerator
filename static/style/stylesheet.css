@@ -2068,3 +2068,134 @@ main,
     padding: 24px 18px;
   }
 }
+
+/* =============================================================================
+   19. Toast Notification System (Bottom-Right)
+   ============================================================================= */
+.toast-container {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-width: 440px;
+  width: calc(100vw - 32px);
+  pointer-events: none;
+}
+
+.copy-toast {
+  pointer-events: auto;
+  background: rgba(10, 25, 48, 0.96);
+  border: 1px solid rgba(40, 185, 241, 0.4);
+  border-radius: 12px;
+  padding: 14px 16px;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.7), 0 0 20px rgba(40, 185, 241, 0.2);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  transform: translateY(16px) scale(0.96);
+  opacity: 0;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease;
+}
+
+.copy-toast.show {
+  transform: translateY(0) scale(1);
+  opacity: 1;
+}
+
+.copy-toast.hide {
+  transform: translateY(10px) scale(0.96);
+  opacity: 0;
+}
+
+.copy-toast-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  font-family: var(--font-spartan, "League Spartan", Inter, sans-serif);
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--accent-ice-blue, #28b9f1);
+  letter-spacing: 0.3px;
+}
+
+.copy-toast-header-left {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.copy-toast-header-left .icon {
+  width: 16px;
+  height: 16px;
+  color: var(--accent-ice-blue, #28b9f1);
+}
+
+.copy-toast-close {
+  background: none;
+  border: none;
+  color: var(--text-muted, #94a3b8);
+  cursor: pointer;
+  padding: 2px 6px;
+  font-size: 18px;
+  line-height: 1;
+  border-radius: 4px;
+  transition: color 0.15s ease, background-color 0.15s ease;
+}
+
+.copy-toast-close:hover {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.copy-toast-body {
+  font-family: var(--font-mono, "Cascadia Code", monospace);
+  font-size: 12px;
+  color: var(--text-secondary, #cbd5e1);
+  background: var(--bg-terminal, #000f24);
+  border: 1px solid rgba(40, 185, 241, 0.2);
+  border-radius: 6px;
+  padding: 8px 10px;
+  white-space: pre-wrap;
+  word-break: break-all;
+  max-height: 120px;
+  overflow-y: auto;
+  line-height: 1.45;
+  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.4);
+}
+
+.copy-toast-body::-webkit-scrollbar {
+  width: 5px;
+}
+.copy-toast-body::-webkit-scrollbar-thumb {
+  background: rgba(40, 185, 241, 0.35);
+  border-radius: 3px;
+}
+.copy-toast-body::-webkit-scrollbar-thumb:hover {
+  background: rgba(40, 185, 241, 0.6);
+}
+
+.btn-download.copied {
+  background-color: var(--status-online-bg);
+  border: 1px solid var(--status-online-border);
+  color: var(--status-online);
+  box-shadow: 0 0 14px rgba(74, 222, 128, 0.3);
+}
+
+.btn-download.copied .icon {
+  color: var(--status-online);
+}
+
+@media (max-width: 480px) {
+  .toast-container {
+    bottom: 16px;
+    right: 16px;
+    width: calc(100vw - 32px);
+  }
+}

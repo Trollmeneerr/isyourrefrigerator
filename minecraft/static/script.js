@@ -36,6 +36,9 @@ function setupCopyHandlers() {
       target.dataset.originalText = orig;
 
       if (span) span.textContent = 'Copied!';
+      if (window.showCopiedToast) {
+        window.showCopiedToast(text);
+      }
       clearTimeout(target._copyTimeout);
       target._copyTimeout = setTimeout(() => {
         target.classList.remove('copied');

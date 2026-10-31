@@ -15,6 +15,7 @@ const CONFIG = {
     address: 'play.isyourrefrigerator.online:16261',
     directIp: '158.101.195.224:16261',
     workshopUrl: '#',
+    workshopItems: 'WorkshopItems=3388844542;3705029261;3171167894;3402491515;3631989559;2799152995;2618213077;2811383142;3110911330;3779315249;3435796523;2942793445;2642541073;3409946507;3799523320;3362376892;3610005735;3402493701;3797252119;3428369137;3753313963;3683878228;3670133839;2705406713;3677217949;2142622992;2812326159;2684285534;3800471544;3401134276;3409472393;3546314080;2987772693',
     specs: [
       ['CPU', 'I7-6700k 4 Cores'],
       ['RAM', 'DDR4 16GB'],
@@ -72,10 +73,6 @@ function renderServer() {
           <div class="server-connect" id="copyAddr" role="button" tabindex="0" title="Click to copy server hostname" aria-label="Copy server hostname: ${esc(s.address)}">
             <span class="ip-display">${esc(s.address)}</span>
           </div>
-          <div class="direct-ip-pill" id="copyDirectAddr" role="button" tabindex="0" title="Click to copy direct IP" aria-label="Copy direct IP: ${esc(s.directIp)}">
-            <span class="direct-ip-label">Direct IP:</span>
-            <span class="direct-ip-val">${esc(s.directIp)}</span>
-          </div>
         </div>
       </div>
 
@@ -104,11 +101,16 @@ function renderServer() {
           </ul>
         </div>
         <div class="downloads-card-buttons">
-          <!-- Set your workshop collection link in CONFIG.server.workshopUrl -->
-          <a href="${esc(s.workshopUrl || '#')}" class="btn btn-blue btn-download" title="View Steam Workshop Collection" target="_blank" rel="noopener noreferrer">
-            <span class="icon" data-icon="download"></span>
-            <span>Workshop Collection</span>
-          </a>
+          <button type="button" id="copyWorkshop" class="btn btn-blue btn-download" title="Click to copy Workshop Items list" aria-label="Copy workshop mod list">
+            <span class="icon" data-icon="copy"></span>
+            <span>Workshop List</span>
+          </button>
+          ${s.workshopUrl && s.workshopUrl !== '#' ? `
+            <a href="${esc(s.workshopUrl)}" class="btn btn-outline btn-download" title="View Steam Workshop Collection" target="_blank" rel="noopener noreferrer">
+              <span class="icon" data-icon="download"></span>
+              <span>Workshop Collection</span>
+            </a>
+          ` : ''}
         </div>
       </div>
     </div>`;
@@ -119,17 +121,36 @@ function renderServer() {
     const copy = async () => {
       try {
         await navigator.clipboard.writeText(text);
-      } catch (_) {}
+      } catch (_) { }
       el.classList.add('copied');
-      const span = el.querySelector('.ip-display, .direct-ip-val');
+      const span = el.querySelector('.ip-display, .direct-ip-val, .btn-text') || el.querySelector('span:not(.icon)') || el;
       const orig = el.dataset.originalText || (span ? span.textContent : text);
       el.dataset.originalText = orig;
 
+      const icon = el.querySelector('.icon');
+      const origIcon = el.dataset.originalIcon || (icon ? icon.dataset.icon : '');
+      if (icon && !el.dataset.originalIcon) el.dataset.originalIcon = origIcon;
+
       if (span) span.textContent = 'Copied!';
+      if (icon) {
+        icon.setAttribute('data-icon', 'check');
+        if (window.renderIcons) window.renderIcons(el);
+      }
+
+      if (typeof showCopiedToast === 'function') {
+        showCopiedToast(text);
+      } else if (typeof window.showCopiedToast === 'function') {
+        window.showCopiedToast(text);
+      }
+
       clearTimeout(el._copyTimeout);
       el._copyTimeout = setTimeout(() => {
         el.classList.remove('copied');
         if (span) span.textContent = orig;
+        if (icon && origIcon) {
+          icon.setAttribute('data-icon', origIcon);
+          if (window.renderIcons) window.renderIcons(el);
+        }
       }, 1800);
     };
 
@@ -144,6 +165,7 @@ function renderServer() {
 
   setupCopy('copyAddr', s.address);
   setupCopy('copyDirectAddr', s.directIp);
+  setupCopy('copyWorkshop', s.workshopItems);
   if (window.renderIcons) window.renderIcons(box);
   refreshStatus();
 }
@@ -167,12 +189,85 @@ async function refreshStatus() {
         label = online ? 'Online' : 'Offline';
         break;
       }
-    } catch (_) {}
+    } catch (_) { }
   }
 
   dot.className = `indicator-dot ${status}`;
   if (text) text.textContent = label;
 }
+
+function showCopiedToast(text, label = 'Copied to clipboard') {
+  if (typeof window.showCopiedToast === 'function' && window.showCopiedToast !== showCopiedToast) {
+    return window.showCopiedToast(text, label);
+  }
+  let container = document.getElementById('toast-container');
+  if (!container) {
+    container = document.createElement('div');
+    container.id = 'toast-container';
+    container.className = 'toast-container';
+    container.setAttribute('aria-live', 'polite');
+    container.setAttribute('aria-atomic', 'true');
+    document.body.appendChild(container);
+  }
+
+  while (container.children.length >= 3) {
+    container.removeChild(container.firstChild);
+  }
+
+  const toast = document.createElement('div');
+  toast.className = 'copy-toast';
+  toast.setAttribute('role', 'status');
+
+  const header = document.createElement('div');
+  header.className = 'copy-toast-header';
+
+  const headerLeft = document.createElement('div');
+  headerLeft.className = 'copy-toast-header-left';
+  headerLeft.innerHTML = `
+    <span class="icon" data-icon="check"></span>
+    <span class="copy-toast-title"></span>
+  `;
+  const titleSpan = headerLeft.querySelector('.copy-toast-title');
+  if (titleSpan) titleSpan.textContent = label;
+
+  const closeBtn = document.createElement('button');
+  closeBtn.type = 'button';
+  closeBtn.className = 'copy-toast-close';
+  closeBtn.setAttribute('aria-label', 'Close notification');
+  closeBtn.innerHTML = '&times;';
+
+  header.append(headerLeft, closeBtn);
+
+  const body = document.createElement('div');
+  body.className = 'copy-toast-body';
+  body.textContent = text;
+
+  toast.append(header, body);
+  container.appendChild(toast);
+
+  if (window.renderIcons) window.renderIcons(toast);
+
+  requestAnimationFrame(() => {
+    toast.classList.add('show');
+  });
+
+  const dismiss = () => {
+    toast.classList.remove('show');
+    toast.classList.add('hide');
+    setTimeout(() => {
+      if (toast.parentNode) toast.parentNode.removeChild(toast);
+    }, 250);
+  };
+
+  closeBtn.addEventListener('click', dismiss);
+  const timeoutId = setTimeout(dismiss, 4000);
+  toast.addEventListener('mouseenter', () => clearTimeout(timeoutId));
+  toast.addEventListener('mouseleave', () => {
+    clearTimeout(timeoutId);
+    setTimeout(dismiss, 2000);
+  });
+}
+window.showCopiedToast = showCopiedToast;
 
 /* ---------- Checklists ---------- */
 
@@ -358,14 +453,14 @@ function startLive() {
       try {
         state = JSON.parse(e.data);
         renderChecks();
-      } catch (_) {}
+      } catch (_) { }
     };
     events.onerror = () => {
       setSync('Reconnecting...', 'degraded');
       if (events.readyState !== EventSource.CLOSED) return;
 
       let saved = '';
-      try { saved = sessionStorage.getItem(SESSION_KEY) || ''; } catch (_) {}
+      try { saved = sessionStorage.getItem(SESSION_KEY) || ''; } catch (_) { }
       const retry = async () => {
         const result = await unlock(saved);
         if (result === 'ok') connect();
@@ -399,7 +494,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   };
 
   let saved = '';
-  try { saved = sessionStorage.getItem(SESSION_KEY) || ''; } catch (_) {}
+  try { saved = sessionStorage.getItem(SESSION_KEY) || ''; } catch (_) { }
   if (saved && (await unlock(saved)) === 'ok') {
     showApp();
     return;
@@ -416,7 +511,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       if (btn) btn.disabled = false;
 
       if (result === 'ok') {
-        try { sessionStorage.setItem(SESSION_KEY, input.value); } catch (_) {}
+        try { sessionStorage.setItem(SESSION_KEY, input.value); } catch (_) { }
         showApp();
       } else if (result === 'wrong') {
         say('Wrong password.');

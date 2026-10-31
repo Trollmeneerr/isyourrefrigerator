@@ -410,6 +410,80 @@
     }
   };
 
+  // ===========================================================================
+  // Toast Notification System (Bottom-Right)
+  // ===========================================================================
+  function showCopiedToast(text, label = "Copied to clipboard") {
+    if (!text) return;
+    let container = document.getElementById("toast-container");
+    if (!container) {
+      container = document.createElement("div");
+      container.id = "toast-container";
+      container.className = "toast-container";
+      container.setAttribute("aria-live", "polite");
+      container.setAttribute("aria-atomic", "true");
+      document.body.appendChild(container);
+    }
+
+    while (container.children.length >= 3) {
+      container.removeChild(container.firstChild);
+    }
+
+    const toast = document.createElement("div");
+    toast.className = "copy-toast";
+    toast.setAttribute("role", "status");
+
+    const header = document.createElement("div");
+    header.className = "copy-toast-header";
+
+    const headerLeft = document.createElement("div");
+    headerLeft.className = "copy-toast-header-left";
+    headerLeft.innerHTML = `
+      <span class="icon" data-icon="check"></span>
+      <span class="copy-toast-title"></span>
+    `;
+    const titleSpan = headerLeft.querySelector(".copy-toast-title");
+    if (titleSpan) titleSpan.textContent = label;
+
+    const closeBtn = document.createElement("button");
+    closeBtn.type = "button";
+    closeBtn.className = "copy-toast-close";
+    closeBtn.setAttribute("aria-label", "Close notification");
+    closeBtn.innerHTML = "&times;";
+
+    header.append(headerLeft, closeBtn);
+
+    const body = document.createElement("div");
+    body.className = "copy-toast-body";
+    body.textContent = text;
+
+    toast.append(header, body);
+    container.appendChild(toast);
+
+    if (window.renderIcons) window.renderIcons(toast);
+
+    requestAnimationFrame(() => {
+      toast.classList.add("show");
+    });
+
+    const dismiss = () => {
+      toast.classList.remove("show");
+      toast.classList.add("hide");
+      setTimeout(() => {
+        if (toast.parentNode) toast.parentNode.removeChild(toast);
+      }, 250);
+    };
+
+    closeBtn.addEventListener("click", dismiss);
+    const timeoutId = setTimeout(dismiss, 4000);
+    toast.addEventListener("mouseenter", () => clearTimeout(timeoutId));
+    toast.addEventListener("mouseleave", () => {
+      clearTimeout(timeoutId);
+      setTimeout(dismiss, 2000);
+    });
+  }
+
+  window.showCopiedToast = showCopiedToast;
   // Expose globally
   window.SiteLayout = Layout;
   window.SiteComponents = Layout;

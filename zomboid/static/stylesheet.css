@@ -293,18 +293,9 @@
 .zb-grid,
 .zb-skills {
   min-width: 0;
-}
-
-.zb-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 8px;
-}
-
-.zb-skills {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 8px;
+  columns: 2;
+  column-gap: 8px;
+  margin-bottom: -8px;
 }
 
 .zb-item {
@@ -322,6 +313,10 @@
   cursor: pointer;
   user-select: none;
   transition: transform var(--transition-fast, 0.2s ease), border-color 0.2s ease, background 0.2s ease;
+  break-inside: avoid;
+  -webkit-column-break-inside: avoid;
+  page-break-inside: avoid;
+  margin-bottom: 8px;
 }
 
 .zb-item:hover {
@@ -368,6 +363,10 @@
   border-radius: 8px;
   box-shadow: var(--shadow-terminal, inset 0 2px 8px rgba(0, 0, 0, 0.4));
   transition: border-color 0.2s ease;
+  break-inside: avoid;
+  -webkit-column-break-inside: avoid;
+  page-break-inside: avoid;
+  margin-bottom: 8px;
 }
 
 .zb-skill:hover {
@@ -467,7 +466,7 @@
   }
   .zb-skills,
   .zb-grid {
-    grid-template-columns: 1fr;
+    columns: 1;
   }
 }
 

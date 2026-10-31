@@ -92,6 +92,10 @@ async function copyToClipboard(text, buttonEl, successText = 'Copied!') {
     renderIcons(buttonEl);
   }
 
+  if (window.showCopiedToast) {
+    window.showCopiedToast(text);
+  }
+
   clearTimeout(buttonEl._copyTimeout);
   buttonEl._copyTimeout = setTimeout(() => {
     buttonEl.classList.remove('copied');
