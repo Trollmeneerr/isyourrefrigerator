@@ -64,7 +64,8 @@
                 <span>Back to Main Site</span>
             </a>
             <a href="https://panel.isyourrefrigerator.online" target="_blank" rel="noopener noreferrer"
-                id="btn-freezer-panel" class="btn btn-blue transition-fast" title="Open Pelican Freezer Management Panel">
+                id="btn-freezer-panel" class="btn btn-blue transition-fast"
+                title="Open Pelican Freezer Management Panel">
                 <span class="icon" data-icon="freezer"></span>
                 <span>Freezer Panel</span>
             </a>
@@ -77,41 +78,118 @@
             <section class="mc-intro overview-section" aria-labelledby="mc-title">
                 <h4 class="section-header-text">02 // DEDICATED FREEZER</h4>
                 <h1 id="mc-title" class="section-header-title">Minecraft</h1>
-                <p class="section-text">Paper survival freezer running the latest updates. Explore the realm, build together, and track player activity on the live world map.</p>
+                <p class="section-text">Paper survival freezer running the latest updates. Explore the realm, build
+                    together, and track player activity on the live world map.</p>
             </section>
 
             <!-- Server Information Card -->
             <section class="mc-server" id="serverBox" aria-label="Server information">
-                <div class="server-card">
-                    <div class="server-top">
-                        <div class="server-icon" title="Minecraft Server">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                                <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
-                                <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
-                                <line x1="12" y1="22.08" x2="12" y2="12"></line>
-                            </svg>
+                <div class="server-card server-main-card">
+                    <div class="server-info">
+                        <div>
+                            <div class="server-top">
+                                <div class="server-icon" title="Minecraft Server">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                        stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                        <path
+                                            d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z">
+                                        </path>
+                                        <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                                        <line x1="12" y1="22.08" x2="12" y2="12"></line>
+                                    </svg>
+                                </div>
+                                <div class="server-status-pill">
+                                    <span class="indicator-dot" id="srvDot" aria-hidden="true"></span>
+                                    <span id="srvText">Checking...</span>
+                                </div>
+                            </div>
+                            <h3>Minecraft 26.3</h3>
+                            <div class="server-subtitle">Paper Survival &bull; Dedicated PvE</div>
+                            <p class="server-desc">Paper survival freezer running the latest updates. Explore the realm,
+                                build
+                                together, and track player activity on the live world map.</p>
+                            <p class="managed">Managed by The Refrigerator</p>
+                            <div class="server-specs">
+                                <div class="spec-item"><span class="spec-label">CPU:</span><span
+                                        class="spec-val">i5-10300H 2 Threads</span></div>
+                                <div class="spec-item"><span class="spec-label">RAM:</span><span class="spec-val">DDR4
+                                        4GB</span></div>
+                                <div class="spec-item"><span class="spec-label">DISK:</span><span class="spec-val">50GB
+                                        SSD</span></div>
+                            </div>
                         </div>
-                        <div class="server-status-pill">
-                            <span class="indicator-dot" id="srvDot" aria-hidden="true"></span>
-                            <span id="srvText">Checking...</span>
+
+                        <div class="server-connect-group">
+                            <div class="server-connect" id="copyAddr" role="button" tabindex="0"
+                                title="Click to copy server hostname"
+                                aria-label="Copy server hostname: play.isyourrefrigerator.online:25565">
+                                <span class="ip-display">play.isyourrefrigerator.online:25565</span>
+                            </div>
                         </div>
                     </div>
-                    <h3>Minecraft 26.3</h3>
-                    <div class="server-subtitle">Paper Survival &bull; Dedicated PvE</div>
-                    <p class="server-desc">Paper survival freezer running the latest updates. Explore the realm, build together, and track player activity on the live world map.</p>
-                    <p class="managed">Managed by The Refrigerator</p>
-                    <div class="server-specs">
-                        <div class="spec-item"><span class="spec-label">CPU:</span><span class="spec-val">i5-10300H 2 Threads</span></div>
-                        <div class="spec-item"><span class="spec-label">RAM:</span><span class="spec-val">DDR4 4GB</span></div>
-                        <div class="spec-item"><span class="spec-label">DISK:</span><span class="spec-val">50GB SSD</span></div>
-                    </div>
-                    <div class="server-connect-group">
-                        <div class="server-connect" id="copyAddr" role="button" tabindex="0" title="Click to copy server hostname" aria-label="Copy server hostname: play.isyourrefrigerator.online:25565">
-                            <span class="ip-display">play.isyourrefrigerator.online:25565</span>
+
+                    <!-- Downloads Nested Card (styled like hosting-tier-card) -->
+                    <div class="server-downloads-card" aria-label="Server Downloads">
+                        <div>
+                            <div class="downloads-card-header">
+                                <span class="spec-label">DOWNLOADS</span>
+                                <span class="downloads-card-badge">Client Packs</span>
+                            </div>
+                            <div class="downloads-card-title">Freezer Resources</div>
+                            <div class="tier-divider"></div>
+                            <ul class="downloads-features">
+                                <li>
+                                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                        aria-hidden="true">
+                                        <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+                                        <polyline points="2 17 12 22 22 17"></polyline>
+                                        <polyline points="2 12 12 17 22 12"></polyline>
+                                    </svg>
+                                    <span>Client Modpack (FPS &amp; Shaders)</span>
+                                </li>
+                                <li>
+                                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                        aria-hidden="true">
+                                        <path
+                                            d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z">
+                                        </path>
+                                    </svg>
+                                    <span>Distant Horizon (Extended LODs)</span>
+                                </li>
+                                <li>
+                                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                        aria-hidden="true">
+                                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                                    </svg>
+                                    <span>Recommended &amp; Tested</span>
+                                </li>
+                            </ul>
                         </div>
-                        <div class="direct-ip-pill" id="copyDirectAddr" role="button" tabindex="0" title="Click to copy direct IP" aria-label="Copy direct IP: 158.101.195.224:25565">
-                            <span class="direct-ip-label">Direct IP:</span>
-                            <span class="direct-ip-val">158.101.195.224:25565</span>
+                        <div class="downloads-card-buttons">
+                            <!-- Set your download links in href below -->
+                            <a href="https://drive.google.com/file/d/1Up3wkUSuwNsn8KL1uQ5JuSVQEHcBtH3V/view?usp=sharing" class="btn btn-blue btn-download" title="Download Client Modpack"
+                                target="_blank" rel="noopener noreferrer">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                    <polyline points="7 10 12 15 17 10"></polyline>
+                                    <line x1="12" y1="15" x2="12" y2="3"></line>
+                                </svg>
+                                <span>Client Modpack</span>
+                            </a>
+                            <a href="https://drive.google.com/file/d/1F3ifgK5EUGZTvfOgDT3r9CXGLf_z_iNa/view?usp=sharing" class="btn btn-outline btn-download" title="Download Distant Horizon"
+                                target="_blank" rel="noopener noreferrer">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                    <polyline points="7 10 12 15 17 10"></polyline>
+                                    <line x1="12" y1="15" x2="12" y2="3"></line>
+                                </svg>
+                                <span>Distant Horizon</span>
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -123,7 +201,8 @@
                     <div class="map-header">
                         <div class="map-title-wrap">
                             <div class="map-icon" aria-hidden="true">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round">
                                     <polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"></polygon>
                                     <line x1="8" y1="2" x2="8" y2="18"></line>
                                     <line x1="16" y1="6" x2="16" y2="22"></line>
@@ -135,15 +214,21 @@
                             </div>
                         </div>
                         <div class="map-actions">
-                            <button type="button" class="btn btn-gray" id="btnMapFullscreen" title="Toggle fullscreen map">
-                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                                    <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path>
+                            <button type="button" class="btn btn-gray" id="btnMapFullscreen"
+                                title="Toggle fullscreen map">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                    <path
+                                        d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3">
+                                    </path>
                                 </svg>
                                 <span>Fullscreen</span>
                             </button>
-                            <a href="https://isyourrefrigerator.online/minecraft/map/" target="_blank" rel="noopener noreferrer" class="btn btn-blue" title="Open map in new tab">
+                            <a href="https://isyourrefrigerator.online/minecraft/map/" target="_blank"
+                                rel="noopener noreferrer" class="btn btn-blue" title="Open map in new tab">
                                 <span>Open Fullscreen</span>
-                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                                     <line x1="7" y1="17" x2="17" y2="7"></line>
                                     <polyline points="7 7 17 7 17 17"></polyline>
                                 </svg>
@@ -151,8 +236,11 @@
                         </div>
                     </div>
                     <div class="map-frame-wrapper" id="mapWrapper">
-                        <iframe id="mapFrame" class="map-frame" src="https://isyourrefrigerator.online/minecraft/map/" title="Minecraft Live World Map" loading="lazy" allowfullscreen="true">
-                            <p>Your browser does not support iframes. <a href="https://isyourrefrigerator.online/minecraft/map/" target="_blank" rel="noopener noreferrer">Click here to open the live world map</a>.</p>
+                        <iframe id="mapFrame" class="map-frame" src="https://isyourrefrigerator.online/minecraft/map/"
+                            title="Minecraft Live World Map" loading="lazy" allowfullscreen="true">
+                            <p>Your browser does not support iframes. <a
+                                    href="https://isyourrefrigerator.online/minecraft/map/" target="_blank"
+                                    rel="noopener noreferrer">Click here to open the live world map</a>.</p>
                         </iframe>
                     </div>
                 </div>
@@ -178,8 +266,10 @@
         </section>
         <span class="underline"></span>
         <section id="copyright" class="footer-copyright">
-            <p class="text-gray">&copy; <span class="current-year">2026</span> IsYourRefrigerator.online &mdash; Hosted with love &amp; electricity.</p>
-            <p class="text-gray">status <span id="status" class="status-indicator" role="status" aria-live="polite"></span></p>
+            <p class="text-gray">&copy; <span class="current-year">2026</span> IsYourRefrigerator.online &mdash; Hosted
+                with love &amp; electricity.</p>
+            <p class="text-gray">status <span id="status" class="status-indicator" role="status"
+                    aria-live="polite"></span></p>
         </section>
     </footer>
 

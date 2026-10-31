@@ -191,141 +191,148 @@
 }
 
 /* =========================================================================
-   Interactive Checklists
+   Interactive Checklists (Styled in common with main site)
    ========================================================================= */
 .zb-list {
   background-color: var(--bg-card, rgba(10, 25, 48, 0.78));
   border: 2px solid var(--border-color, #132a4a);
   border-radius: 12px;
-  padding: 24px;
+  padding: 28px 30px;
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   box-shadow: var(--shadow-card, 0 4px 24px rgba(0, 0, 0, 0.25));
-  margin-bottom: 26px;
+  margin-bottom: 30px;
   min-width: 0;
   overflow: hidden;
-  transition: border-color var(--transition-smooth, 0.25s ease), box-shadow var(--transition-smooth, 0.25s ease);
+  transition: border-color var(--transition-smooth, 0.25s ease);
 }
 
 .zb-list:hover {
-  border-color: var(--border-card-hover, #148dc0);
+  border-color: rgba(40, 185, 241, 0.35);
 }
 
 .zb-list-head {
   display: flex;
   flex-wrap: wrap;
-  align-items: flex-end;
+  align-items: center;
   justify-content: space-between;
-  gap: 14px;
-  margin-bottom: 14px;
+  gap: 16px;
+  margin-bottom: 16px;
 }
 
 .zb-list-head h2 {
   font-family: var(--font-spartan, spartan, Inter, sans-serif);
-  font-size: 20px;
+  font-size: 24px;
+  font-weight: 700;
   color: #ffffff;
-  margin-bottom: 4px;
+  margin-bottom: 6px;
 }
 
 .zb-list-head p {
-  font-size: 14px;
+  font-size: 14.5px;
   color: var(--text-muted, #94a3b8);
 }
 
 .zb-list-tools {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 14px;
   min-width: 0;
 }
 
 .zb-count {
   font-family: var(--font-mono, "Cascadia Code", monospace);
-  font-size: 12.5px;
-  font-weight: 600;
+  font-size: 13px;
+  font-weight: 700;
   color: var(--accent-ice-blue, #28b9f1);
   background: rgba(40, 185, 241, 0.08);
-  border: 1px solid rgba(40, 185, 241, 0.2);
-  padding: 4px 10px;
-  border-radius: 12px;
+  border: 1px solid rgba(40, 185, 241, 0.25);
+  padding: 6px 14px;
+  border-radius: 20px;
   white-space: nowrap;
 }
 
 .zb-search {
-  min-width: 180px;
+  min-width: 220px;
   max-width: 100%;
-  padding: 8px 14px;
+  padding: 10px 16px;
   background: var(--bg-terminal, #000f24);
   border: 1px solid var(--border-card, rgba(40, 185, 241, 0.22));
-  border-radius: 6px;
+  border-radius: 8px;
   color: #ffffff;
   font-family: var(--font-mono, "Cascadia Code", monospace);
-  font-size: 13px;
+  font-size: 13.5px;
   outline: none;
+  box-shadow: var(--shadow-terminal, inset 0 2px 8px rgba(0, 0, 0, 0.4));
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .zb-search:focus-visible {
   border-color: var(--accent-ice-blue, #28b9f1);
-  box-shadow: 0 0 10px rgba(40, 185, 241, 0.35);
+  box-shadow: 0 0 12px rgba(40, 185, 241, 0.35);
 }
 
 .zb-bar {
-  height: 6px;
-  margin-bottom: 18px;
+  height: 8px;
+  margin-bottom: 22px;
   background: var(--bg-terminal, #000f24);
   border: 1px solid var(--border-subtle, rgba(255, 255, 255, 0.08));
   border-radius: 999px;
   overflow: hidden;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.6);
 }
 
 .zb-bar-fill {
   width: 0;
   height: 100%;
   background: linear-gradient(90deg, var(--accent-blue, #0d8cf1) 0%, var(--accent-ice-blue, #28b9f1) 100%);
-  box-shadow: 0 0 8px rgba(40, 185, 241, 0.6);
+  box-shadow: 0 0 10px rgba(40, 185, 241, 0.7);
   transition: width 0.3s ease;
 }
 
 .zb-grid,
 .zb-skills {
-  column-gap: 10px;
   min-width: 0;
 }
 
 .zb-grid {
-  columns: 2;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
 }
 
 .zb-skills {
-  columns: 370px;
-}
-
-.zb-item,
-.zb-skill {
-  break-inside: avoid;
-  margin-bottom: 8px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
 }
 
 .zb-item {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
   min-width: 0;
-  padding: 9px 12px;
-  background: rgba(0, 15, 36, 0.72);
-  border: 1px solid rgba(40, 185, 241, 0.16);
-  border-radius: 6px;
-  font-size: 13.5px;
+  padding: 12px 16px;
+  background: var(--bg-terminal, #000f24);
+  border: 1px solid var(--border-card, rgba(40, 185, 241, 0.22));
+  border-radius: 8px;
+  box-shadow: var(--shadow-terminal, inset 0 2px 8px rgba(0, 0, 0, 0.4));
+  font-size: 14.5px;
   color: var(--text-secondary, #cbd5e1);
   cursor: pointer;
   user-select: none;
-  transition: border-color 0.2s ease, background 0.2s ease;
+  transition: transform var(--transition-fast, 0.2s ease), border-color 0.2s ease, background 0.2s ease;
 }
 
 .zb-item:hover {
-  border-color: rgba(40, 185, 241, 0.4);
-  background: rgba(0, 15, 36, 0.95);
+  transform: translateY(-1px);
+  border-color: var(--accent-ice-blue, #28b9f1);
+  background: rgba(0, 20, 48, 0.85);
+  color: #ffffff;
+}
+
+.zb-item:active {
+  transform: translateY(0);
 }
 
 .zb-item span {
@@ -335,8 +342,8 @@
 
 .zb-item input {
   flex-shrink: 0;
-  width: 16px;
-  height: 16px;
+  width: 18px;
+  height: 18px;
   accent-color: var(--accent-ice-blue, #28b9f1);
   cursor: pointer;
 }
@@ -344,18 +351,21 @@
 .zb-item.done {
   color: var(--text-dark-muted, #64748b);
   text-decoration: line-through;
-  border-color: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.06);
+  background: rgba(0, 15, 36, 0.45);
 }
 
+/* 2-Row Skill Card Layout */
 .zb-skill {
   display: flex;
-  align-items: center;
-  gap: 8px;
+  flex-direction: column;
+  gap: 10px;
   min-width: 0;
-  padding: 8px 12px;
-  background: rgba(0, 15, 36, 0.72);
-  border: 1px solid rgba(40, 185, 241, 0.16);
-  border-radius: 6px;
+  padding: 14px 16px;
+  background: var(--bg-terminal, #000f24);
+  border: 1px solid var(--border-card, rgba(40, 185, 241, 0.22));
+  border-radius: 8px;
+  box-shadow: var(--shadow-terminal, inset 0 2px 8px rgba(0, 0, 0, 0.4));
   transition: border-color 0.2s ease;
 }
 
@@ -363,63 +373,76 @@
   border-color: rgba(40, 185, 241, 0.4);
 }
 
+/* Row 1: Skill Title */
 .zb-skill h3 {
-  flex: 1;
-  min-width: 0;
-  margin: 0;
-  font-size: 13.5px;
-  font-weight: 600;
+  font-family: var(--font-spartan, spartan, Inter, sans-serif);
+  font-size: 16px;
+  font-weight: 700;
   color: #ffffff;
+  letter-spacing: 0.3px;
+  margin: 0;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
+/* Row 2: Volume Buttons */
 .zb-vols {
   display: flex;
-  gap: 4px;
-  flex-shrink: 0;
+  gap: 8px;
+  width: 100%;
 }
 
 .zb-vol {
+  flex: 1;
   display: inline-flex;
   align-items: center;
-  gap: 3px;
-  padding: 4px 7px;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px 10px;
+  background: rgba(255, 255, 255, 0.04);
   border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 4px;
+  border-radius: 6px;
   font-family: var(--font-mono, "Cascadia Code", monospace);
-  font-size: 11px;
+  font-size: 13px;
   font-weight: 600;
-  color: var(--text-muted, #94a3b8);
+  color: var(--text-secondary, #cbd5e1);
   cursor: pointer;
   user-select: none;
-  transition: all 0.2s ease;
+  transition: transform var(--transition-fast, 0.2s ease), border-color 0.2s ease, background-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .zb-vol:hover {
+  transform: translateY(-1px);
   border-color: var(--accent-ice-blue, #28b9f1);
+  background-color: rgba(40, 185, 241, 0.12);
   color: #ffffff;
 }
 
+.zb-vol:active {
+  transform: translateY(0);
+}
+
 .zb-vol input {
-  width: 13px;
-  height: 13px;
+  width: 15px;
+  height: 15px;
   accent-color: var(--accent-ice-blue, #28b9f1);
   cursor: pointer;
+  margin: 0;
 }
 
 .zb-vol.done {
-  background: rgba(40, 185, 241, 0.18);
+  background: rgba(40, 185, 241, 0.2);
   border-color: var(--accent-ice-blue, #28b9f1);
   color: var(--accent-ice-blue, #28b9f1);
   font-weight: 700;
+  box-shadow: 0 0 10px rgba(40, 185, 241, 0.25);
 }
 
 .zb-empty {
-  padding: 14px 0;
+  padding: 18px 0;
   color: var(--text-dark-muted, #64748b);
-  font-size: 14px;
+  font-size: 14.5px;
 }
 
 .zb-empty code {
@@ -441,7 +464,7 @@
   }
   .zb-skills,
   .zb-grid {
-    columns: 1;
+    grid-template-columns: 1fr;
   }
 }
 
@@ -453,16 +476,13 @@
     padding: 28px 18px;
   }
   .zb-list {
-    padding: 14px 12px;
-  }
-  .zb-skill {
-    flex-wrap: wrap;
-  }
-  .zb-skill h3 {
-    flex-basis: 100%;
-    margin-bottom: 4px;
+    padding: 18px 14px;
   }
   .zb-vols {
-    flex-wrap: wrap;
+    gap: 4px;
+  }
+  .zb-vol {
+    padding: 7px 4px;
+    font-size: 12px;
   }
 }

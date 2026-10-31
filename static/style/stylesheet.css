@@ -509,8 +509,7 @@ main,
 }
 
 .box:hover {
-  border-color: var(--border-card-hover);
-  box-shadow: var(--shadow-card-hover);
+  border-color: rgba(40, 185, 241, 0.32);
 }
 
 /* =============================================================================
@@ -1007,6 +1006,118 @@ main,
   margin-bottom: 16px;
 }
 
+/* Server Main Card Layout (Hosting Main Card style with nested Downloads Card) */
+.server-main-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: stretch;
+  gap: 32px;
+  position: relative;
+}
+
+.server-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-width: 0;
+}
+
+.server-downloads-card {
+  width: 340px;
+  flex-shrink: 0;
+  background: rgba(0, 15, 36, 0.72);
+  border: 1px solid rgba(40, 185, 241, 0.24);
+  border-radius: 14px;
+  padding: 24px 22px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: inset 0 2px 12px rgba(0, 0, 0, 0.55), 0 4px 16px rgba(0, 0, 0, 0.2);
+  transition: border-color var(--transition-fast);
+}
+
+.server-downloads-card:hover {
+  border-color: rgba(40, 185, 241, 0.45);
+}
+
+.downloads-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.downloads-card-header .spec-label {
+  color: var(--accent-ice-blue);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.downloads-card-badge {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--accent-cyan);
+  background: rgba(40, 185, 241, 0.08);
+  border: 1px solid rgba(40, 185, 241, 0.2);
+  padding: 2px 8px;
+  border-radius: 12px;
+}
+
+.downloads-card-title {
+  font-family: var(--font-spartan);
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 12px;
+}
+
+.downloads-features {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.downloads-features li {
+  font-size: 13px;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.downloads-features li svg {
+  flex-shrink: 0;
+  color: var(--accent-ice-blue);
+}
+
+.downloads-card-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+}
+
+.downloads-card-buttons .btn-download {
+  width: 100%;
+  padding: 9px 14px;
+  font-size: 13px;
+  font-family: var(--font-sans);
+  font-weight: 600;
+  border-radius: 6px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  text-decoration: none;
+}
+
 .freezer-specs span,
 .spec-item {
   display: flex;
@@ -1039,8 +1150,7 @@ main,
 
 .freezers-box:hover .freezer-specs,
 .server-card:hover .server-specs {
-  border-color: rgba(40, 185, 241, 0.45);
-  box-shadow: inset 0 2px 12px rgba(0, 0, 0, 0.6), 0 0 14px rgba(40, 185, 241, 0.12);
+  border-color: var(--border-card);
 }
 
 /* Freezer Card Actions */
@@ -1094,8 +1204,7 @@ main,
 }
 
 .server-card:hover {
-  border-color: var(--border-card-hover);
-  box-shadow: var(--shadow-card-hover);
+  border-color: rgba(40, 185, 241, 0.32);
 }
 
 .server-top {
@@ -1268,8 +1377,7 @@ main,
 }
 
 .hosting-main-card:hover {
-  border-color: rgba(40, 185, 241, 0.38);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), 0 0 24px rgba(40, 185, 241, 0.12);
+  border-color: rgba(40, 185, 241, 0.35);
 }
 
 .hosting-info {
@@ -1515,7 +1623,6 @@ main,
 
 .discord-card:hover {
   border-color: rgba(88, 101, 242, 0.5);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25), 0 0 16px rgba(88, 101, 242, 0.15);
 }
 
 .discord-left {
@@ -1832,6 +1939,12 @@ main,
 /* =============================================================================
    15. Responsive Breakpoints
    ============================================================================= */
+/* 1521px+ Breakpoint */
+@media (min-width: 1521px) {
+  .site-header { padding: 0 15vw; }
+  .site-footer { padding: 36px 15vw 24px; }
+  main, .main-content { margin: clamp(24px, 3vw, 48px) 15vw; }
+}
 
 /* 1520px Breakpoint */
 @media (max-width: 1520px) {
@@ -1875,6 +1988,13 @@ main,
 
 /* 850px Breakpoint */
 @media (max-width: 850px) {
+  .server-main-card {
+    flex-direction: column;
+    gap: 24px;
+  }
+  .server-downloads-card {
+    width: 100%;
+  }
   .site-header {
     justify-content: center;
     height: auto;
