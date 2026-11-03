@@ -124,9 +124,9 @@ const FREEZERS = [
     status: 'online',
     statusKey: 'minecraft',
     specs: [
-      { label: 'CPU', value: 'i5-10300H 2 Threads' },
-      { label: 'RAM', value: 'DDR4 4GB' },
-      { label: 'DISK', value: '50GB SSD' }
+      { label: 'CPU', value: 'i5-10300H 3 Threads' },
+      { label: 'RAM', value: 'DDR4 6GB' },
+      { label: 'DISK', value: '75GB SSD' }
     ]
   },
   {
@@ -141,7 +141,7 @@ const FREEZERS = [
     status: 'offline',
     statusKey: 'zomboid',
     specs: [
-      { label: 'CPU', value: 'I7-6700k 4 Cores' },
+      { label: 'CPU', value: 'I7-6700k 8 Threads' },
       { label: 'RAM', value: 'DDR4 16GB' },
       { label: 'DISK', value: '512GB SSD' }
     ]
@@ -159,7 +159,7 @@ const FREEZERS = [
     specs: [
       { label: 'CPU', value: 'i5-10300H 3 Threads' },
       { label: 'RAM', value: 'DDR4 6GB' },
-      { label: 'DISK', value: '50GB SSD' }
+      { label: 'DISK', value: '75GB SSD' }
     ]
   },
   {
@@ -175,7 +175,7 @@ const FREEZERS = [
     specs: [
       { label: 'CPU', value: 'i5-10300H 3 Threads' },
       { label: 'RAM', value: 'DDR4 6GB' },
-      { label: 'DISK', value: '50GB SSD' }
+      { label: 'DISK', value: '25GB SSD' }
     ]
   }
 ];
@@ -249,9 +249,9 @@ function renderFreezersCards(showAll = false) {
       <div class="freezer-managed">Managed by The Refrigerator</div>
     </div>
     <div class="freezer-specs">
-      <span>CPU: Ryzen 9 5900X</span>
-      <span>RAM: 24GB</span>
-      <span>Disk: 512GB SSD</span>
+      <span>CPU: i5-10300H 3 Threads</span>
+      <span>RAM: DDR4 6GB</span>
+      <span>Disk: 50GB SSD</span>
     </div>
     <div class="freezer-footer">
       <a class="freezer-ip" href="#hosting" title="Learn more about hosting options">
